@@ -61,6 +61,8 @@ public class RegisterActionListener implements ActionListener{
 		}catch(Exception err){
 			err.printStackTrace();
 		}
+		username.setText("Account Name");
+		password.setText("Password");
 	}
 
 }
