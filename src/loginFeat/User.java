@@ -41,7 +41,7 @@ public class User {
 	/**
 	 * List of Contacts attached to the User's account
 	 */
-	public ArrayList<User> Contacts = new ArrayList<User>();
+	public ArrayList<Integer> Contacts = new ArrayList<Integer>();
 	
 public User(String username, String password, int id) {
 		setUsername(username);
@@ -73,15 +73,15 @@ public User(String username, String password, int id) {
 		return username;
 	}
 	
-	public ArrayList<User> getContacts(){
+	public ArrayList<Integer> getContacts(){
 		return Contacts;
 	}
 	
-	public void AddContact(ArrayList<User> Contacts, User userToAdd) {
-		Contacts.add(userToAdd);
+	public void AddContact(ArrayList<Integer> Contacts, Integer idToAdd) {
+		Contacts.add(idToAdd);
 	}
 	
-	public void removeContact(ArrayList<User> Contacts, User userToRemove) {
-		Contacts.remove(userToRemove);
+	public void removeContact(ArrayList<Integer> Contacts, Integer idToRemove) {
+		Contacts.remove(idToRemove);
 	}
 }

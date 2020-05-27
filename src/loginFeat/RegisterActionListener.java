@@ -55,12 +55,15 @@ public class RegisterActionListener implements ActionListener{
 			if(!existingAccount){ //if the account doesn't already exist, create it
 				User user = new User(usr, pwd, id);
 				XMLUser.addToXML(user); //update the logger XML
+				//XMLUser.addContactToUserXML(id, 52); //Try add test contact
 				LoggerGUI.updateLogger();
 				LoggerGUI.idConnectedUser = id;
 			}
 		}catch(Exception err){
 			err.printStackTrace();
 		}
+		username.setText("Account Name");
+		password.setText("Password");
 	}
 
 }

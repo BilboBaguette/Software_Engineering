@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -77,14 +78,14 @@ public class LoggerGUI{
 	 * @see LogActionListener.actionPerformed(ActionEvent)
 	 * @see RegisterActionLister.actionPerformed(ActionEvent)
 	 */
-	private JTextField usrnmfieldregister;
+	private JTextField userNameFieldRegister;
 	/**
 	 * password field for the registering process
 	 * @see LoggerGUI()
 	 * @see LogActionListener.actionPerformed(ActionEvent)
 	 * @see RegisterActionLister.actionPerformed(ActionEvent)
 	 */
-	private JTextField pwdfieldregister;
+	private JTextField passwordFieldRegister;
 	/**
 	 * id of the connected client, initally a negative value for easier error prevention
 	 * @see LogActionListener.actionPerformed(ActionEvent)
@@ -133,10 +134,10 @@ public class LoggerGUI{
 		userNameFieldLogin.setColumns(25);
 		passwordFieldLogin = new JTextField("Password");
 		passwordFieldLogin.setColumns(25);
-		usrnmfieldregister = new JTextField("Account Name");
-		usrnmfieldregister.setColumns(25);
-		pwdfieldregister = new JTextField("Password");
-		pwdfieldregister.setColumns(25);
+		userNameFieldRegister = new JTextField("Account Name");
+		userNameFieldRegister.setColumns(25);
+		passwordFieldRegister = new JTextField("Password");
+		passwordFieldRegister.setColumns(25);
 				
 		//adding panels, fields and buttons to the frame
 		frame.add(loginpanel, BorderLayout.WEST);
@@ -147,16 +148,27 @@ public class LoggerGUI{
 		btnpanel1.add(loginbtn);
 		frame.add(registerpanel, BorderLayout.EAST);
 		registerpanel.add(registerlabel);
-		registerpanel.add(usrnmfieldregister);
-		registerpanel.add(pwdfieldregister);
+		registerpanel.add(userNameFieldRegister);
+		registerpanel.add(passwordFieldRegister);
 		registerpanel.add(btnpanel2, BorderLayout.CENTER);
 		btnpanel2.add(registerbtn);
 
 		frame.pack();
+		
+		//Adding mouse listeners to the textfields, to clear them when the user clicks on them.
+		MouseListener userNameFieldLoginListener = new FieldMouseListener(userNameFieldLogin);
+		userNameFieldLogin.addMouseListener(userNameFieldLoginListener);
+		MouseListener passwordFieldLoginListener = new FieldMouseListener(passwordFieldLogin);
+		passwordFieldLogin.addMouseListener(passwordFieldLoginListener);
+		MouseListener userNameFieldRegisterListener = new FieldMouseListener(userNameFieldRegister);
+		userNameFieldRegister.addMouseListener(userNameFieldRegisterListener);
+		MouseListener passwordFieldRegisterListener = new FieldMouseListener(passwordFieldRegister);
+		passwordFieldRegister.addMouseListener(passwordFieldRegisterListener);
+		
 		//Adding action listeners to the buttons
 		ActionListener loginListener = new LogActionListener(userNameFieldLogin, passwordFieldLogin, frame);
 		loginbtn.addActionListener(loginListener);
-		ActionListener registerListener = new RegisterActionListener(usrnmfieldregister, pwdfieldregister);
+		ActionListener registerListener = new RegisterActionListener(userNameFieldRegister, passwordFieldRegister);
 		registerbtn.addActionListener(registerListener);
 		frame.setVisible(true);
 	}
