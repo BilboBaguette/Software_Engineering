@@ -121,15 +121,52 @@ public class XMLUser {
         Transformer transformer = factory.newTransformer();
         DOMSource domSource = new DOMSource(document);
         StreamResult streamResult = new StreamResult(new File("./User.xml"));
-        transformer.transform(domSource, streamResult);
-			 
+        transformer.transform(domSource, streamResult);	 
 	}
 	
-	public static ArrayList<String> readXMLUser(String choice) throws Exception
+	public static void removeContactFromUserXML(Integer idUser, Integer idToRemove) throws Exception //Doesn't Work
 	{
 		File xmlFile = new File("./User.xml");
 		
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+		Document document = documentBuilder.parse(xmlFile);
+		
+		Node contacts = document.getFirstChild();
+		NodeList userList = contacts.getChildNodes();
+		
+		for (int i = 0; i < userList.getLength(); i++) 
+		{
+			Node element =  userList.item(i);
+			
+			String attr = element.getAttributes().getNamedItem("id").getNodeValue();
+			if(Integer.toString(idUser).equals(attr))
+			{
+				NodeList subUserList = element.getChildNodes();
+				for (int j = 0; j < subUserList.getLength(); j++) {
+					System.out.println("ok1");
+	                Node subElement = subUserList.item(j);
+	                if ("Contacts".equals(subElement.getNodeName())) {
+	                	System.out.println("ok2");	    				
+	    	            if (Integer.toString(idToRemove).equals(subElement.getNodeValue())) {
+	    	            	((Node) subUserList).removeChild(subElement);
+	    	            }
+	                }
+	            }
+			}
+		}
+		TransformerFactory factory = TransformerFactory.newInstance();
+        Transformer transformer = factory.newTransformer();
+        DOMSource domSource = new DOMSource(document);
+        StreamResult streamResult = new StreamResult(new File("./User.xml"));
+        transformer.transform(domSource, streamResult);	 
+	}
+	
+	public static ArrayList<String> readXMLUser(String choice) throws Exception //Need changes
+	{
+		File xmlFile = new File("./User.xml");
 		ArrayList<String> toReturn = new ArrayList<String>();
+		ArrayList<ArrayList<String>> toReturnArray = new ArrayList<ArrayList<String>>();
 		
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -152,7 +189,16 @@ public class XMLUser {
 					toReturn.add(element.getElementsByTagName("Password").item(0).getTextContent());
 					break;
 				case "Contacts":
-					toReturn.add(element.getElementsByTagName("Contacts").item(0).getTextContent());
+					NodeList subUserList = element.getChildNodes();
+					ArrayList<String> contactsList = new ArrayList<String>();
+					for (int j = 0; j < subUserList.getLength(); j++) {
+		                Node subElement = subUserList.item(j);
+		                contactsList.add(subElement.getTextContent());	                
+		            }
+					toReturnArray.add(contactsList);
+					break;
+				case "ID":
+					toReturn.add(element.getAttribute("id"));
 					break;
 				}
 			}
