@@ -53,8 +53,13 @@ public class SendButtonListener implements ActionListener {
 		String a,b;
 		a = TypingText.getText();
 		b = textPane.getText();
-		myList.add(new Messages("user",a));
 		if(!TypingText.getText().isEmpty()){
+			myList.add(new Messages("user",a));
+			try {
+				XMLLog.addToXML(new Messages("user", a));
+			}catch (Exception exc) {
+				exc.getStackTrace();
+			}
 			simpleClient.Senda = a;
 			simpleClient.messageSent = true;
 			if(textPane.getText().isEmpty()){

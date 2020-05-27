@@ -27,6 +27,8 @@ import connec.SimpleClient;
 public class Chatroom {
 
 	public List<Messages> myList = new ArrayList<Messages>();
+	ArrayList<String> messageContent;
+	ArrayList<String> messageUsername;
 	
     /**
      * Description: Constructor of the class chat room
@@ -60,26 +62,52 @@ public class Chatroom {
 		scrollPane = new JScrollPane();
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		
-		final JTextPane textPane = new JTextPane();
-		textPane.setEnabled(false);
-		textPane.setBounds(123, 57, 444, 338);
+
 		
-		scrollPane.setBounds(123, 57, 444, 338);
-		scrollPane.getViewport().setBackground(Color.WHITE);
-		scrollPane.getViewport().add(textPane);
-		frame.add(scrollPane);
+		try {
+			final JTextPane textPane = new JTextPane();
+			textPane.setEnabled(false);
+			textPane.setBounds(123, 57, 444, 338);
+
+			
+			//XMLLog.createLogXML();
+			ArrayList<String> messageContent = XMLLog.readXMLLog("MessageContent");
+			ArrayList<String> messageUsername = XMLLog.readXMLLog("UserName");
+			
+			String wholeText = "";
+			for(int i=0;i<messageContent.size()-1;i++) {
+				wholeText += messageUsername.get(i) + ": " + messageContent.get(i) + "\n";
+			}
+			wholeText += messageUsername.get(messageUsername.size()-1) + ": " + messageContent.get(messageContent.size()-1);
+			
+			//System.out.println(messageContent.size());
+			
+			textPane.setText(wholeText);
+
+			
+			scrollPane.setBounds(123, 57, 444, 338);
+			scrollPane.getViewport().setBackground(Color.WHITE);
+			scrollPane.getViewport().add(textPane);
+			frame.add(scrollPane);
+			
+			SimpleClient c1 = new SimpleClient();
+			
+			JButton btnSend = new JButton("Send");
+			/*uses Class ActionIsComming*/
+			btnSend.addActionListener(new SendButtonListener(textPane,Typingtext,myList, c1));
+			btnSend.setBounds(486, 406, 89, 23);
+			frame.getContentPane().add(btnSend);
+			
+			frame.setVisible(true);
+			
+			c1.connect("localhost");
+		}catch(Exception e){
+			e.getStackTrace();
+		}
 		
-		SimpleClient c1 = new SimpleClient();
-		
-		JButton btnSend = new JButton("Send");
-		/*uses Class ActionIsComming*/
-		btnSend.addActionListener(new SendButtonListener(textPane,Typingtext,myList, c1));
-		btnSend.setBounds(486, 406, 89, 23);
-		frame.getContentPane().add(btnSend);
-		
-		frame.setVisible(true);
-		
-		c1.connect("localhost");
+
+
+
 		
 	}
 }
