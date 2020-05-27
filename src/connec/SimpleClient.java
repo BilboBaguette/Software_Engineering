@@ -7,6 +7,8 @@ public class SimpleClient {
 	private ObjectOutputStream output;
 	private ObjectInputStream input;
 	private Socket socket;
+	public String Senda;
+	public volatile boolean messageSent = false;
 	
 	public void connect(String ip)
 	{
@@ -19,20 +21,18 @@ public class SimpleClient {
 			output = new ObjectOutputStream(socket.getOutputStream());
             input = new ObjectInputStream(socket.getInputStream());
 			
-			String textToSend = new String("Send me the student info! ");
-			System.out.println("text sent to the server: " + textToSend);			
-			output.writeObject(textToSend);		//serialize and write the String to the stream
- 
-			Student student = (Student) input.readObject();	//deserialize and read the Student object from the stream
-			System.out.println("Received student id: " + student.getID() + " and student name: " + student.getName() + " from server");
-	    } catch  (UnknownHostException uhe) {
+			while(true){
+				if(messageSent==true) {
+					output = new ObjectOutputStream(socket.getOutputStream());
+					output.writeObject((String) Senda);
+					messageSent =false;
+				}
+			}
+		} catch  (UnknownHostException uhe) {
 			uhe.printStackTrace();
 		}
 		catch  (IOException ioe) {
 			ioe.printStackTrace();
-		}
-		catch  (ClassNotFoundException cnfe) {
-			cnfe.printStackTrace();
 		}
 		finally {
 			try {

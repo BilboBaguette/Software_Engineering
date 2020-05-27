@@ -16,10 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTextPane;
 
+import connec.SimpleClient;
+
 
 public class SendButtonListener implements ActionListener {
 	private JTextPane textPane;
 	private JTextPane TypingText;
+	private SimpleClient simpleClient;
 
 	public List<Messages> myList = new ArrayList<Messages>();
 	
@@ -31,11 +34,12 @@ public class SendButtonListener implements ActionListener {
  * @param sendList: List of messages that we have received or sent
  * 
  */
-	public SendButtonListener(JTextPane textPane, JTextPane textPane2,List<Messages> sendList)
+	public SendButtonListener(JTextPane textPane, JTextPane textPane2,List<Messages> sendList, SimpleClient sc)
 	{
 		this.textPane = textPane;
 		this.TypingText =textPane2;
 		this.myList = sendList;
+		this.simpleClient = sc;
 	}
 
 /**
@@ -49,8 +53,15 @@ public class SendButtonListener implements ActionListener {
 		String a,b;
 		a = TypingText.getText();
 		b = textPane.getText();
-		myList.add(new Messages("user",a));
 		if(!TypingText.getText().isEmpty()){
+			myList.add(new Messages("user",a));
+			try {
+				XMLLog.addToXML(new Messages("user", a));
+			}catch (Exception exc) {
+				exc.getStackTrace();
+			}
+			simpleClient.Senda = a;
+			simpleClient.messageSent = true;
 			if(textPane.getText().isEmpty()){
 				textPane.setText("user : " +  a+b);
 				}else{
