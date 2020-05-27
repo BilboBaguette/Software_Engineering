@@ -20,11 +20,17 @@ public class ServerThread extends Thread {
 			input = new ObjectInputStream(socket.getInputStream());
 			output = new ObjectOutputStream(socket.getOutputStream());
  
- 			String text = (String)input.readObject();  //read the object received through the stream and deserialize it
+ 			/*String text = (String)input.readObject();  //read the object received through the stream and deserialize it
 			System.out.println("server received a text:" + text);
 			
 			Student student = new Student(1234, "john.doe");
 			output.writeObject(student);		//serialize and write the Student object to the stream
+			*/
+			while(true) {
+				input = new ObjectInputStream(socket.getInputStream());
+				String helo = (String) input.readObject();
+				System.out.println("The server received: " + helo);
+			}
  
         } catch (IOException ex) {
             System.out.println("Server exception: " + ex.getMessage());

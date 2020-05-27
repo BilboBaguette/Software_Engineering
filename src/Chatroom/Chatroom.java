@@ -21,6 +21,8 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 
+import connec.SimpleClient;
+
 
 public class Chatroom {
 
@@ -67,13 +69,17 @@ public class Chatroom {
 		scrollPane.getViewport().add(textPane);
 		frame.add(scrollPane);
 		
+		SimpleClient c1 = new SimpleClient();
+		
 		JButton btnSend = new JButton("Send");
 		/*uses Class ActionIsComming*/
-		btnSend.addActionListener(new SendButtonListener(textPane,Typingtext,myList));
+		btnSend.addActionListener(new SendButtonListener(textPane,Typingtext,myList, c1));
 		btnSend.setBounds(486, 406, 89, 23);
 		frame.getContentPane().add(btnSend);
 		
 		frame.setVisible(true);
+		
+		c1.connect("localhost");
 		
 	}
 }
