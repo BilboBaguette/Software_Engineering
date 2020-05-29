@@ -10,6 +10,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -38,7 +39,7 @@ public class XMLUser {
 		
 		Document document = documentBuilder.newDocument();
 		
-		Element element = document.createElement("Logins");
+		Element element = document.createElement("Accounts");
 		document.appendChild(element);
 		
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -58,9 +59,14 @@ public class XMLUser {
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		Document document = documentBuilder.parse(xmlFile);
 		
-        Element root = document.getDocumentElement();
-        Element element = document.createElement("Login");
+		Element element = document.createElement("User");
+		
+		Element root = document.getDocumentElement();
         root.appendChild(element);
+		
+		Attr attr = document.createAttribute("id");
+        attr.setValue(Integer.toString(UserToAdd.getId()));
+        element.setAttributeNode(attr);
         
         Element userName = document.createElement("UserName");
     	userName.appendChild(document.createTextNode(UserToAdd.getUsername()));
@@ -70,10 +76,8 @@ public class XMLUser {
     	password.appendChild(document.createTextNode(UserToAdd.getPassword()));
     	element.appendChild(password);
     		
-    	Element id = document.createElement("ID");
-    	id.appendChild(document.createTextNode(Integer.toString(UserToAdd.getId())));
-    	element.appendChild(id);
-
+    	Element contacts = document.createElement("Contacts");
+    	element.appendChild(contacts);
 
         TransformerFactory factory = TransformerFactory.newInstance();
         Transformer transformer = factory.newTransformer();
@@ -81,21 +85,94 @@ public class XMLUser {
         StreamResult streamResult = new StreamResult(new File("./User.xml"));
         transformer.transform(domSource, streamResult);
         
-        
-		
 	}
 	
-	public static ArrayList<String> readXMLLogger(String choice) throws Exception
+	public static void addContactToUserXML(Integer idUser, Integer idToAdd) throws Exception
 	{
 		File xmlFile = new File("./User.xml");
-		
-		ArrayList<String> toReturn = new ArrayList<String>();
 		
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		Document document = documentBuilder.parse(xmlFile);
 		
-		NodeList list = document.getElementsByTagName("Login");
+		Node contacts = document.getFirstChild();
+		NodeList userList = contacts.getChildNodes();
+		
+		for (int i = 0; i < userList.getLength(); i++) 
+		{
+			Node element =  userList.item(i);
+			
+			String attr = element.getAttributes().getNamedItem("id").getNodeValue();
+			if(Integer.toString(idUser).equals(attr))
+			{
+				NodeList subUserList = element.getChildNodes();
+				for (int j = 0; j < subUserList.getLength(); j++) {
+					
+	                Node subElement = subUserList.item(j);
+	                if ("Contacts".equals(subElement.getNodeName())) {
+	                	Element contact = document.createElement("Contact");
+	                	contact.appendChild(document.createTextNode(Integer.toString(idToAdd)));
+	                	((Node) subUserList).appendChild(contact);
+	                }
+	            }
+			}
+		}
+		TransformerFactory factory = TransformerFactory.newInstance();
+        Transformer transformer = factory.newTransformer();
+        DOMSource domSource = new DOMSource(document);
+        StreamResult streamResult = new StreamResult(new File("./User.xml"));
+        transformer.transform(domSource, streamResult);	 
+	}
+	
+	public static void removeContactFromUserXML(Integer idUser, Integer idToRemove) throws Exception //Doesn't Work
+	{
+		File xmlFile = new File("./User.xml");
+		
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+		Document document = documentBuilder.parse(xmlFile);
+		
+		Node contacts = document.getFirstChild();
+		NodeList userList = contacts.getChildNodes();
+		
+		for (int i = 0; i < userList.getLength(); i++) 
+		{
+			Node element =  userList.item(i);
+			
+			String attr = element.getAttributes().getNamedItem("id").getNodeValue();
+			if(Integer.toString(idUser).equals(attr))
+			{
+				NodeList subUserList = element.getChildNodes();
+				for (int j = 0; j < subUserList.getLength(); j++) {
+					System.out.println("ok1");
+	                Node subElement = subUserList.item(j);
+	                if ("Contacts".equals(subElement.getNodeName())) {
+	                	System.out.println("ok2");	    				
+	    	            if (Integer.toString(idToRemove).equals(subElement.getNodeValue())) {
+	    	            	((Node) subUserList).removeChild(subElement);
+	    	            }
+	                }
+	            }
+			}
+		}
+		TransformerFactory factory = TransformerFactory.newInstance();
+        Transformer transformer = factory.newTransformer();
+        DOMSource domSource = new DOMSource(document);
+        StreamResult streamResult = new StreamResult(new File("./User.xml"));
+        transformer.transform(domSource, streamResult);	 
+	}
+	
+	public static ArrayList<String> readXMLUser(String choice) throws Exception //Need changes
+	{
+		File xmlFile = new File("./User.xml");
+		ArrayList<String> toReturn = new ArrayList<String>();
+		ArrayList<ArrayList<String>> toReturnArray = new ArrayList<ArrayList<String>>();
+		
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+		Document document = documentBuilder.parse(xmlFile);
+		
+		NodeList list = document.getElementsByTagName("User");
 		
 		for(int i = 0; i < list.getLength(); i++)
 		{
@@ -111,8 +188,17 @@ public class XMLUser {
 				case "Password":
 					toReturn.add(element.getElementsByTagName("Password").item(0).getTextContent());
 					break;
+				case "Contacts":
+					NodeList subUserList = element.getChildNodes();
+					ArrayList<String> contactsList = new ArrayList<String>();
+					for (int j = 0; j < subUserList.getLength(); j++) {
+		                Node subElement = subUserList.item(j);
+		                contactsList.add(subElement.getTextContent());	                
+		            }
+					toReturnArray.add(contactsList);
+					break;
 				case "ID":
-					toReturn.add(element.getElementsByTagName("ID").item(0).getTextContent());
+					toReturn.add(element.getAttribute("id"));
 					break;
 				}
 			}

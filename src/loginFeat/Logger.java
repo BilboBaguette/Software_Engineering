@@ -25,7 +25,7 @@ public class Logger {
 	/**
 	 * Constructor for the logger class
 	 * @see LoggerGUI
-	 * @see xmlLogger#readXMLLogger(String)
+	 * @see xmlLogger#readXMLUser(String)
 	 */
 	public Logger() {
 
