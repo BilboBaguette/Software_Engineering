@@ -18,6 +18,7 @@ public class SimpleClient {
 			output = new ObjectOutputStream(socket.getOutputStream());
 
 
+
 			
 	    } catch  (UnknownHostException uhe) {
 			uhe.printStackTrace();
@@ -52,7 +53,6 @@ public class SimpleClient {
 	{
 		int id= 0;
         try  {
-        	input = new ObjectInputStream(socket.getInputStream());
 			id = (int) input.readObject();	//deserialize and read the Student object from the stream
 	    } catch  (UnknownHostException uhe) {
 			uhe.printStackTrace();
@@ -80,7 +80,9 @@ public class SimpleClient {
 			
 			output.writeObject(password); //serialize and write the String to the stream
 			System.out.println("output sent to the server: " + password);
+			
 			input = new ObjectInputStream(socket.getInputStream());		
+
 			check = (boolean) input.readObject();	//deserialize and read the Student object from the stream
 			System.out.println(check);
 	    } catch  (UnknownHostException uhe) {

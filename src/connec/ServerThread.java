@@ -50,6 +50,9 @@ public class ServerThread extends Thread {
     public void run() {
     	String choice = "";
         try {
+    		input = new ObjectInputStream(socket.getInputStream());
+ 			output = new ObjectOutputStream(socket.getOutputStream());
+
         	choice = clickState();
         	loginInit();
         	System.out.println("Here");
@@ -69,10 +72,17 @@ public class ServerThread extends Thread {
         		break;
         	}
         	      		
-        } finally {
+        } catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			System.out.println("test");
 			try {
 				output.close();
 				input.close();
+				System.out.println("test2");
+
+				
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
 			}
@@ -84,7 +94,6 @@ public class ServerThread extends Thread {
     	String state = "";
     	try {
     		System.out.println("BO");
-    		input = new ObjectInputStream(socket.getInputStream());
     		System.out.println("BO2");
   			state = (String)input.readObject();  //read the object received through the stream and deserialize it
   			System.out.println(state);
@@ -118,7 +127,6 @@ public class ServerThread extends Thread {
     public void loginCheck()
     {
     	 try {
-    		input = new ObjectInputStream(socket.getInputStream());
   			String username = (String)input.readObject();  //read the object received through the stream and deserialize it
  			System.out.println("server received input:" + username);
  			String password = (String)input.readObject();  //read the object received through the stream and deserialize it
@@ -151,10 +159,9 @@ public class ServerThread extends Thread {
     	loginInit();
     	try {
     		boolean existingAccount = false;
- 			output = new ObjectOutputStream(socket.getOutputStream());
-  
+ 			System.out.println("test");
  			String usr = (String)input.readObject();  //read the object received through the stream and deserialize it
- 			
+ 			System.out.println("usr = " + usr);
  			for(int i=0; i<users.size(); i++){ //check that the account name is unique
 				if(usr.compareTo(users.get(i)) == 0){
 					existingAccount=true;
@@ -164,6 +171,7 @@ public class ServerThread extends Thread {
 					System.out.println("ju ");
 				}
 			}
+ 			System.out.println(existingAccount);
  			output.writeObject((boolean)existingAccount);
   
          } catch (IOException ex) {
