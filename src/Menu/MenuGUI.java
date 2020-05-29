@@ -11,25 +11,47 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
+/**
+ * Class used to create the Menu GUI, allowing the user to select which contact or group he wants to chat with, add new contacts and create groups
+ * @author roman
+ * @see ActionListeners
+ */
 public class MenuGUI {
-
+	/**
+	 * frame of the Menu
+	 */
 	private JFrame frame;
-	
+	/**
+	 * top panel used to display the name fo the current connected user
+	 */
 	private JPanel currentUserPanel;
-	
+	/**
+	 * center panel used to contain two comboboxes to select contacts or groups and the button to create groups
+	 */
 	private JPanel selectContactsAndGroups;
-	
+	/**
+	 * bottom panel used to contain the textfield and button to select and add a user as a new contact
+	 */
 	private JPanel addNewContact;
-	
+	/**
+	 * combobox used to select either the contacts list or the groups list
+	 */
 	private JComboBox<String> contactsAndGroups;
-	
+	/**
+	 * combobox that displays either the contacts list or the groups list
+	 */
 	private JComboBox<String> contactsOrGroups;
-	
+	/**
+	 * textfield used to enter the name of the user you wish to add as a new contact
+	 */
 	private JTextField newContact;
-	
+	/**
+	 * button used to add a new contact
+	 */
 	private JButton addNewContactbtn;
-	
+	/**
+	 * button used to create a new group
+	 */
 	private JButton newGroupbtn;
 	
 	/**
@@ -46,7 +68,7 @@ public class MenuGUI {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 100, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+		//panels, labels, comboboxes and buttons setup
 		currentUserPanel = new JPanel();
 		selectContactsAndGroups = new JPanel();
 		addNewContact = new JPanel();
@@ -60,22 +82,19 @@ public class MenuGUI {
 		String contactsGroups[] = {"Contacts", "Groups"};
 		contactsAndGroups = new JComboBox<String>(contactsGroups);
 		contactsOrGroups = new JComboBox<String>();
-		
+		//layout and borders setup
 		BoxLayout userLayout = new BoxLayout(currentUserPanel, BoxLayout.X_AXIS);
 		BoxLayout contactsAndGroupsLayout = new BoxLayout(selectContactsAndGroups, BoxLayout.X_AXIS);
 		BoxLayout newContactLayout = new BoxLayout(addNewContact, BoxLayout.X_AXIS);
-		
 		currentUserPanel.setBorder(BorderFactory.createTitledBorder(""));
 		currentUserPanel.setLayout(userLayout);
-		//currentUserPanel.setBorder(new EmptyBorder());
 		selectContactsAndGroups.setBorder(BorderFactory.createTitledBorder("Contacts and Groups"));
 		selectContactsAndGroups.setLayout(contactsAndGroupsLayout);
-		//currentUserPanel.setBorder(new EmptyBorder());
 		addNewContact.setBorder(BorderFactory.createTitledBorder("Add new Contact"));
 		addNewContact.setLayout(newContactLayout);
 		newContactbtnPane.setBorder(BorderFactory.createEmptyBorder(0, 15, 100, 10));
 		newGroupbtnPane.setBorder(BorderFactory.createEmptyBorder(0, 15, 100, 10));
-		
+		//adding elements to the frame
 		frame.add(currentUserPanel, BorderLayout.NORTH);
 		currentUserPanel.add(currentUserLabel);
 		frame.add(selectContactsAndGroups, BorderLayout.CENTER);
@@ -85,7 +104,7 @@ public class MenuGUI {
 		frame.add(addNewContact, BorderLayout.SOUTH);
 		addNewContact.add(newContact);
 		addNewContact.add(addNewContactbtn);
-		
+		//Adding MouseListener and ActionListeners
 		MouseListener newContactFieldMouseListener = new loginFeat.FieldMouseListener(newContact);
 		newContact.addMouseListener(newContactFieldMouseListener);
 		contactsAndGroups.addActionListener(new ActionListeners(contactsAndGroups, contactsOrGroups));
@@ -94,7 +113,7 @@ public class MenuGUI {
 		contactsOrGroups.setActionCommand("contactsOrGroups");
 		addNewContactbtn.addActionListener(new ActionListeners(newContact));
 		addNewContactbtn.setActionCommand("add");
-		
+		//Display the frame
 		frame.pack();
 		frame.setVisible(true);
 	}
