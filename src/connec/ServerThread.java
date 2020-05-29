@@ -42,21 +42,33 @@ public class ServerThread extends Thread {
     private Socket socket;
 	private ObjectInputStream input;
 	private ObjectOutputStream output;
- 
+	
     public ServerThread(Socket socket) {
         this.socket = socket;
     }
  
     public void run() {
+    	String choice = "";
         try {
-        	loginInit();       		
-        	System.out.println("First");
-        	registerCheck();
-        	System.out.println("Second");
-        	idCheck();
-        	System.out.println("Third");
-			loginCheck();
-			System.out.println("End");
+        	choice = clickState();
+        	loginInit();
+        	System.out.println("Here");
+        	switch(choice) {
+        	case "register":
+        		System.out.println("Here2");
+        		registerCheck();
+        		System.out.println("Here3");
+        		idCheck();
+        		System.out.println("Here4");
+        		break;
+        		
+        	case "login":
+        		System.out.println("Here5");
+        		loginCheck();
+        		System.out.println("Here6");
+        		break;
+        	}
+        	      		
         } finally {
 			try {
 				output.close();
@@ -67,13 +79,33 @@ public class ServerThread extends Thread {
 		}
     }
     
+    private String clickState()
+    {
+    	String state = "";
+    	try {
+    		System.out.println("BO");
+    		input = new ObjectInputStream(socket.getInputStream());
+    		System.out.println("BO2");
+  			state = (String)input.readObject();  //read the object received through the stream and deserialize it
+  			System.out.println(state);
+         } catch (IOException ex) {
+             System.out.println("Server exception: " + ex.getMessage());
+             ex.printStackTrace();
+
+ 		} catch (ClassNotFoundException ex) {
+             System.out.println("Server exception: " + ex.getMessage());
+             ex.printStackTrace();
+         } 
+    	System.out.println(state);
+    	return state;
+    }
+    
     private void loginInit() 
     {
     	try {
 			users = XMLUser.readXMLUser("UserName");
 			passwords = XMLUser.readXMLUser("Password");
 			IdUserString = XMLUser.readXMLUser("ID");
-			System.out.println(users.size());
 			//Since it was simpler to store the IDs in the XML files as string and then convert them, we use parseInt to do the conversion
 			for(int i=0; i<IdUserString.size(); i++) {
 				IdUser.add(Integer.parseInt(IdUserString.get(i)));
@@ -85,14 +117,14 @@ public class ServerThread extends Thread {
     
     public void loginCheck()
     {
-    	
     	 try {
-    		loginInit();
-  
+    		input = new ObjectInputStream(socket.getInputStream());
   			String username = (String)input.readObject();  //read the object received through the stream and deserialize it
  			System.out.println("server received input:" + username);
  			String password = (String)input.readObject();  //read the object received through the stream and deserialize it
  			System.out.println("server received input:" + password);
+ 			
+ 			loginInit();
  			
  			boolean matchCheck = match(username, password);
  			output.writeObject(matchCheck);		//serialize and write the Student object to the stream
@@ -119,8 +151,6 @@ public class ServerThread extends Thread {
     	loginInit();
     	try {
     		boolean existingAccount = false;
- 			//create the streams that will handle the objects coming through the sockets
- 			input = new ObjectInputStream(socket.getInputStream());
  			output = new ObjectOutputStream(socket.getOutputStream());
   
  			String usr = (String)input.readObject();  //read the object received through the stream and deserialize it
@@ -176,11 +206,8 @@ public class ServerThread extends Thread {
 	 * @return boolean
 	 */
 	public boolean match(String name, String password) {
-		System.out.println("Here!" + users.size());
 		for(int i=0; i<users.size();i++) {
-			System.out.println("Here");
 			if(name.compareTo(users.get(i))==0 && password.compareTo(passwords.get(i))==0) {
-				System.out.println("Here2");
 				return true;
 			}
 		}

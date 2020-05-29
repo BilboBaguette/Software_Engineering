@@ -45,7 +45,7 @@ public class RegisterActionListener implements ActionListener{
 		boolean existingAccount=false;
 		
 		try{
-			existingAccount =  c1.usrCheck("localhost", usr);
+			existingAccount =  c1.usrCheck(usr);
 
 			if(!existingAccount){ //if the account doesn't already exist, create it
 				int id = c1.createId();

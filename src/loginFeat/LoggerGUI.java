@@ -99,7 +99,6 @@ public class LoggerGUI{
 	 * @see LogActionListener.actionPerformed(ActionEvent)
 	 * @see RegisterActionLister.actionPerformed(ActionEvent)
 	 */
-	public static Logger data = new Logger();
 
 	
 	public LoggerGUI() {
@@ -156,7 +155,7 @@ public class LoggerGUI{
 		btnpanel2.add(registerbtn);
 
 		frame.pack();
-		
+
 		//Adding mouse listeners to the textfields, to clear them when the user clicks on them.
 		MouseListener userNameFieldLoginListener = new FieldMouseListener(userNameFieldLogin);
 		userNameFieldLogin.addMouseListener(userNameFieldLoginListener);
@@ -167,7 +166,9 @@ public class LoggerGUI{
 		MouseListener passwordFieldRegisterListener = new FieldMouseListener(passwordFieldRegister);
 		passwordFieldRegister.addMouseListener(passwordFieldRegisterListener);
 		SimpleClient c1 = new SimpleClient();
+
 		c1.connect("localhost");
+
 		//Adding action listeners to the buttons
 		ActionListener loginListener = new LogActionListener(userNameFieldLogin, passwordFieldLogin, frame, c1);
 		loginbtn.addActionListener(loginListener);
@@ -179,13 +180,4 @@ public class LoggerGUI{
 		}
 	}
 	
-	public static Logger getData() {
-		return data;
-	}
-	
-	public static void updateLogger() {
-		Logger newLogger = new Logger();
-		data = newLogger;
-	}
-
 }

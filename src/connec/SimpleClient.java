@@ -11,15 +11,13 @@ public class SimpleClient {
 	
 	public void connect(String ip)
 	{
-		
         try  {
 			//create the socket; it is defined by an remote IP address (the address of the server) and a port number
 			socket = new Socket(ip, port);
-
 			//create the streams that will handle the objects coming and going through the sockets
 			output = new ObjectOutputStream(socket.getOutputStream());
-            input = new ObjectInputStream(socket.getInputStream());
-			
+
+
 			
 	    } catch  (UnknownHostException uhe) {
 			uhe.printStackTrace();
@@ -29,13 +27,15 @@ public class SimpleClient {
 		}
 	}
 	
-	public boolean usrCheck(String ip, String usrname)
+	public boolean usrCheck(String usrname)
 	{
+		
 		boolean usr = false;
         try {
-        
+        	
+        	output.writeObject("register");
             output.writeObject((String)usrname);
-            
+            input = new ObjectInputStream(socket.getInputStream());
             usr = (boolean)input.readObject();
         } catch (IOException ex) {
             System.out.println("Server exception: " + ex.getMessage());
@@ -52,6 +52,7 @@ public class SimpleClient {
 	{
 		int id= 0;
         try  {
+        	input = new ObjectInputStream(socket.getInputStream());
 			id = (int) input.readObject();	//deserialize and read the Student object from the stream
 	    } catch  (UnknownHostException uhe) {
 			uhe.printStackTrace();
@@ -69,7 +70,8 @@ public class SimpleClient {
 	{
 		boolean check = false;
         try  {
-        
+        	
+        	output.writeObject("login");
             String username = usrname;
             String password = psword;
             
@@ -78,7 +80,7 @@ public class SimpleClient {
 			
 			output.writeObject(password); //serialize and write the String to the stream
 			System.out.println("output sent to the server: " + password);
-					
+			input = new ObjectInputStream(socket.getInputStream());		
 			check = (boolean) input.readObject();	//deserialize and read the Student object from the stream
 			System.out.println(check);
 	    } catch  (UnknownHostException uhe) {
