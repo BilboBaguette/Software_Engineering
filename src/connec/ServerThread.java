@@ -1,6 +1,10 @@
 package connec;
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
+
+import Chatroom.Messages;
+import Chatroom.XMLLog;
  
 /**
  * Class name : ServerThread 
@@ -47,21 +51,23 @@ public class ServerThread extends Thread {
     public void run() {
         try {
 			//create the streams that will handle the objects coming through the sockets
-			input = new ObjectInputStream(socket.getInputStream());
+			ArrayList<String> messageContent = XMLLog.readXMLLog("MessageContent");
+			ArrayList<String> messageUsername = XMLLog.readXMLLog("UserName");
+			String wholeText = "";
+			for(int i=0;i<messageContent.size()-1;i++) {
+				wholeText += messageUsername.get(i) + ": " + messageContent.get(i) + "\n";
+			}
+			wholeText += messageUsername.get(messageUsername.size()-1) + ": " + messageContent.get(messageContent.size()-1);
+						
 			output = new ObjectOutputStream(socket.getOutputStream());
- 
- 			/*String text = (String)input.readObject();  //read the object received through the stream and deserialize it
-			System.out.println("server received a text:" + text);
+			output.writeObject((String) wholeText);
 			
-			Student student = new Student(1234, "john.doe");
-			output.writeObject(student);		//serialize and write the Student object to the stream
-			*/
 			while(true) {
 				input = new ObjectInputStream(socket.getInputStream());
 				String helo = (String) input.readObject();
 				System.out.println("The server received: " + helo);
+				XMLLog.addToXML(new Messages("user", helo));
 			}
- 
         } catch (IOException ex) {
             System.out.println("Server exception: " + ex.getMessage());
             ex.printStackTrace();
@@ -69,7 +75,9 @@ public class ServerThread extends Thread {
 		} catch (ClassNotFoundException ex) {
             System.out.println("Server exception: " + ex.getMessage());
             ex.printStackTrace();
-        } finally {
+        } catch(Exception e){ 
+        	e.printStackTrace();
+        }finally {
 			try {
 				output.close();
 				input.close();
