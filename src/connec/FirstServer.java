@@ -2,11 +2,39 @@ package connec;
 import java.io.*;  
 import java.net.*; 
 
+/*
+ * Class name : FirstServer
+ * 
+ * Description : This is a class for setting up a server 
+ * 
+ * Version : 1.0
+ * 
+ * Date : 27/05/2020
+ * 
+ */
+
+
+
 public class FirstServer extends AbstractServer
 {
+	/**
+	 * The base ip address
+	 */
 	private String ip = "localhost";
+	
+	/**
+	 * This the variable where we put the port for connecting 
+	 */
 	private ServerSocket ss;
 	
+	/**
+	 * This function will allow us to connect to a server
+	 * 
+	 * @param ip Is the ip address of the network where we want to open a server 
+	 * @see java Socket class
+	 * @author Nils Chol; Jean-Louis Cheng
+	 *
+	 */
 	public void connect(String ip) {
 		try {
 			//the server socket is defined only by a port (its IP is localhost)
