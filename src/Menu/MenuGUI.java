@@ -1,8 +1,6 @@
 package Menu;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.Insets;
 import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
@@ -13,7 +11,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
 
 public class MenuGUI {
 
@@ -55,15 +52,14 @@ public class MenuGUI {
 		addNewContact = new JPanel();
 		JPanel newContactbtnPane = new JPanel();
 		JPanel newGroupbtnPane = new JPanel();
-		JLabel currentUserLabel = new JLabel("Current User:");
+		JLabel currentUserLabel = new JLabel("Current User:"); //TODO fetch and display current user name
 		addNewContactbtn = new JButton("Add");
 		newGroupbtn = new JButton("Create Group");
 		newContact = new JTextField("Account Name");
 		newContact.setColumns(25);
 		String contactsGroups[] = {"Contacts", "Groups"};
 		contactsAndGroups = new JComboBox<String>(contactsGroups);
-		String tester1[] = {"Jean", "Pol", "Kim"};
-		contactsOrGroups = new JComboBox<String>(tester1);
+		contactsOrGroups = new JComboBox<String>();
 		
 		BoxLayout userLayout = new BoxLayout(currentUserPanel, BoxLayout.X_AXIS);
 		BoxLayout contactsAndGroupsLayout = new BoxLayout(selectContactsAndGroups, BoxLayout.X_AXIS);
@@ -92,6 +88,12 @@ public class MenuGUI {
 		
 		MouseListener newContactFieldMouseListener = new loginFeat.FieldMouseListener(newContact);
 		newContact.addMouseListener(newContactFieldMouseListener);
+		contactsAndGroups.addActionListener(new ActionListeners(contactsAndGroups, contactsOrGroups));
+		contactsAndGroups.setActionCommand("contactsAndGroups");
+		contactsOrGroups.addActionListener(new ActionListeners(contactsOrGroups));
+		contactsOrGroups.setActionCommand("contactsOrGroups");
+		addNewContactbtn.addActionListener(new ActionListeners(newContact));
+		addNewContactbtn.setActionCommand("add");
 		
 		frame.pack();
 		frame.setVisible(true);
