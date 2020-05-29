@@ -84,7 +84,6 @@ public class XMLUser {
         DOMSource domSource = new DOMSource(document);
         StreamResult streamResult = new StreamResult(new File("./User.xml"));
         transformer.transform(domSource, streamResult);
-        
 	}
 	
 	public static void addContactToUserXML(Integer idUser, Integer idToAdd) throws Exception
@@ -143,13 +142,19 @@ public class XMLUser {
 			if(Integer.toString(idUser).equals(attr))
 			{
 				NodeList subUserList = element.getChildNodes();
-				for (int j = 0; j < subUserList.getLength(); j++) {
-					System.out.println("ok1");
+				for (int j = 0; j < subUserList.getLength(); j++) 
+				{
 	                Node subElement = subUserList.item(j);
-	                if ("Contacts".equals(subElement.getNodeName())) {
-	                	System.out.println("ok2");	    				
-	    	            if (Integer.toString(idToRemove).equals(subElement.getNodeValue())) {
-	    	            	((Node) subUserList).removeChild(subElement);
+	                if ("Contacts".equals(subElement.getNodeName()))
+	                {
+	                	NodeList subSubUserList = element.getChildNodes();
+	    				for (int n = 0; n < subSubUserList.getLength(); n++) 
+	    				{
+	    	                Node subSubElement = subSubUserList.item(n);  				
+	    	    	        if (Integer.toString(idToRemove).equals(subSubElement.getTextContent())) 
+	    	    	        {
+	    	    	        	((Node) subUserList).removeChild(subSubElement);
+	    	    	        }
 	    	            }
 	                }
 	            }
@@ -166,7 +171,6 @@ public class XMLUser {
 	{
 		File xmlFile = new File("./User.xml");
 		ArrayList<String> toReturn = new ArrayList<String>();
-		ArrayList<ArrayList<String>> toReturnArray = new ArrayList<ArrayList<String>>();
 		
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -188,19 +192,40 @@ public class XMLUser {
 				case "Password":
 					toReturn.add(element.getElementsByTagName("Password").item(0).getTextContent());
 					break;
-				case "Contacts":
-					NodeList subUserList = element.getChildNodes();
-					ArrayList<String> contactsList = new ArrayList<String>();
-					for (int j = 0; j < subUserList.getLength(); j++) {
-		                Node subElement = subUserList.item(j);
-		                contactsList.add(subElement.getTextContent());	                
-		            }
-					toReturnArray.add(contactsList);
-					break;
 				case "ID":
 					toReturn.add(element.getAttribute("id"));
 					break;
 				}
+			}
+		}
+		return toReturn;
+	}
+	
+	public static ArrayList<ArrayList<String>> readContactXMLUser() throws Exception
+	{
+		File xmlFile = new File("./User.xml");
+		ArrayList<ArrayList<String>> toReturn = new ArrayList<ArrayList<String>>();
+		
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+		Document document = documentBuilder.parse(xmlFile);
+		
+		NodeList list = document.getElementsByTagName("User");
+		
+		for(int i = 0; i < list.getLength(); i++)
+		{
+			Node node = list.item(i);
+			
+			if(node.getNodeType() == Node.ELEMENT_NODE)
+			{
+				Element element = (Element) node;
+				NodeList subUserList = element.getChildNodes();
+				ArrayList<String> contactsList = new ArrayList<String>();
+				for (int j = 0; j < subUserList.getLength(); j++) {
+		            Node subElement = subUserList.item(j);
+		            contactsList.add(subElement.getTextContent());	                
+		        }
+				toReturn.add(contactsList);
 			}
 		}
 		return toReturn;

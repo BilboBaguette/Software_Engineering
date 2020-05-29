@@ -40,6 +40,8 @@ public class Logger {
 	 * @see findID()
 	 */
 	public ArrayList<Integer> IdUser = new ArrayList<Integer>();
+	
+	public ArrayList<ArrayList<String>> contactList = new ArrayList<ArrayList<String>>();
 
 	/**
 	 * Constructor for the logger class
@@ -52,6 +54,7 @@ public class Logger {
 			this.users = XMLUser.readXMLUser("UserName");
 			this.passwords = XMLUser.readXMLUser("Password");
 			this.IdUserString = XMLUser.readXMLUser("ID");
+			this.contactList = XMLUser.readContactXMLUser();
 			
 			//Since it was simpler to store the IDs in the XML files as string and then convert them, we use parseInt to do the conversion
 			for(int i=0; i<this.IdUserString.size(); i++) {
