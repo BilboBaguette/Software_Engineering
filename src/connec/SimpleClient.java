@@ -17,8 +17,6 @@ public class SimpleClient {
 			//create the streams that will handle the objects coming and going through the sockets
 			output = new ObjectOutputStream(socket.getOutputStream());
 
-
-
 			
 	    } catch  (UnknownHostException uhe) {
 			uhe.printStackTrace();

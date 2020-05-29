@@ -42,6 +42,7 @@ public class ServerThread extends Thread {
     private Socket socket;
 	private ObjectInputStream input;
 	private ObjectOutputStream output;
+	private boolean loop = true;
 	
     public ServerThread(Socket socket) {
         this.socket = socket;
@@ -53,39 +54,31 @@ public class ServerThread extends Thread {
     		input = new ObjectInputStream(socket.getInputStream());
  			output = new ObjectOutputStream(socket.getOutputStream());
 
-        	choice = clickState();
-        	loginInit();
+
         	System.out.println("Here");
-        	switch(choice) {
-        	case "register":
-        		System.out.println("Here2");
-        		registerCheck();
-        		System.out.println("Here3");
-        		idCheck();
-        		System.out.println("Here4");
-        		break;
-        		
-        	case "login":
-        		System.out.println("Here5");
-        		loginCheck();
-        		System.out.println("Here6");
-        		break;
+        	while(loop) {
+            	choice = clickState();
+            	loginInit();
+	        	switch(choice) {
+	        	case "register":
+	        		System.out.println("Here2");
+	        		registerCheck();
+	        		System.out.println("Here3");
+	        		idCheck();
+	        		System.out.println("Here4");
+	        		break;
+	        		
+	        	case "login":
+	        		System.out.println("Here5");
+	        		loginCheck();
+	        		System.out.println("Here6");
+	        		break;
+	        	}
         	}
         	      		
         } catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			System.out.println("test");
-			try {
-				output.close();
-				input.close();
-				System.out.println("test2");
-
-				
-			} catch (IOException ioe) {
-				ioe.printStackTrace();
-			}
 		}
     }
     
@@ -137,6 +130,7 @@ public class ServerThread extends Thread {
  			boolean matchCheck = match(username, password);
  			output.writeObject(matchCheck);		//serialize and write the Student object to the stream
  			System.out.println(matchCheck);
+ 			loop = !matchCheck;
          } catch (IOException ex) {
              System.out.println("Server exception: " + ex.getMessage());
              ex.printStackTrace();
@@ -158,6 +152,7 @@ public class ServerThread extends Thread {
     {
     	loginInit();
     	try {
+    		loop = false;
     		boolean existingAccount = false;
  			System.out.println("test");
  			String usr = (String)input.readObject();  //read the object received through the stream and deserialize it
@@ -165,6 +160,7 @@ public class ServerThread extends Thread {
  			for(int i=0; i<users.size(); i++){ //check that the account name is unique
 				if(usr.compareTo(users.get(i)) == 0){
 					existingAccount=true;
+					loop=true;
 					System.out.println("ji");
 					JOptionPane.showMessageDialog(null,"Account already exist", //if it isn't display an error message
 							  "Warning", JOptionPane.WARNING_MESSAGE);
@@ -175,11 +171,11 @@ public class ServerThread extends Thread {
  			output.writeObject((boolean)existingAccount);
   
          } catch (IOException ex) {
-             System.out.println("Server exception: " + ex.getMessage());
+             System.out.println("Server exception: 2" + ex.getMessage());
              ex.printStackTrace();
 
  		} catch (ClassNotFoundException ex) {
-             System.out.println("Server exception: " + ex.getMessage());
+             System.out.println("Server exception: 2" + ex.getMessage());
              ex.printStackTrace();
          } 
     }
@@ -199,7 +195,7 @@ public class ServerThread extends Thread {
  			output.writeObject((int)id);		//serialize and write the Student object to the stream
  			
          } catch (IOException ex) {
-             System.out.println("Server exception: " + ex.getMessage());
+             System.out.println("Server exception: 1" + ex.getMessage());
              ex.printStackTrace();
 
  		} 

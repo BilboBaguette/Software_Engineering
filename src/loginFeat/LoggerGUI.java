@@ -176,7 +176,7 @@ public class LoggerGUI{
 		registerbtn.addActionListener(registerListener);
 		frame.setVisible(true);
 		while(true) {
-			
+			System.out.printf("");
 		}
 	}
 	
