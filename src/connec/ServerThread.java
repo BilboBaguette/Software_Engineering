@@ -3,6 +3,7 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 
+import Chatroom.Messages;
 import Chatroom.XMLLog;
  
 /**
@@ -30,13 +31,12 @@ public class ServerThread extends Thread {
 						
 			output = new ObjectOutputStream(socket.getOutputStream());
 			output.writeObject((String) wholeText);
-
 			
 			while(true) {
-
 				input = new ObjectInputStream(socket.getInputStream());
 				String helo = (String) input.readObject();
 				System.out.println("The server received: " + helo);
+				XMLLog.addToXML(new Messages("user", helo));
 			}
         } catch (IOException ex) {
             System.out.println("Server exception: " + ex.getMessage());
