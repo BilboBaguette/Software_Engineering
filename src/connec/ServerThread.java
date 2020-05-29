@@ -49,6 +49,7 @@ public class ServerThread extends Thread {
  
     public void run() {
         try {
+        	loginInit();       		
         	System.out.println("First");
         	registerCheck();
         	System.out.println("Second");
@@ -72,7 +73,7 @@ public class ServerThread extends Thread {
 			this.users = XMLUser.readXMLUser("UserName");
 			this.passwords = XMLUser.readXMLUser("Password");
 			this.IdUserString = XMLUser.readXMLUser("ID");
-			
+			System.out.println(users.size());
 			//Since it was simpler to store the IDs in the XML files as string and then convert them, we use parseInt to do the conversion
 			for(int i=0; i<this.IdUserString.size(); i++) {
 				this.IdUser.add(Integer.parseInt(this.IdUserString.get(i)));
@@ -84,18 +85,18 @@ public class ServerThread extends Thread {
     
     public void loginCheck()
     {
-    	loginInit();
+    	
     	 try {
- 			//create the streams that will handle the objects coming through the sockets
+    		loginInit();
   
   			String username = (String)input.readObject();  //read the object received through the stream and deserialize it
  			System.out.println("server received input:" + username);
  			String password = (String)input.readObject();  //read the object received through the stream and deserialize it
  			System.out.println("server received input:" + password);
  			
- 			boolean matchCheck = match(username, password, users, passwords);
+ 			boolean matchCheck = match(username, password);
  			output.writeObject(matchCheck);		//serialize and write the Student object to the stream
-  
+ 			System.out.println(matchCheck);
          } catch (IOException ex) {
              System.out.println("Server exception: " + ex.getMessage());
              ex.printStackTrace();
@@ -149,7 +150,6 @@ public class ServerThread extends Thread {
     public void idCheck()
     {
     	try {
-
  			int id= (int)(Math.random() * 999999); //generate a random account id 			
  			for(int i=0; i<IdUser.size();i++) { //check that it is unique
  				if(id==IdUser.get(i)) {
@@ -175,9 +175,12 @@ public class ServerThread extends Thread {
 	 * @param passwords
 	 * @return boolean
 	 */
-	static public boolean match(String name, String password, ArrayList<String> accounts, ArrayList<String> passwords) {
-		for(int i=0; i<accounts.size();i++) {
-			if(name.compareTo(accounts.get(i))==0 && password.compareTo(passwords.get(i))==0) {
+	public boolean match(String name, String password) {
+		System.out.println("Here!" + users.size());
+		for(int i=0; i<users.size();i++) {
+			System.out.println("Here");
+			if(name.compareTo(users.get(i))==0 && password.compareTo(passwords.get(i))==0) {
+				System.out.println("Here2");
 				return true;
 			}
 		}

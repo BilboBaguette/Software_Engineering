@@ -7,6 +7,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import connec.SimpleClient;
+
 
 /**
  * Class that handles finding existing accounts and their corresponding IDs
@@ -31,47 +33,7 @@ public class Logger {
 
 	}
  	
-	public static boolean loginCheck(String ip, String usrname, String psword) 
-	{
-		ObjectOutputStream output;
-		ObjectInputStream input;
-		Socket socket;
-		boolean check = false;
-		int port = 6666;
-        try  {
-			//create the socket; it is defined by an remote IP address (the address of the server) and a port number
-			socket = new Socket(ip, port);
-
-			//create the streams that will handle the objects coming and going through the sockets
-			output = new ObjectOutputStream(socket.getOutputStream());
-            input = new ObjectInputStream(socket.getInputStream());
-			
-            String username = usrname;
-            String password = psword;
-            
-            output.writeObject(username); //serialize and write the String to the stream
-			System.out.println("output sent to the server: " + username);	
-			
-			output.writeObject(password); //serialize and write the String to the stream
-			System.out.println("output sent to the server: " + password);
-					
-			check = (boolean) input.readObject();	//deserialize and read the Student object from the stream
-			
-			input.close();
-			output.close();
-			socket.close();
-			
-	    } catch  (UnknownHostException uhe) {
-			uhe.printStackTrace();
-		}
-		catch  (IOException ioe) {
-			ioe.printStackTrace();
-		}
-		catch  (ClassNotFoundException cnfe) {
-			cnfe.printStackTrace();
-		}
-        return check;
-	}
+	
 	/**
 	 * Method that matches the entered account name and password with existing accounts
 	 * 

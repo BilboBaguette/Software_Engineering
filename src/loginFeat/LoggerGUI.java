@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import connec.SimpleClient;
+
 /**
  * Class that handles GUI creation and setup for the logger
  * @author roman
@@ -164,13 +166,17 @@ public class LoggerGUI{
 		userNameFieldRegister.addMouseListener(userNameFieldRegisterListener);
 		MouseListener passwordFieldRegisterListener = new FieldMouseListener(passwordFieldRegister);
 		passwordFieldRegister.addMouseListener(passwordFieldRegisterListener);
-		
+		SimpleClient c1 = new SimpleClient();
+		c1.connect("localhost");
 		//Adding action listeners to the buttons
-		ActionListener loginListener = new LogActionListener(userNameFieldLogin, passwordFieldLogin, frame);
+		ActionListener loginListener = new LogActionListener(userNameFieldLogin, passwordFieldLogin, frame, c1);
 		loginbtn.addActionListener(loginListener);
-		ActionListener registerListener = new RegisterActionListener(userNameFieldRegister, passwordFieldRegister);
+		ActionListener registerListener = new RegisterActionListener(userNameFieldRegister, passwordFieldRegister, c1);
 		registerbtn.addActionListener(registerListener);
 		frame.setVisible(true);
+		while(true) {
+			
+		}
 	}
 	
 	public static Logger getData() {
