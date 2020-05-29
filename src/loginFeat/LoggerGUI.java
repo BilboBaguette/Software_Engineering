@@ -87,7 +87,7 @@ public class LoggerGUI{
 	 */
 	private JTextField passwordFieldRegister;
 	/**
-	 * id of the connected client, initally a negative value for easier error prevention
+	 * id of the connected client, initially a negative value for easier error prevention
 	 * @see LogActionListener.actionPerformed(ActionEvent)
 	 * @see RegisterActionLister.actionPerformed(ActionEvent)
 	 */
@@ -155,7 +155,7 @@ public class LoggerGUI{
 
 		frame.pack();
 		
-		//Adding mouse listeners to the textfields, to clear them when the user clicks on them.
+		//Adding mouse listeners to the text fields, to clear them when the user clicks on them.
 		MouseListener userNameFieldLoginListener = new FieldMouseListener(userNameFieldLogin);
 		userNameFieldLogin.addMouseListener(userNameFieldLoginListener);
 		MouseListener passwordFieldLoginListener = new FieldMouseListener(passwordFieldLogin);

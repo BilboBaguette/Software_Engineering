@@ -13,17 +13,16 @@ import javax.swing.JTextField;
  * @version 1.0
  * @see Logger
  * @see LoggerGUI
- *
  */
 public class LogActionListener implements ActionListener{
 	
 	/**
-	 * username textfield from the GUI
+	 * username text field from the GUI
 	 * @see LoggerGUI()
 	 */
 	private JTextField username;
 	/**
-	 * password textfield from the GUI
+	 * password text field from the GUI
 	 * @see LoggerGUI()
 	 */
 	private JTextField password;

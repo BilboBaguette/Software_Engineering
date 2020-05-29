@@ -10,17 +10,16 @@ import javax.swing.JTextField;
  * @version 1.0
  * @see Logger
  * @see LoggerGUI
- * 
  */
 public class RegisterActionListener implements ActionListener{
 	
 	/**
-	 * username textfield from the GUI
+	 * username text field from the GUI
 	 * @see LoggerGUI()
 	 */
 	private JTextField username;
 	/**
-	 * password textfield from the GUI
+	 * password text field from the GUI
 	 * @see LoggerGUI()
 	 */
 	private JTextField password;
@@ -55,10 +54,10 @@ public class RegisterActionListener implements ActionListener{
 			if(!existingAccount){ //if the account doesn't already exist, create it
 				User user = new User(usr, pwd, id);
 				XMLUser.addToXML(user); //update the logger XML
-				XMLUser.addContactToUserXML(id, 52); 
+				/*XMLUser.addContactToUserXML(id, 52); 
 				XMLUser.addContactToUserXML(id, 53);
 				XMLUser.addContactToUserXML(id, 55);
-				XMLUser.removeContactFromUserXML(id, 52);//Try add test contact
+				XMLUser.removeContactFromUserXML(id, 52);*/
 				LoggerGUI.updateLogger();
 				LoggerGUI.idConnectedUser = id;
 			}
