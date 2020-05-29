@@ -56,7 +56,6 @@ public class RegisterActionListener implements ActionListener{
 				XMLUser.addContactToUserXML(id, 53);
 				XMLUser.addContactToUserXML(id, 55);
 				XMLUser.removeContactFromUserXML(id, 52);
-				LoggerGUI.updateLogger();
 				LoggerGUI.idConnectedUser = id;
 			}
 		}catch(Exception err){

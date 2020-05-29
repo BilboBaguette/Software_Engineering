@@ -70,13 +70,13 @@ public class ServerThread extends Thread {
     private void loginInit() 
     {
     	try {
-			this.users = XMLUser.readXMLUser("UserName");
-			this.passwords = XMLUser.readXMLUser("Password");
-			this.IdUserString = XMLUser.readXMLUser("ID");
+			users = XMLUser.readXMLUser("UserName");
+			passwords = XMLUser.readXMLUser("Password");
+			IdUserString = XMLUser.readXMLUser("ID");
 			System.out.println(users.size());
 			//Since it was simpler to store the IDs in the XML files as string and then convert them, we use parseInt to do the conversion
-			for(int i=0; i<this.IdUserString.size(); i++) {
-				this.IdUser.add(Integer.parseInt(this.IdUserString.get(i)));
+			for(int i=0; i<IdUserString.size(); i++) {
+				IdUser.add(Integer.parseInt(IdUserString.get(i)));
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
