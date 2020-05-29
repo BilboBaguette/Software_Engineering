@@ -54,10 +54,13 @@ public class MenuGUI {
 	 */
 	private JButton newGroupbtn;
 	
+	private String currentUser;
+	
 	/**
 	 * Create the application.
 	 */
-	public MenuGUI() {
+	public MenuGUI(String user) {
+		this.currentUser=user;
 		initialize();
 	}
 
@@ -74,7 +77,7 @@ public class MenuGUI {
 		addNewContact = new JPanel();
 		JPanel newContactbtnPane = new JPanel();
 		JPanel newGroupbtnPane = new JPanel();
-		JLabel currentUserLabel = new JLabel("Current User:"); //TODO fetch and display current user name
+		JLabel currentUserLabel = new JLabel("Current User: "+currentUser); //TODO fetch and display current user name
 		addNewContactbtn = new JButton("Add");
 		newGroupbtn = new JButton("Create Group");
 		newContact = new JTextField("Account Name");
