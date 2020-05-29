@@ -15,12 +15,14 @@ public class SimpleClient {
 		int port = 6666;
         try  {
 			//create the socket; it is defined by an remote IP address (the address of the server) and a port number
-			socket = new Socket(ip, port);
+			//socket = new Socket(ip, port);
 
-			//create the streams that will handle the objects coming and going through the sockets
-			output = new ObjectOutputStream(socket.getOutputStream());
-            input = new ObjectInputStream(socket.getInputStream());
+			//create the streams that will handle the objects coming and going through the sockets            
+			String logs = (String) input.readObject();
 			
+			System.out.println(logs);
+
+            
 			while(true){
 				if(messageSent==true) {
 					output = new ObjectOutputStream(socket.getOutputStream());
@@ -33,6 +35,9 @@ public class SimpleClient {
 		}
 		catch  (IOException ioe) {
 			ioe.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		finally {
 			try {
@@ -43,5 +48,30 @@ public class SimpleClient {
 				ioe.printStackTrace();
 			}
 		}
+	}
+	
+	public String getLogs(String ip) {
+		int port = 6666;
+		String logs ="";
+        try  {
+			//create the socket; it is defined by an remote IP address (the address of the server) and a port number
+			socket = new Socket(ip, port);
+
+			input = new ObjectInputStream(socket.getInputStream());
+			
+			logs = (String) input.readObject();
+
+		} catch  (UnknownHostException uhe) {
+			uhe.printStackTrace();
+		}
+		catch  (IOException ioe) {
+			ioe.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+
+        
+        return logs;
+        
 	}
 }

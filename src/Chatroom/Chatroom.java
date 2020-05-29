@@ -68,22 +68,6 @@ public class Chatroom {
 			final JTextPane textPane = new JTextPane();
 			textPane.setEnabled(false);
 			textPane.setBounds(123, 57, 444, 338);
-
-			
-			//XMLLog.createLogXML();
-			ArrayList<String> messageContent = XMLLog.readXMLLog("MessageContent");
-			ArrayList<String> messageUsername = XMLLog.readXMLLog("UserName");
-			
-			String wholeText = "";
-			for(int i=0;i<messageContent.size()-1;i++) {
-				wholeText += messageUsername.get(i) + ": " + messageContent.get(i) + "\n";
-			}
-			wholeText += messageUsername.get(messageUsername.size()-1) + ": " + messageContent.get(messageContent.size()-1);
-			
-			//System.out.println(messageContent.size());
-			
-			textPane.setText(wholeText);
-
 			
 			scrollPane.setBounds(123, 57, 444, 338);
 			scrollPane.getViewport().setBackground(Color.WHITE);
@@ -92,8 +76,10 @@ public class Chatroom {
 			
 			SimpleClient c1 = new SimpleClient();
 			
+			textPane.setText(c1.getLogs("localhost"));
+			
 			JButton btnSend = new JButton("Send");
-			/*uses Class ActionIsComming*/
+			/*uses Class SendButtonListener*/
 			btnSend.addActionListener(new SendButtonListener(textPane,Typingtext,myList, c1));
 			btnSend.setBounds(486, 406, 89, 23);
 			frame.getContentPane().add(btnSend);
@@ -101,6 +87,8 @@ public class Chatroom {
 			frame.setVisible(true);
 			
 			c1.connect("localhost");
+			
+
 		}catch(Exception e){
 			e.getStackTrace();
 		}
