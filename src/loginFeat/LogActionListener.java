@@ -46,7 +46,7 @@ public class LogActionListener implements ActionListener{
 			LoggerGUI.idConnectedUser = Logger.findID(usr, pwd, LoggerGUI.getData().users, LoggerGUI.getData().passwords, LoggerGUI.getData().IdUser);
 			frame.setVisible(false); //remove the logger
 			frame.dispose();
-			new Menu.MenuGUI(usr); //display the Menu GUI
+			//new Menu.MenuGUI(user); //display the Menu GUI
 		}
 		else
 		{
