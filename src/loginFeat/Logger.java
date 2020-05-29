@@ -55,9 +55,7 @@ public class Logger {
 			output.writeObject(password); //serialize and write the String to the stream
 			System.out.println("output sent to the server: " + password);
 					
- 
 			check = (boolean) input.readObject();	//deserialize and read the Student object from the stream
-			System.out.println("input received from the server: " + check);
 			
 			input.close();
 			output.close();

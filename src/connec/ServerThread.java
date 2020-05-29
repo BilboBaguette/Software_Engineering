@@ -49,23 +49,13 @@ public class ServerThread extends Thread {
  
     public void run() {
         try {
-			//create the streams that will handle the objects coming through the sockets
-			input = new ObjectInputStream(socket.getInputStream());
-			output = new ObjectOutputStream(socket.getOutputStream());
- 
- 			String text = (String)input.readObject();  //read the object received through the stream and deserialize it
-			System.out.println("server received a text:" + text);
-			
-			Student student = new Student(1234, "john.doe");
-			output.writeObject(student);		//serialize and write the Student object to the stream
- 
-        } catch (IOException ex) {
-            System.out.println("Server exception: " + ex.getMessage());
-            ex.printStackTrace();
-
-		} catch (ClassNotFoundException ex) {
-            System.out.println("Server exception: " + ex.getMessage());
-            ex.printStackTrace();
+        	System.out.println("First");
+        	registerCheck();
+        	System.out.println("Second");
+        	idCheck();
+        	System.out.println("Third");
+			loginCheck();
+			System.out.println("End");
         } finally {
 			try {
 				output.close();
@@ -97,8 +87,6 @@ public class ServerThread extends Thread {
     	loginInit();
     	 try {
  			//create the streams that will handle the objects coming through the sockets
- 			input = new ObjectInputStream(socket.getInputStream());
- 			output = new ObjectOutputStream(socket.getOutputStream());
   
   			String username = (String)input.readObject();  //read the object received through the stream and deserialize it
  			System.out.println("server received input:" + username);
@@ -139,11 +127,13 @@ public class ServerThread extends Thread {
  			for(int i=0; i<users.size(); i++){ //check that the account name is unique
 				if(usr.compareTo(users.get(i)) == 0){
 					existingAccount=true;
+					System.out.println("ji");
 					JOptionPane.showMessageDialog(null,"Account already exist", //if it isn't display an error message
 							  "Warning", JOptionPane.WARNING_MESSAGE);
+					System.out.println("ju ");
 				}
 			}
- 			output.writeObject(existingAccount);
+ 			output.writeObject((boolean)existingAccount);
   
          } catch (IOException ex) {
              System.out.println("Server exception: " + ex.getMessage());
@@ -158,12 +148,8 @@ public class ServerThread extends Thread {
     
     public void idCheck()
     {
-    	loginInit();
     	try {
- 			//create the streams that will handle the objects coming through the sockets
- 			input = new ObjectInputStream(socket.getInputStream());
- 			output = new ObjectOutputStream(socket.getOutputStream());
-  
+
  			int id= (int)(Math.random() * 999999); //generate a random account id 			
  			for(int i=0; i<IdUser.size();i++) { //check that it is unique
  				if(id==IdUser.get(i)) {
@@ -172,8 +158,8 @@ public class ServerThread extends Thread {
  				}
  			}
  			
- 			output.writeObject(id);		//serialize and write the Student object to the stream
-  
+ 			output.writeObject((int)id);		//serialize and write the Student object to the stream
+ 			
          } catch (IOException ex) {
              System.out.println("Server exception: " + ex.getMessage());
              ex.printStackTrace();

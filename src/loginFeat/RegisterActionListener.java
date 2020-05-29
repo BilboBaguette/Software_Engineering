@@ -47,17 +47,19 @@ public class RegisterActionListener implements ActionListener{
 		String usr = username.getText();
 		String pwd = password.getText();
 		boolean existingAccount=false;
-		int id = createId("localhost");
 		
 		try{
 			existingAccount =  usrCheck("localhost", usr);
+
 			if(!existingAccount){ //if the account doesn't already exist, create it
+				int id = createId();
+				System.out.println(id);
 				User user = new User(usr, pwd, id);
 				XMLUser.addToXML(user); //update the logger XML
 				XMLUser.addContactToUserXML(id, 52); 
 				XMLUser.addContactToUserXML(id, 53);
 				XMLUser.addContactToUserXML(id, 55);
-				XMLUser.removeContactFromUserXML(id, 52);//Try add test contact
+				XMLUser.removeContactFromUserXML(id, 52);
 				LoggerGUI.updateLogger();
 				LoggerGUI.idConnectedUser = id;
 			}
@@ -73,16 +75,13 @@ public class RegisterActionListener implements ActionListener{
 		boolean usr = false;
         try {
         	socket = new Socket(ip, port);
-
     		//create the streams that will handle the objects coming and going through the sockets
     		output = new ObjectOutputStream(socket.getOutputStream());
             input = new ObjectInputStream(socket.getInputStream());	
             
-            output.writeObject(usrname);
+            output.writeObject((String)usrname);
             
             usr = (boolean)input.readObject();
-            return usr;
- 
         } catch (IOException ex) {
             System.out.println("Server exception: " + ex.getMessage());
             ex.printStackTrace();
@@ -94,19 +93,13 @@ public class RegisterActionListener implements ActionListener{
         return usr;
 	}
 	
-	public int createId(String ip)
+	public int createId()
 	{
 		int id= 0;
         try  {
-			//create the socket; it is defined by an remote IP address (the address of the server) and a port number
-			socket = new Socket(ip, port);
-
-			//create the streams that will handle the objects coming and going through the sockets
-			output = new ObjectOutputStream(socket.getOutputStream());
-            input = new ObjectInputStream(socket.getInputStream());				
- 
+        	System.out.println("ok");
 			id = (int) input.readObject();	//deserialize and read the Student object from the stream
-			
+			System.out.println("ok2");
 	    } catch  (UnknownHostException uhe) {
 			uhe.printStackTrace();
 		}
