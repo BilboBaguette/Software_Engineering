@@ -42,8 +42,7 @@ public class LogActionListener implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		String usr = username.getText();
 		String pwd = password.getText();
-		if(Logger.match(usr, pwd, LoggerGUI.getData().users, LoggerGUI.getData().passwords)){ //check if the credentials correspond to an existing account
-			LoggerGUI.idConnectedUser = Logger.findID(usr, pwd, LoggerGUI.getData().users, LoggerGUI.getData().passwords, LoggerGUI.getData().IdUser);
+		if(Logger.loginCheck("localhost", usr, pwd)){ //check if the credentials correspond to an existing account
 			frame.setVisible(false); //remove the logger
 			frame.dispose();
 			//new AppGUI(); //display the store GUI

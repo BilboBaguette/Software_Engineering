@@ -2,8 +2,14 @@ package loginFeat;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JOptionPane;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 import javax.swing.JTextField;
+
 /**
  * Class that handles the actionevent for the "register" button of the logger and oversees acount creation
  * @author roman
@@ -25,6 +31,12 @@ public class RegisterActionListener implements ActionListener{
 	 */
 	private JTextField password;
 	
+	
+	private ObjectOutputStream output;
+	private ObjectInputStream input;
+	private Socket socket;
+	int port = 6666;
+	
 	public RegisterActionListener(JTextField username, JTextField password) {
 		this.username=username;
 		this.password=password;
@@ -35,23 +47,10 @@ public class RegisterActionListener implements ActionListener{
 		String usr = username.getText();
 		String pwd = password.getText();
 		boolean existingAccount=false;
+		int id = createId("localhost");
 		
-		int id= (int)(Math.random() * 999999); //generate a random account id
-
-		for(int i=0; i<LoggerGUI.getData().IdUser.size();i++) { //check that it is unique
-			if(id==LoggerGUI.getData().IdUser.get(i)) {
-				i=0;
-				id= (int)(Math.random() * 999999);
-			}
-		}
 		try{
-			for(int i=0; i<LoggerGUI.getData().users.size(); i++){ //check that the account name is unique
-				if(usr.compareTo(LoggerGUI.getData().users.get(i)) == 0){
-					existingAccount=true;
-					JOptionPane.showMessageDialog(null,"Account already exist", //if it isn't display an error message
-							  "Warning", JOptionPane.WARNING_MESSAGE);
-				}
-			}
+			existingAccount =  usrCheck("localhost", usr);
 			if(!existingAccount){ //if the account doesn't already exist, create it
 				User user = new User(usr, pwd, id);
 				XMLUser.addToXML(user); //update the logger XML
@@ -60,9 +59,60 @@ public class RegisterActionListener implements ActionListener{
 			}
 		}catch(Exception err){
 			err.printStackTrace();
-		}
+		} 
 		username.setText("Account Name");
 		password.setText("Password");
+	}
+	
+	public boolean usrCheck(String ip, String usrname)
+	{
+		boolean usr = false;
+        try {
+        	socket = new Socket(ip, port);
+
+    		//create the streams that will handle the objects coming and going through the sockets
+    		output = new ObjectOutputStream(socket.getOutputStream());
+            input = new ObjectInputStream(socket.getInputStream());	
+            
+            output.writeObject(usrname);
+            
+            usr = (boolean)input.readObject();
+            return usr;
+ 
+        } catch (IOException ex) {
+            System.out.println("Server exception: " + ex.getMessage());
+            ex.printStackTrace();
+
+		} catch (ClassNotFoundException ex) {
+            System.out.println("Server exception: " + ex.getMessage());
+            ex.printStackTrace();
+        } 
+        return usr;
+	}
+	
+	public int createId(String ip)
+	{
+		int id= 0;
+        try  {
+			//create the socket; it is defined by an remote IP address (the address of the server) and a port number
+			socket = new Socket(ip, port);
+
+			//create the streams that will handle the objects coming and going through the sockets
+			output = new ObjectOutputStream(socket.getOutputStream());
+            input = new ObjectInputStream(socket.getInputStream());				
+ 
+			id = (int) input.readObject();	//deserialize and read the Student object from the stream
+			
+	    } catch  (UnknownHostException uhe) {
+			uhe.printStackTrace();
+		}
+		catch  (IOException ioe) {
+			ioe.printStackTrace();
+		}
+		catch  (ClassNotFoundException cnfe) {
+			cnfe.printStackTrace();
+		}
+        return id;
 	}
 
 }

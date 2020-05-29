@@ -1,6 +1,12 @@
 package loginFeat;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+
 
 /**
  * Class that handles finding existing accounts and their corresponding IDs
@@ -15,32 +21,7 @@ import java.util.ArrayList;
 
 
 public class Logger {
-	/**
-	 * Arraylist used to store account names
-	 * @see Logger()
-	 * @see match()
-	 * @see findID()
-	 */
-	public ArrayList<String> users = new ArrayList<String>();
-	/**
-	 * Arraylist used to store passwords
-	 * @see Logger()
-	 * @see match()
-	 * @see findID()
-	 */
-	public ArrayList<String> passwords = new ArrayList<String>();
-	/**
-	 * Arraylist used to store client IDs as Strings
-	 * @see Logger()
-	 */
-	public ArrayList<String> IdUserString = new ArrayList<String>();
-	/**
-	 * Arraylist used to store client IDs as integers
-	 * @see Logger()
-	 * @see findID()
-	 */
-	public ArrayList<Integer> IdUser = new ArrayList<Integer>();
-
+	
 	/**
 	 * Constructor for the logger class
 	 * @see LoggerGUI
@@ -48,21 +29,51 @@ public class Logger {
 	 */
 	public Logger() {
 
-		try {
-			this.users = XMLUser.readXMLLogger("UserName");
-			this.passwords = XMLUser.readXMLLogger("Password");
-			this.IdUserString = XMLUser.readXMLLogger("ID");
-			
-			//Since it was simpler to store the IDs in the XML files as string and then convert them, we use parseInt to do the conversion
-			for(int i=0; i<this.IdUserString.size(); i++) {
-				this.IdUser.add(Integer.parseInt(this.IdUserString.get(i)));
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
 	}
  	
+	public static boolean loginCheck(String ip, String usrname, String psword) 
+	{
+		ObjectOutputStream output;
+		ObjectInputStream input;
+		Socket socket;
+		boolean check = false;
+		int port = 6666;
+        try  {
+			//create the socket; it is defined by an remote IP address (the address of the server) and a port number
+			socket = new Socket(ip, port);
 
+			//create the streams that will handle the objects coming and going through the sockets
+			output = new ObjectOutputStream(socket.getOutputStream());
+            input = new ObjectInputStream(socket.getInputStream());
+			
+            String username = usrname;
+            String password = psword;
+            
+            output.writeObject(username); //serialize and write the String to the stream
+			System.out.println("output sent to the server: " + username);	
+			
+			output.writeObject(password); //serialize and write the String to the stream
+			System.out.println("output sent to the server: " + password);
+					
+ 
+			check = (boolean) input.readObject();	//deserialize and read the Student object from the stream
+			System.out.println("input received from the server: " + check);
+			
+			input.close();
+			output.close();
+			socket.close();
+			
+	    } catch  (UnknownHostException uhe) {
+			uhe.printStackTrace();
+		}
+		catch  (IOException ioe) {
+			ioe.printStackTrace();
+		}
+		catch  (ClassNotFoundException cnfe) {
+			cnfe.printStackTrace();
+		}
+        return check;
+	}
 	/**
 	 * Method that matches the entered account name and password with existing accounts
 	 * 
