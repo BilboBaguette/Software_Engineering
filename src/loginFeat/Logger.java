@@ -1,6 +1,14 @@
 package loginFeat;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+
+import connec.SimpleClient;
+
 
 /**
  * Class that handles finding existing accounts and their corresponding IDs
@@ -15,34 +23,7 @@ import java.util.ArrayList;
 
 
 public class Logger {
-	/**
-	 * Arraylist used to store account names
-	 * @see Logger()
-	 * @see match()
-	 * @see findID()
-	 */
-	public ArrayList<String> users = new ArrayList<String>();
-	/**
-	 * Arraylist used to store passwords
-	 * @see Logger()
-	 * @see match()
-	 * @see findID()
-	 */
-	public ArrayList<String> passwords = new ArrayList<String>();
-	/**
-	 * Arraylist used to store client IDs as Strings
-	 * @see Logger()
-	 */
-	public ArrayList<String> IdUserString = new ArrayList<String>();
-	/**
-	 * Arraylist used to store client IDs as integers
-	 * @see Logger()
-	 * @see findID()
-	 */
-	public ArrayList<Integer> IdUser = new ArrayList<Integer>();
 	
-	public ArrayList<ArrayList<String>> contactList = new ArrayList<ArrayList<String>>();
-
 	/**
 	 * Constructor for the logger class
 	 * @see LoggerGUI
@@ -50,22 +31,9 @@ public class Logger {
 	 */
 	public Logger() {
 
-		try {
-			this.users = XMLUser.readXMLUser("UserName");
-			this.passwords = XMLUser.readXMLUser("Password");
-			this.IdUserString = XMLUser.readXMLUser("ID");
-			this.contactList = XMLUser.readContactXMLUser();
-			
-			//Since it was simpler to store the IDs in the XML files as string and then convert them, we use parseInt to do the conversion
-			for(int i=0; i<this.IdUserString.size(); i++) {
-				this.IdUser.add(Integer.parseInt(this.IdUserString.get(i)));
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
 	}
  	
-
+	
 	/**
 	 * Method that matches the entered account name and password with existing accounts
 	 * 

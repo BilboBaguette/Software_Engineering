@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import connec.SimpleClient;
+
 /**
  * Class that handles the actionevent for the "login" button of the logger, checks if the entered credentials are correct
  * @author roman
@@ -32,18 +34,20 @@ public class LogActionListener implements ActionListener{
 	 * @see LoggerGUI()
 	 */
 	private JFrame frame;
-	
-	public LogActionListener(JTextField username, JTextField password, JFrame frame) {
+	private SimpleClient c1;
+	public LogActionListener(JTextField username, JTextField password, JFrame frame, SimpleClient c1) {
 		this.username=username;
 		this.password=password;
 		this.frame=frame;
+		this.c1=c1;
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		String usr = username.getText();
 		String pwd = password.getText();
-		if(Logger.match(usr, pwd, LoggerGUI.getData().users, LoggerGUI.getData().passwords)){ //check if the credentials correspond to an existing account
-			LoggerGUI.idConnectedUser = Logger.findID(usr, pwd, LoggerGUI.getData().users, LoggerGUI.getData().passwords, LoggerGUI.getData().IdUser);
+		if(c1.loginCheck("localhost", usr, pwd)){ //check if the credentials correspond to an existing account
+			User test = c1.connectedAccount;
+			System.out.println("Username =" + test.getUsername() + "\nPassword = " + test.getPassword() + "\nID = " + test.getId());
 			frame.setVisible(false); //remove the logger
 			frame.dispose();
 			//new Menu.MenuGUI(user); //display the Menu GUI

@@ -1,30 +1,62 @@
 package connec;
 import java.io.*;  
-import java.net.*; 
+import java.net.*;
+
+import loginFeat.User; 
 
 public class SimpleClient {
 	
 	private ObjectOutputStream output;
 	private ObjectInputStream input;
 	private Socket socket;
+	private int port = 6666;
+	public User connectedAccount;
 	
 	public void connect(String ip)
 	{
-		int port = 6666;
         try  {
 			//create the socket; it is defined by an remote IP address (the address of the server) and a port number
 			socket = new Socket(ip, port);
-
 			//create the streams that will handle the objects coming and going through the sockets
 			output = new ObjectOutputStream(socket.getOutputStream());
-            input = new ObjectInputStream(socket.getInputStream());
+
 			
-			String textToSend = new String("Send me the student info! ");
-			System.out.println("text sent to the server: " + textToSend);			
-			output.writeObject(textToSend);		//serialize and write the String to the stream
- 
-			Student student = (Student) input.readObject();	//deserialize and read the Student object from the stream
-			System.out.println("Received student id: " + student.getID() + " and student name: " + student.getName() + " from server");
+	    } catch  (UnknownHostException uhe) {
+			uhe.printStackTrace();
+		}
+		catch  (IOException ioe) {
+			ioe.printStackTrace();
+		}
+	}
+	
+	public boolean usrCheck(String usrname, String password)
+	{
+		
+		boolean usr = false;
+        try {
+        	
+        	output.writeObject("register");
+            output.writeObject((String)usrname);
+            output.writeObject((String)password);
+            input = new ObjectInputStream(socket.getInputStream());
+            usr = (boolean)input.readObject();
+        } catch (IOException ex) {
+            System.out.println("Server exception: " + ex.getMessage());
+            ex.printStackTrace();
+
+		} catch (ClassNotFoundException ex) {
+            System.out.println("Server exception: " + ex.getMessage());
+            ex.printStackTrace();
+        } 
+        return usr;
+	}
+	
+	public int createId()
+	{
+		int id= 0;
+        try  {
+			id = (int) input.readObject();	//deserialize and read the Student object from the stream
+			connectedAccount = (User) input.readObject();
 	    } catch  (UnknownHostException uhe) {
 			uhe.printStackTrace();
 		}
@@ -34,14 +66,39 @@ public class SimpleClient {
 		catch  (ClassNotFoundException cnfe) {
 			cnfe.printStackTrace();
 		}
-		finally {
-			try {
-				input.close();
-				output.close();
-				socket.close();
-			} catch (IOException ioe) {
-				ioe.printStackTrace();
-			}
+        return id;
+	}
+	
+	public boolean loginCheck(String ip, String usrname, String psword) 
+	{
+		boolean check = false;
+        try  {
+        	
+        	output.writeObject("login");
+            String username = usrname;
+            String password = psword;
+            
+            output.writeObject(username); //serialize and write the String to the stream
+			System.out.println("output sent to the server: " + username);	
+			
+			output.writeObject(password); //serialize and write the String to the stream
+			System.out.println("output sent to the server: " + password);
+			
+			input = new ObjectInputStream(socket.getInputStream());		
+
+			check = (boolean) input.readObject();	//deserialize and read the Student object from the stream
+			
+			connectedAccount = (User) input.readObject();
+			System.out.println(check);
+	    } catch  (UnknownHostException uhe) {
+			uhe.printStackTrace();
 		}
+		catch  (IOException ioe) {
+			ioe.printStackTrace();
+		}
+		catch  (ClassNotFoundException cnfe) {
+			cnfe.printStackTrace();
+		}
+        return check;
 	}
 }
