@@ -11,7 +11,14 @@ package Chatroom;
 
 
 public class Messages {
-    String username;
+
+	/**
+	 * String containing the username of an user
+	 */
+	String username;
+	/**
+	 * String containing the message the user wants to send
+	 */
     String message;
     
     /**

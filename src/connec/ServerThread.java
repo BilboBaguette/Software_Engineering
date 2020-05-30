@@ -53,6 +53,9 @@ public class ServerThread extends Thread {
 	 */
 	public ArrayList<ArrayList<String>> contactList = new ArrayList<ArrayList<String>>();
 	
+	/**
+	 * Server socket variable
+	 */
     private Socket socket;
     /**
      * This stream will handle the objects going through the sockets
@@ -63,9 +66,19 @@ public class ServerThread extends Thread {
 	 */
 	private ObjectOutputStream output;
  
-
+	/**
+	 * User variable containing user information to add to an XML file
+	 */
 	private User userToAdd = new User("name", "password", 0);
+	
+	/**
+	 * boolean to verify if an account exist
+	 */
 	private boolean accountExists=false;
+	
+	/**
+	 * String containing user's username 
+	 */
 	String contactUsername;
 	
 	/**
@@ -226,6 +239,9 @@ public class ServerThread extends Thread {
 		}
     }
     
+    /**
+     * Function that gets a user's friend list
+     */
     private void sendContactList() {
 
     	

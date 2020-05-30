@@ -34,7 +34,14 @@ public class SimpleClient {
 	 * This boolean is used to tell if a message has been sent or not
 	 */
 	public volatile boolean messageSent = false;
+	/**
+	 * Server port
+	 */
 	private int port = 6666;
+	
+	/**
+	 * User variable to identify an user's account that is currently connected
+	 */
 	public User connectedAccount;
 	
 	
@@ -203,6 +210,10 @@ public class SimpleClient {
         
 	}
 	
+	/**
+	 * Function to add an user to a friend list
+	 * @param userToAdd User name to add to the friend list
+	 */
 	public void addUser(String userToAdd) {
         try  {
 			//create the socket; it is defined by an remote IP address (the address of the server) and a port number
@@ -217,6 +228,10 @@ public class SimpleClient {
 		}
 	}
 	
+	/**
+	 * Function to return the contact list of an user 
+	 * @return
+	 */
 	public String[] getContactList() {
 		try {
 			int arraySize = (int) input.readObject();
@@ -236,6 +251,9 @@ public class SimpleClient {
 		return new String[1];
 	}
 	
+	/**
+	 * Function to start a Chatroom
+	 */
 	public void startChatroom() {
 		try {
 			output.writeObject((String) "chatroom");
@@ -245,6 +263,10 @@ public class SimpleClient {
 		}
 	}
 	
+	/**
+	 * Function to send a message into a chatroom
+	 * @param message to be sent 
+	 */
 	public void sendMessage(String message) {
 		try {
 			//output = new ObjectOutputStream(socket.getOutputStream());

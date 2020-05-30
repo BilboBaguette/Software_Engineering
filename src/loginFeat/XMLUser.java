@@ -266,7 +266,7 @@ public class XMLUser {
                     Node subElement = subUserList.item(j);
                     if ("Contacts".equals(subElement.getNodeName())) //If found then go through the list of contact
                     {
-                        NodeList subSubUserList = subElement.getChildNodes();
+                        NodeList subSubUserList = element.getChildNodes();
                         ArrayList<String> contactsList = new ArrayList<String>();
                         for (int n = 0; n < subSubUserList.getLength(); n++) 
                         {

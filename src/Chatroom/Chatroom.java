@@ -27,13 +27,19 @@ import loginFeat.User;
 
 public class Chatroom {
 
+	/**
+	 * List of type message containing user message
+	 */
 	public List<Messages> myList = new ArrayList<Messages>();
-	ArrayList<String> messageContent;
-	ArrayList<String> messageUsername;
-	
-    /**
-     * Description: Constructor of the class chat room
-     */
+
+
+	/**
+	 * Description: Constructor of the class chat room
+     *
+	 * @param frame
+	 * @param members
+	 * @param c1
+	 */
 	public Chatroom(JFrame frame, ArrayList<String> members, SimpleClient c1){
 		
 		initialize(frame, members, c1);
@@ -44,6 +50,9 @@ public class Chatroom {
      * Description: Creates the GUI
      * 2 text ares(one for writing and the other one for seeing the chat box) and a button to send a text.
      * 
+     * @param frameMenu
+     * @param members
+     * @param c1
      * @see SendButtonListener#SendButtonListener
      */
 	private void initialize(JFrame frameMenu, ArrayList<String> members, SimpleClient c1) {
