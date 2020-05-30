@@ -1,6 +1,8 @@
 package connec;
 import java.io.*;  
-import java.net.*; 
+import java.net.*;
+
+import loginFeat.User; 
 
 public class SimpleClient {
 	
@@ -8,6 +10,7 @@ public class SimpleClient {
 	private ObjectInputStream input;
 	private Socket socket;
 	private int port = 6666;
+	public User connectedAccount;
 	
 	public void connect(String ip)
 	{
@@ -26,7 +29,7 @@ public class SimpleClient {
 		}
 	}
 	
-	public boolean usrCheck(String usrname)
+	public boolean usrCheck(String usrname, String password)
 	{
 		
 		boolean usr = false;
@@ -34,6 +37,7 @@ public class SimpleClient {
         	
         	output.writeObject("register");
             output.writeObject((String)usrname);
+            output.writeObject((String)password);
             input = new ObjectInputStream(socket.getInputStream());
             usr = (boolean)input.readObject();
         } catch (IOException ex) {
@@ -52,6 +56,7 @@ public class SimpleClient {
 		int id= 0;
         try  {
 			id = (int) input.readObject();	//deserialize and read the Student object from the stream
+			connectedAccount = (User) input.readObject();
 	    } catch  (UnknownHostException uhe) {
 			uhe.printStackTrace();
 		}
@@ -82,6 +87,8 @@ public class SimpleClient {
 			input = new ObjectInputStream(socket.getInputStream());		
 
 			check = (boolean) input.readObject();	//deserialize and read the Student object from the stream
+			
+			connectedAccount = (User) input.readObject();
 			System.out.println(check);
 	    } catch  (UnknownHostException uhe) {
 			uhe.printStackTrace();

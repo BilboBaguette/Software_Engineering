@@ -172,12 +172,9 @@ public class LoggerGUI{
 		//Adding action listeners to the buttons
 		ActionListener loginListener = new LogActionListener(userNameFieldLogin, passwordFieldLogin, frame, c1);
 		loginbtn.addActionListener(loginListener);
-		ActionListener registerListener = new RegisterActionListener(userNameFieldRegister, passwordFieldRegister, c1);
+		ActionListener registerListener = new RegisterActionListener(userNameFieldRegister, passwordFieldRegister,frame, c1);
 		registerbtn.addActionListener(registerListener);
 		frame.setVisible(true);
-		while(true) {
-			System.out.printf("");
-		}
 	}
 	
 }

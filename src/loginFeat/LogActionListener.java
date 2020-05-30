@@ -46,6 +46,8 @@ public class LogActionListener implements ActionListener{
 		String usr = username.getText();
 		String pwd = password.getText();
 		if(c1.loginCheck("localhost", usr, pwd)){ //check if the credentials correspond to an existing account
+			User test = c1.connectedAccount;
+			System.out.println("Username =" + test.getUsername() + "\nPassword = " + test.getPassword() + "\nID = " + test.getId());
 			frame.setVisible(false); //remove the logger
 			frame.dispose();
 			//new AppGUI(); //display the store GUI
