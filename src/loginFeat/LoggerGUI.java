@@ -94,13 +94,13 @@ public class LoggerGUI{
 	 * @see RegisterActionLister.actionPerformed(ActionEvent)
 	 */
 	static public int idConnectedUser = -1;
+	
+	
 	/**
 	 * creation of a logger instance from the logger class
 	 * @see LogActionListener.actionPerformed(ActionEvent)
 	 * @see RegisterActionLister.actionPerformed(ActionEvent)
 	 */
-
-	
 	public LoggerGUI() {
 		//we setup the panels and boxes for the logger, and we setup our frame
 		frame.setMinimumSize(new Dimension(640,480));

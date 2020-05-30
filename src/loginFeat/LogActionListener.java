@@ -10,7 +10,7 @@ import javax.swing.JTextField;
 import connec.SimpleClient;
 
 /**
- * Class that handles the actionevent for the "login" button of the logger, checks if the entered credentials are correct
+ * Class that handles the action event for the "login" button of the logger, checks if the entered credentials are correct
  * @author roman
  * @version 1.0
  * @see Logger
@@ -34,7 +34,19 @@ public class LogActionListener implements ActionListener{
 	 * @see LoggerGUI()
 	 */
 	private JFrame frame;
+	/**
+	 * This variable is a client 
+	 */
 	private SimpleClient c1;
+	
+	/**
+	 * This is the constructor
+	 * 
+	 * @param username
+	 * @param password
+	 * @param frame
+	 * @param c1
+	 */
 	public LogActionListener(JTextField username, JTextField password, JFrame frame, SimpleClient c1) {
 		this.username=username;
 		this.password=password;
@@ -42,6 +54,9 @@ public class LogActionListener implements ActionListener{
 		this.c1=c1;
 	}
 
+	/**
+	 * This class check if the user has correct credentials and link the results to the GUI
+	 */
 	public void actionPerformed(ActionEvent e) {
 		String usr = username.getText();
 		String pwd = password.getText();
