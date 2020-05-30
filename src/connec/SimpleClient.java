@@ -31,7 +31,6 @@ public class SimpleClient {
 	
 	public boolean usrCheck(String usrname, String password)
 	{
-		
 		boolean usr = false;
         try {
         	

@@ -97,7 +97,7 @@ public class XMLUser {
 	 * @param idUser
 	 * @param idToAdd
 	 */
-	public static void addContactToUserXML(Integer idUser, Integer idToAdd) throws Exception 
+	public static void addContactToUserXML(Integer idUser, String usernameToAdd) throws Exception 
 	{
 		File xmlFile = new File("./User.xml");
 		
@@ -120,9 +120,23 @@ public class XMLUser {
 					
 	                Node subElement = subUserList.item(j);
 	                if ("Contacts".equals(subElement.getNodeName())) { //If found then add an ID to the contact list
-	                	Element contact = document.createElement("Contact");
-	                	contact.appendChild(document.createTextNode(Integer.toString(idToAdd)));
-	                	((Node) subUserList).appendChild(contact);
+	                	
+	                	NodeList subSubUserList = element.getChildNodes();
+	                	boolean check = false;
+	                	for (int n = 0; n < subSubUserList.getLength(); n++) 
+	    				{
+	    	                Node subSubElement = subSubUserList.item(n);  				
+	    	    	        if (usernameToAdd.equals(subSubElement.getTextContent())) //If we find the ID then we delete it.
+	    	    	        {
+	    	    	        	check = true;
+	    	    	        }
+	    	            }
+	                	if(!check)
+	                	{
+	                		Element contact = document.createElement("Contact");
+	                		contact.appendChild(document.createTextNode(usernameToAdd));
+	                		((Node) subUserList).appendChild(contact);
+	                	}
 	                }
 	            }
 			}
@@ -133,14 +147,14 @@ public class XMLUser {
         StreamResult streamResult = new StreamResult(new File("./User.xml"));
         transformer.transform(domSource, streamResult);	 
 	}
-	
+
 	/**
 	 * Method that removes contact from an user's contact list
 	 * 
 	 * @param idUser
 	 * @param idToRemove
 	 */
-	public static void removeContactFromUserXML(Integer idUser, Integer idToRemove) throws Exception 
+	public static void removeContactFromUserXML(Integer idUser, String usernameToRemove) throws Exception 
 	{
 		File xmlFile = new File("./User.xml");
 		
@@ -168,7 +182,7 @@ public class XMLUser {
 	    				for (int n = 0; n < subSubUserList.getLength(); n++) 
 	    				{
 	    	                Node subSubElement = subSubUserList.item(n);  				
-	    	    	        if (Integer.toString(idToRemove).equals(subSubElement.getTextContent())) //If we find the ID then we delete it.
+	    	    	        if (usernameToRemove.equals(subSubElement.getTextContent())) //If we find the ID then we delete it.
 	    	    	        {
 	    	    	        	((Node) subUserList).removeChild(subSubElement);
 	    	    	        }

@@ -41,11 +41,14 @@ public class ServerThread extends Thread {
 	 */
 	public ArrayList<Integer> IdUser = new ArrayList<Integer>();
 
+	public ArrayList<ArrayList<String>> contactList = new ArrayList<ArrayList<String>>();
+	
     private Socket socket;
 	private ObjectInputStream input;
 	private ObjectOutputStream output;
 	private User userToAdd = new User("name", "password", 0);
 	private boolean accountExists=false;
+	String contactUsername;
 	
     public ServerThread(Socket socket) {
         this.socket = socket;
@@ -56,7 +59,6 @@ public class ServerThread extends Thread {
         try {
     		input = new ObjectInputStream(socket.getInputStream());
  			output = new ObjectOutputStream(socket.getOutputStream());
-
 
         	System.out.println("Here");
             	choice = clickState();
@@ -77,6 +79,17 @@ public class ServerThread extends Thread {
 	        		System.out.println("Here5");
 	        		loginCheck();
 	        		System.out.println("Here6");
+	        		break;
+	        		
+	        	case "addcontact":
+	        		System.out.println("Here7");
+	        		if(!checkContact())
+	        		{
+	        			System.out.println("Here9");
+	        			XMLUser.addContactToUserXML(userToAdd.getId(), contactUsername);
+	        			System.out.println("Here10");
+	        		}
+	        		System.out.println("Here8");
 	        		break;
 	        	}
         	      		
@@ -112,6 +125,7 @@ public class ServerThread extends Thread {
 			users = XMLUser.readXMLUser("UserName");
 			passwords = XMLUser.readXMLUser("Password");
 			IdUserString = XMLUser.readXMLUser("ID");
+			contactList = XMLUser.readContactXMLUser();
 			//Since it was simpler to store the IDs in the XML files as string and then convert them, we use parseInt to do the conversion
 			for(int i=0; i<IdUserString.size(); i++) {
 				IdUser.add(Integer.parseInt(IdUserString.get(i)));
@@ -121,7 +135,7 @@ public class ServerThread extends Thread {
 		}
     }
     
-    public void loginCheck()
+    private void loginCheck()
     {
     	 try {
   			String username = (String)input.readObject();  //read the object received through the stream and deserialize it
@@ -153,7 +167,7 @@ public class ServerThread extends Thread {
  		}
     }
     
-    public void registerCheck()
+    private void registerCheck()
     {
     	loginInit();
     	try {
@@ -190,8 +204,7 @@ public class ServerThread extends Thread {
          } 
     }
     
-    
-    public void idCheck()
+    private void idCheck()
     {
     	try {
  			int id= (int)(Math.random() * 999999); //generate a random account id 			
@@ -209,6 +222,36 @@ public class ServerThread extends Thread {
              ex.printStackTrace();
  		} 
     }
+    
+    private boolean checkContact()
+    {
+    	try {
+    		contactUsername = (String)input.readObject();
+        	for(int i = 0; i < users.size(); i++)
+        	{
+        		String node = users.get(i);
+        		if(userToAdd.getUsername().equals(node))
+        		{
+        			for(int j = 0; j < contactList.size(); j++)
+        			{
+        				if(contactUsername.equals(contactList.get(i).get(j)))
+        				{
+        					return true;
+        				}
+        			}
+        		}
+			}		
+         } catch (IOException ex) {
+             System.out.println("Server exception: " + ex.getMessage());
+             ex.printStackTrace();
+
+ 		} catch (ClassNotFoundException ex) {
+             System.out.println("Server exception: " + ex.getMessage());
+             ex.printStackTrace();
+         }
+    	return false;
+    }
+    
     /**
 	 * Method that matches the entered account name and password with existing accounts
 	 * 
