@@ -29,12 +29,23 @@ public class RegisterActionListener implements ActionListener{
 	 * @see LoggerGUI()
 	 */
 	private JTextField password;
-	
+	/**
+	 * frame from the GUI
+	 * @see LoggerGUI()
+	 */
 	private JFrame frame;
-	
+	/**
+	 * This variable is a client 
+	 */
 	private SimpleClient c1;
 	
-	
+	/**
+	 * This is the constructor
+	 * @param username
+	 * @param password
+	 * @param frame
+	 * @param c1
+	 */
 	public RegisterActionListener(JTextField username, JTextField password,JFrame frame, SimpleClient c1) {
 		this.username=username;
 		this.password=password;
@@ -42,6 +53,9 @@ public class RegisterActionListener implements ActionListener{
 		this.frame = frame;
 	}
 
+	/**
+	 * This class register the user's credentials and link the results to the GUI
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String usr = username.getText();
