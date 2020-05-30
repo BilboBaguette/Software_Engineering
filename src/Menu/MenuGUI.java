@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import connec.SimpleClient;
 import loginFeat.User;
 /**
  * Class used to create the Menu GUI, allowing the user to select which contact or group he wants to chat with, add new contacts and create groups
@@ -58,11 +59,14 @@ public class MenuGUI {
 	
 	private User currentUser;
 	
+	private SimpleClient c1;
+	
 	/**
 	 * Create the application.
 	 */
-	public MenuGUI(User user) {
+	public MenuGUI(User user, SimpleClient sc) {
 		this.currentUser=user;
+		this.c1 = sc;
 		initialize();
 	}
 
@@ -112,11 +116,11 @@ public class MenuGUI {
 		//Adding MouseListener and ActionListeners
 		MouseListener newContactFieldMouseListener = new loginFeat.FieldMouseListener(newContact);
 		newContact.addMouseListener(newContactFieldMouseListener);
-		contactsAndGroups.addActionListener(new ActionListeners(contactsAndGroups, contactsOrGroups, currentUser));
+		contactsAndGroups.addActionListener(new ActionListeners(contactsAndGroups, contactsOrGroups, currentUser, c1));
 		contactsAndGroups.setActionCommand("contactsAndGroups");
-		contactsOrGroups.addActionListener(new ActionListeners(contactsOrGroups));
+		contactsOrGroups.addActionListener(new ActionListeners(contactsOrGroups, c1));
 		contactsOrGroups.setActionCommand("contactsOrGroups");
-		addNewContactbtn.addActionListener(new ActionListeners(newContact, currentUser));
+		addNewContactbtn.addActionListener(new ActionListeners(newContact, currentUser, c1));
 		addNewContactbtn.setActionCommand("add");
 		//Display the frame
 		frame.pack();

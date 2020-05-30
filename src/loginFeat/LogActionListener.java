@@ -50,7 +50,7 @@ public class LogActionListener implements ActionListener{
 			System.out.println("Username =" + test.getUsername() + "\nPassword = " + test.getPassword() + "\nID = " + test.getId());
 			frame.setVisible(false); //remove the logger
 			frame.dispose();
-			new Menu.MenuGUI(test); //display the Menu GUI
+			new Menu.MenuGUI(test, c1); //display the Menu GUI
 		}
 		else
 		{

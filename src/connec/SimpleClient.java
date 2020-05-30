@@ -53,13 +53,13 @@ public class SimpleClient {
 			socket = new Socket(ip, port);
 			//create the streams that will handle the objects coming and going through the sockets
 			output = new ObjectOutputStream(socket.getOutputStream());
-			while(true){
+			/*while(true){
 				if(messageSent==true) {
 					output = new ObjectOutputStream(socket.getOutputStream());
 					output.writeObject((String) Senda);
 					messageSent =false;
 				}
-			}	
+			}*/	
 	    } catch  (UnknownHostException uhe) {
 			uhe.printStackTrace();
 		}
@@ -104,7 +104,7 @@ public class SimpleClient {
 		catch  (ClassNotFoundException cnfe) {
 			cnfe.printStackTrace();
 		}
-		finally {
+		/*finally {
 			try {
 				input.close();
 				output.close();
@@ -112,7 +112,7 @@ public class SimpleClient {
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
 			}
-		}
+		}*/
         return id;
 	}
 	

@@ -7,6 +7,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
+import connec.SimpleClient;
 import loginFeat.User;
 import loginFeat.XMLUser;
 
@@ -35,13 +36,16 @@ public class ActionListeners implements ActionListener{
 	 * user connected to the menu
 	 */
 	private User user;
+	
+	private SimpleClient c1;
 	/**
 	 * first contructor, used for the action listener of the contactsOrGroups combobox
 	 * @param contactsOrGroups
 	 * @see MenuGUI
 	 */
-	public ActionListeners(JComboBox<String> contactsOrGroups) {
+	public ActionListeners(JComboBox<String> contactsOrGroups, SimpleClient c1) {
 		this.contactsOrGroups=contactsOrGroups;
+		this.c1 =c1;
 	}
 	/**
 	 * second constructor, used for the action listener of the contactAndGroups combobox
@@ -49,19 +53,21 @@ public class ActionListeners implements ActionListener{
 	 * @param contactsOrGroups
 	 * @see MenuGUI
 	 */
-	public ActionListeners(JComboBox<String> contactsAndGroups, JComboBox<String> contactsOrGroups, User user) {
+	public ActionListeners(JComboBox<String> contactsAndGroups, JComboBox<String> contactsOrGroups, User user, SimpleClient c1) {
 		this.contactsAndGroups=contactsAndGroups;
 		this.contactsOrGroups=contactsOrGroups;
 		this.user=user;
+		this.c1 =c1;
 	}
 	/**
 	 * third constructor, used for the add button that adds a new contact
 	 * @param newContactName
 	 * @see MenuGUI
 	 */
-	public ActionListeners(JTextField newContactName, User user) {
+	public ActionListeners(JTextField newContactName, User user, SimpleClient c1) {
 		this.newContactName=newContactName;
 		this.user=user;
+		this.c1 =c1;
 	}
 
 	@Override
