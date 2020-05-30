@@ -21,7 +21,6 @@ import org.w3c.dom.NodeList;
  *
  * @version 1.0
  *
- * @see logger
  *
  * @author Jean-Louis CHENG
  * @author Nils CHOL

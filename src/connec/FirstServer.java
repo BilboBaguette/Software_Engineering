@@ -31,7 +31,7 @@ public class FirstServer extends AbstractServer
 	 * This function will allow us to connect to a server
 	 * 
 	 * @param ip Is the ip address of the network where we want to open a server 
-	 * @see java Socket class
+	 * @see Socket 
 	 * @author Nils Chol; Jean-Louis Cheng
 	 *
 	 */

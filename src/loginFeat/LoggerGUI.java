@@ -17,11 +17,11 @@ import javax.swing.border.EmptyBorder;
 
 import connec.SimpleClient;
 
+
 /**
  * Class that handles GUI creation and setup for the logger
  * @author roman
  * @version 1.O
- * @see Logger
  * @see XMLUser
  * @see LogActionListener
  * @see RegisterActionListener
@@ -31,75 +31,75 @@ public class LoggerGUI{
 	
 	/**
 	 * the frame of our logger
-	 * @see LoggerGUI()
-	 * @see LogActionListener.actionPerformed(ActionEvent)
-	 * @see RegisterActionLister.actionPerformed(ActionEvent)
+	 * @see LoggerGUI
+	 * @see LogActionListener.actionPerformed(ActionEvent e)
+	 * @see RegisterActionListener.actionPerformed(ActionEvent e)
 	 */
 	private JFrame frame = new JFrame("Login/Register");
 	/**
 	 * panel where the "login part" of the logger is
-	 * @see LogActionListener.actionPerformed(ActionEvent)
-	 * @see RegisterActionLister.actionPerformed(ActionEvent)
+	 * @see LogActionListener.actionPerformed(ActionEvent e)
+	 * @see RegisterActionListener.actionPerformed(ActionEvent e)
 	 */
 	private JPanel loginpanel;
 	/**
 	 * panel where the "register part" of the logger is
-	 * @see LogActionListener.actionPerformed(ActionEvent)
-	 * @see RegisterActionLister.actionPerformed(ActionEvent)
+	 * @see LogActionListener.actionPerformed(ActionEvent e)
+	 * @see RegisterActionListener.actionPerformed(ActionEvent e)
 	 */
 	private JPanel registerpanel;
 	/**
 	 * button to confirm login credentials
-	 * @see LogActionListener.actionPerformed(ActionEvent)
-	 * @see RegisterActionLister.actionPerformed(ActionEvent)
+	 * @see LogActionListener.actionPerformed(ActionEvent e)
+	 * @see RegisterActionListener.actionPerformed(ActionEvent e)
 	 */
 	private JButton loginbtn;
 	/**
 	 * button to finalize account creation
-	 * @see LogActionListener.actionPerformed(ActionEvent)
-	 * @see RegisterActionLister.actionPerformed(ActionEvent)
+	 * @see LogActionListener.actionPerformed(ActionEvent e)
+	 * @see RegisterActionListener.actionPerformed(ActionEvent e)
 	 */
 	private JButton registerbtn;
 	/**
 	 * user name field for the login part
-	 * @see LogGUI()
-	 * @see LogActionListener.actionPerformed(ActionEvent)
-	 * @see RegisterActionLister.actionPerformed(ActionEvent)
+	 * @see LogGUI
+	 * @see LogActionListener.actionPerformed(ActionEvent e)
+	 * @see RegisterActionListener.actionPerformed(ActionEvent e)
 	 */
 	private JTextField userNameFieldLogin;
 	/**
 	 * password field for the login part
-	 * @see LoggerGUI()
-	 * @see LogActionListener.actionPerformed(ActionEvent)
-	 * @see RegisterActionLister.actionPerformed(ActionEvent)
+	 * @see LoggerGUI
+	 * @see LogActionListener.actionPerformed(ActionEvent e)
+	 * @see RegisterActionListener.actionPerformed(ActionEvent e)
 	 */
 	private JTextField passwordFieldLogin;
 	/**
 	 * user name field for the registering process
-	 * @see LoggerGUI()
-	 * @see LogActionListener.actionPerformed(ActionEvent)
-	 * @see RegisterActionLister.actionPerformed(ActionEvent)
+	 * @see LoggerGUI
+	 * @see LogActionListener.actionPerformed(ActionEvent e)
+	 * @see RegisterActionListener.actionPerformed(ActionEvent e) 
 	 */
 	private JTextField userNameFieldRegister;
 	/**
 	 * password field for the registering process
-	 * @see LoggerGUI()
-	 * @see LogActionListener.actionPerformed(ActionEvent)
-	 * @see RegisterActionLister.actionPerformed(ActionEvent)
+	 * @see LoggerGUI
+	 * @see LogActionListener.actionPerformed(ActionEvent e)
+	 * @see RegisterActionListener.actionPerformed(ActionEvent e)
 	 */
 	private JTextField passwordFieldRegister;
 	/**
-	 * id of the connected client, initally a negative value for easier error prevention
-	 * @see LogActionListener.actionPerformed(ActionEvent)
-	 * @see RegisterActionLister.actionPerformed(ActionEvent)
+	 * id of the connected client, initially a negative value for easier error prevention
+	 * @see LogActionListener#actionPerformed(ActionEvent e)
+	 * @see RegisterActionListener#actionPerformed(ActionEvent e)
 	 */
 	static public int idConnectedUser = -1;
 	
 	
 	/**
 	 * creation of a logger instance from the logger class
-	 * @see LogActionListener.actionPerformed(ActionEvent)
-	 * @see RegisterActionLister.actionPerformed(ActionEvent)
+	 * @see LogActionListener#actionPerformed(ActionEvent e)
+	 * @see RegisterActionListener#actionPerformed(ActionEvent e)
 	 */
 	public LoggerGUI() {
 		//we setup the panels and boxes for the logger, and we setup our frame

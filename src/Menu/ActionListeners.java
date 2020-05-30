@@ -52,7 +52,12 @@ public class ActionListeners implements ActionListener{
 	
 	/**
 	 * first constructor, used for the action listener of the contactsOrGroups combobox
+	 * 
+	 * @param frame
+	 * @param user
 	 * @param contactsOrGroups
+	 * @param c1
+	 * 
 	 * @see MenuGUI
 	 */
 	public ActionListeners(JFrame frame,User user, JComboBox<String> contactsOrGroups, SimpleClient c1) {
@@ -61,10 +66,15 @@ public class ActionListeners implements ActionListener{
 		this.user=user;
 		this.frame = frame;
 	}
+
 	/**
 	 * second constructor, used for the action listener of the contactAndGroups combobox
+	 * 
 	 * @param contactsAndGroups
 	 * @param contactsOrGroups
+	 * @param user
+	 * @param c1
+	 * 
 	 * @see MenuGUI
 	 */
 	public ActionListeners(JComboBox<String> contactsAndGroups, JComboBox<String> contactsOrGroups, User user, SimpleClient c1) {
@@ -73,9 +83,15 @@ public class ActionListeners implements ActionListener{
 		this.user=user;
 		this.c1 =c1;
 	}
+
 	/**
 	 * third constructor, used for the add button that adds a new contact
+	 * 
 	 * @param newContactName
+	 * @param user
+	 * @param c1
+	 * @param contactsOrGroups
+	 * 
 	 * @see MenuGUI
 	 */
 	public ActionListeners(JTextField newContactName, User user, SimpleClient c1, JComboBox<String> contactsOrGroups) {
@@ -88,6 +104,8 @@ public class ActionListeners implements ActionListener{
 	@Override
 	/**
 	 * method used to perform actions, we used a switch/case to separate the different actions used by different buttons/comboboxes
+	 * 
+	 * @param e
 	 */
 	public void actionPerformed(ActionEvent e) {
 		switch(e.getActionCommand()) {

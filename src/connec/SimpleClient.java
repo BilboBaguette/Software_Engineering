@@ -3,7 +3,7 @@ import java.io.*;
 import java.net.*;
 
 import loginFeat.User; 
-
+import Chatroom.Chatroom;
 /**
  * Class name : SimpleClient
  * This thread is responsible to handle client connection from the client side.
@@ -78,11 +78,11 @@ public class SimpleClient {
 	/**
 	 * Method that asks validation from the server for the Username if it already exists or not 
 	 * 
-	 * @see RegisterActionListener()
-	 * @see ServerThread()
+	 * @see loginFeat.RegisterActionListener
+	 * @see ServerThread
 	 * 
-	 * @param usrname
-	 * @param password 
+	 * @param usrname User's username
+	 * @param password User's Password
 	 * 
 	 * @return boolean
 	 */
@@ -110,8 +110,8 @@ public class SimpleClient {
 	/**
 	 * Method that asks the server to generate an unique ID for the new account
 	 * 
-	 * @see RegisterActionListener() 
-	 * @see ServerThread()
+	 * @see loginFeat.RegisterActionListener 
+	 * @see ServerThread
 	 * 
 	 * @return int
 	 */
@@ -145,8 +145,8 @@ public class SimpleClient {
 	/**
 	 * Method that asks the server to check if the username and password exists in the database (XML file)
 	 * 
-	 * @see LogActionListener() 
-	 * @see ServerThread()
+	 * @see loginFeat.LogActionListener 
+	 * @see ServerThread
 	 * 
 	 * @param ip
 	 * @param usrname
@@ -187,7 +187,7 @@ public class SimpleClient {
 	/**
 	 * Method that asks for the conversations logs from the server
 	 * 
-	 * @see Chatroom() 
+	 * @see Chatroom.Chatroom
 	 * 
 	 * @return String
 	 */
