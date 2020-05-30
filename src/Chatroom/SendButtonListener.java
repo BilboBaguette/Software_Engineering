@@ -22,12 +22,31 @@ import connec.SimpleClient;
 
 
 public class SendButtonListener implements ActionListener {
+	
+	/**
+	 * Variable containing text
+	 */
 	private JTextPane textPane;
+	/**
+	 * Variable containing space to write text
+	 */
 	private JTextPane TypingText;
+	/**
+	 * SimpleClient variable that will allow us to send a message to the server
+	 */
 	private SimpleClient simpleClient;
+	/**
+	 * Frame variable
+	 */
 	private JFrame frame;
+	/**
+	 * FRame variable
+	 */
 	private JFrame frameMenu;
-
+	
+	/**
+	 * List of type message containing user message
+	 */
 	public List<Messages> myList = new ArrayList<Messages>();
 	
 /**

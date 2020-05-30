@@ -58,8 +58,14 @@ public class MenuGUI {
 	 */
 	private JButton newGroupbtn;
 	
+	/**
+	 * User variable containing the current user
+	 */
 	private User currentUser;
 	
+	/**
+	 * Client connection variable
+	 */
 	private SimpleClient c1;
 	
 	/**

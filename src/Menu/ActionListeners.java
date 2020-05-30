@@ -40,11 +40,18 @@ public class ActionListeners implements ActionListener{
 	 */
 	private User user;
 	
+	/**
+	 * Frame variable
+	 */
 	private JFrame frame;
 	
-	private SimpleClient c1;
 	/**
-	 * first contructor, used for the action listener of the contactsOrGroups combobox
+	 * Client connection variable
+	 */
+	private SimpleClient c1;
+	
+	/**
+	 * first constructor, used for the action listener of the contactsOrGroups combobox
 	 * @param contactsOrGroups
 	 * @see MenuGUI
 	 */
