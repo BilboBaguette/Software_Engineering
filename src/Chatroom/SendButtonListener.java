@@ -14,6 +14,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JFrame;
 import javax.swing.JTextPane;
 
 import connec.SimpleClient;
@@ -23,6 +25,8 @@ public class SendButtonListener implements ActionListener {
 	private JTextPane textPane;
 	private JTextPane TypingText;
 	private SimpleClient simpleClient;
+	private JFrame frame;
+	private JFrame frameMenu;
 
 	public List<Messages> myList = new ArrayList<Messages>();
 	
@@ -34,8 +38,10 @@ public class SendButtonListener implements ActionListener {
  * @param sendList: List of messages that we have received or sent
  * 
  */
-	public SendButtonListener(JTextPane textPane, JTextPane textPane2,List<Messages> sendList, SimpleClient sc)
+	public SendButtonListener(JFrame frameMenu, JFrame frame,JTextPane textPane, JTextPane textPane2,List<Messages> sendList, SimpleClient sc)
 	{
+		this.frameMenu = frameMenu;
+		this.frame = frame;
 		this.textPane = textPane;
 		this.TypingText =textPane2;
 		this.myList = sendList;
@@ -53,10 +59,14 @@ public class SendButtonListener implements ActionListener {
 		String a,b;
 		a = TypingText.getText();
 		b = textPane.getText();
+		if(a.compareTo("/quit")==0) {
+			frameMenu.setVisible(true);
+			frame.setVisible(false);
+			frame.dispose();
+		} 
 		if(!TypingText.getText().isEmpty()){
 			myList.add(new Messages("user",a));
-			simpleClient.Senda = a;
-			simpleClient.messageSent = true;
+			simpleClient.sendMessage(a);
 			if(textPane.getText().isEmpty()){
 				textPane.setText("user : " +  a+b);
 				}else{

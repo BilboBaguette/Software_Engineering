@@ -24,6 +24,6 @@ public class Project {
 	 * Create the application.
 	 */
 	public Project() {
-		new Chatroom();
+		//new Chatroom();
 	}
 }

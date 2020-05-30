@@ -2,11 +2,14 @@ package Menu;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JTextField;
 
+import Chatroom.Chatroom;
 import connec.SimpleClient;
 import loginFeat.User;
 import loginFeat.XMLUser;
@@ -37,15 +40,19 @@ public class ActionListeners implements ActionListener{
 	 */
 	private User user;
 	
+	private JFrame frame;
+	
 	private SimpleClient c1;
 	/**
 	 * first contructor, used for the action listener of the contactsOrGroups combobox
 	 * @param contactsOrGroups
 	 * @see MenuGUI
 	 */
-	public ActionListeners(JComboBox<String> contactsOrGroups, SimpleClient c1) {
+	public ActionListeners(JFrame frame,User user, JComboBox<String> contactsOrGroups, SimpleClient c1) {
 		this.contactsOrGroups=contactsOrGroups;
 		this.c1 =c1;
+		this.user=user;
+		this.frame = frame;
 	}
 	/**
 	 * second constructor, used for the action listener of the contactAndGroups combobox
@@ -94,9 +101,12 @@ public class ActionListeners implements ActionListener{
 			}
 			break;
 		case "contactsOrGroups":
-			String selected = contactsOrGroups.getSelectedItem().toString();
-			System.out.println("Starting convo with "+selected); //TODO replace with chatroom startup
+			String selectedContact = contactsOrGroups.getSelectedItem().toString();
+			ArrayList<String> members = new ArrayList<String>();
+			members.add(user.getUsername());
+			members.add(selectedContact);
 			c1.startChatroom();
+			new Chatroom(frame, members, c1);
 			break;
 		case "createGroup":
 			//TODO group creation

@@ -184,15 +184,11 @@ public class SimpleClient {
 	 * 
 	 * @return String
 	 */
-	public String getLogs(String ip) {
-		int port = 6666;
+	public String getLogs() {
 		String logs ="";
         try  {
-			//create the socket; it is defined by an remote IP address (the address of the server) and a port number
-			socket = new Socket(ip, port);
-
-			input = new ObjectInputStream(socket.getInputStream());
-			
+			//create the socket; it is defined by an remote IP address (the address of the server) and a port number	
+        	input = new ObjectInputStream(socket.getInputStream());
 			logs = (String) input.readObject();
 
 		} catch  (UnknownHostException uhe) {
@@ -245,6 +241,16 @@ public class SimpleClient {
 	public void startChatroom() {
 		try {
 			output.writeObject((String) "chatroom");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void sendMessage(String message) {
+		try {
+			//output = new ObjectOutputStream(socket.getOutputStream());
+			output.writeObject((String) message);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

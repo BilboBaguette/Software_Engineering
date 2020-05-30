@@ -22,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 
 import connec.SimpleClient;
+import loginFeat.User;
 
 
 public class Chatroom {
@@ -33,9 +34,9 @@ public class Chatroom {
     /**
      * Description: Constructor of the class chat room
      */
-	public Chatroom(){
+	public Chatroom(JFrame frame, ArrayList<String> members, SimpleClient c1){
 		
-		initialize();
+		initialize(frame, members, c1);
 		
 	}
 	
@@ -45,7 +46,7 @@ public class Chatroom {
      * 
      * @see SendButtonListener#SendButtonListener
      */
-	private void initialize() {
+	private void initialize(JFrame frameMenu, ArrayList<String> members, SimpleClient c1) {
 
 		JScrollPane scrollPane;
 		JFrame frame;		 
@@ -61,7 +62,7 @@ public class Chatroom {
 		
 		scrollPane = new JScrollPane();
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		
+				
 
 		
 		try {
@@ -73,21 +74,20 @@ public class Chatroom {
 			scrollPane.getViewport().setBackground(Color.WHITE);
 			scrollPane.getViewport().add(textPane);
 			frame.add(scrollPane);
-			
-			SimpleClient c1 = new SimpleClient();
-			
-			textPane.setText(c1.getLogs("localhost"));
+						
+
+
+			String logs = c1.getLogs();
+			textPane.setText(logs);
+
 			
 			JButton btnSend = new JButton("Send");
-			/*uses Class SendButtonListener*/
-			btnSend.addActionListener(new SendButtonListener(textPane,Typingtext,myList, c1));
+			frameMenu.setVisible(false);
+			btnSend.addActionListener(new SendButtonListener(frameMenu, frame, textPane,Typingtext,myList, c1));
 			btnSend.setBounds(486, 406, 89, 23);
 			frame.getContentPane().add(btnSend);
 			
-			frame.setVisible(true);
-			
-			c1.connect("localhost");
-			
+			frame.setVisible(true);			
 
 		}catch(Exception e){
 			e.getStackTrace();

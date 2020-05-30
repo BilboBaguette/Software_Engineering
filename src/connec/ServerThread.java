@@ -89,6 +89,7 @@ public class ServerThread extends Thread {
     public void run() {
     	String choice = "";
         try {
+        	//partie logger
     		input = new ObjectInputStream(socket.getInputStream());
  			output = new ObjectOutputStream(socket.getOutputStream());
         	choice = clickState();
@@ -108,43 +109,50 @@ public class ServerThread extends Thread {
         		
         	}
         	
-        	//envoyer infos combobox contacts pour menu
+        	//partie menu
+        	boolean menu;
+        	boolean chatroom;
         	sendContactList();
-        	
         	while(true) {
-        	String menuChoice = (String)input.readObject();
-        	switch(menuChoice) {
-	        	case "addcontact":
-	        		if(!checkContact())
-	        		{
-	        			XMLUser.addContactToUserXML(userToAdd.getId(), contactUsername);
-	        			loginInit();
-	        			sendContactList();
-	        		}
-	        		break;
-	        	case "chatroom":
-	        		System.out.println("test Chatroom");
-	        		break;
+	        	menu=true;
+	        	while(menu) {
+	        	String menuChoice = (String)input.readObject();
+	        	switch(menuChoice) {
+		        	case "addcontact":
+		        		if(!checkContact())
+		        		{
+		        			XMLUser.addContactToUserXML(userToAdd.getId(), contactUsername);
+		        			loginInit();
+		        			sendContactList();
+		        		}
+		        		break;
+		        	case "chatroom":
+		        		menu=false;
+		        		break;
+		        	}
 	        	}
-        	}
         	
-			//create the streams that will handle the objects coming through the sockets
-			/*ArrayList<String> messageContent = XMLLog.readXMLLog("MessageContent");
-			ArrayList<String> messageUsername = XMLLog.readXMLLog("UserName");
-			String wholeText = "";
-			for(int i=0;i<messageContent.size()-1;i++) {
-				wholeText += messageUsername.get(i) + ": " + messageContent.get(i) + "\n";
-			}
-			wholeText += messageUsername.get(messageUsername.size()-1) + ": " + messageContent.get(messageContent.size()-1);
-						
-			output = new ObjectOutputStream(socket.getOutputStream());
-			output.writeObject((String) wholeText);
-			while(true) {
-				input = new ObjectInputStream(socket.getInputStream());
-				String helo = (String) input.readObject();
-				System.out.println("The server received: " + helo);
-				XMLLog.addToXML(new Messages("user", helo));
-			}*/
+	        	//partie chatroom
+				ArrayList<String> messageContent = XMLLog.readXMLLog("MessageContent");
+				ArrayList<String> messageUsername = XMLLog.readXMLLog("UserName");
+				String wholeText = "";
+				for(int i=0;i<messageContent.size()-1;i++) {
+					wholeText += messageUsername.get(i) + ": " + messageContent.get(i) + "\n";
+				}
+				wholeText += messageUsername.get(messageUsername.size()-1) + ": " + messageContent.get(messageContent.size()-1);
+							
+				output = new ObjectOutputStream(socket.getOutputStream());
+				output.writeObject((String) wholeText);
+				chatroom=true;
+				while(chatroom){
+					String helo = (String) input.readObject();
+					if(helo.compareTo("/quit")==0) {
+						chatroom=false;
+					}else {
+						XMLLog.addToXML(new Messages("user", helo));
+					}
+				}
+        	}
         } catch (IOException ex) {
             System.out.println("Server exception: " + ex.getMessage());
             ex.printStackTrace();

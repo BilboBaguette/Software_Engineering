@@ -123,7 +123,7 @@ public class MenuGUI {
 		contactsOrGroups.setModel(model1);
 		contactsAndGroups.addActionListener(new ActionListeners(contactsAndGroups, contactsOrGroups, currentUser, c1));
 		contactsAndGroups.setActionCommand("contactsAndGroups");
-		contactsOrGroups.addActionListener(new ActionListeners(contactsOrGroups, c1));
+		contactsOrGroups.addActionListener(new ActionListeners(frame, currentUser, contactsOrGroups, c1));
 		contactsOrGroups.setActionCommand("contactsOrGroups");
 		addNewContactbtn.addActionListener(new ActionListeners(newContact, currentUser, c1, contactsOrGroups));
 		addNewContactbtn.setActionCommand("add");
