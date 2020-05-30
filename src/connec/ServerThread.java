@@ -15,9 +15,9 @@ import loginFeat.XMLUser;
  * Class name : ServerThread 
  * This thread is responsible to handle client connection From the server side.
  * 
- * Version : 1.0
+ * Version : 2.0
  * 
- * Date : 27/05/2020
+ * Date : 30/05/2020
  */
 
 public class ServerThread extends Thread {
@@ -26,30 +26,31 @@ public class ServerThread extends Thread {
 	 * This variable countains the server port 
 	 *
 	 * Arraylist used to store account names
-	 * @see Logger()
 	 * @see match()
-	 * @see findID()
+	 * @see loginInit()
 	 */
 	public ArrayList<String> users = new ArrayList<String>();
 	/**
 	 * Arraylist used to store passwords
-	 * @see Logger()
 	 * @see match()
-	 * @see findID()
+	 * @see loginInit()
 	 */
 	public ArrayList<String> passwords = new ArrayList<String>();
 	/**
 	 * Arraylist used to store client IDs as Strings
-	 * @see Logger()
+	 * @see loginInit()
 	 */
 	public ArrayList<String> IdUserString = new ArrayList<String>();
 	/**
 	 * Arraylist used to store client IDs as integers
-	 * @see Logger()
-	 * @see findID()
+	 * @see loginInit()
 	 */
 	public ArrayList<Integer> IdUser = new ArrayList<Integer>();
 
+	/**
+	 * Arraylist used to store lists of contacts
+	 * 
+	 */
 	public ArrayList<ArrayList<String>> contactList = new ArrayList<ArrayList<String>>();
 	
     private Socket socket;
@@ -62,18 +63,19 @@ public class ServerThread extends Thread {
 	 */
 	private ObjectOutputStream output;
  
+
+	private User userToAdd = new User("name", "password", 0);
+	private boolean accountExists=false;
+	String contactUsername;
+	
 	/**
 	 * This is the constructor of the class
 	 * 
 	 * @param socket Is the socket of the server 
 	 * 
-	 * @author Nils Chol; Jean-Louis Cheng
+	 * @author Nils Chol; Jean-Louis Cheng; Jason Khaou
 	 *
 	 */
-	private User userToAdd = new User("name", "password", 0);
-	private boolean accountExists=false;
-	String contactUsername;
-	
     public ServerThread(Socket socket) {
         this.socket = socket;
     }
@@ -82,7 +84,6 @@ public class ServerThread extends Thread {
 	 * This function will run the client connection and executes the task leading to the exchange with the server
 	 * 
 	 * @see java Class Thread; java Class Socket; java Class ObjectInputStream; java Class ObjectOutputStream
-	 * @author Nils Chol; Jean-Louis Cheng
 	 *
 	 */
     public void run() {
@@ -162,6 +163,13 @@ public class ServerThread extends Thread {
         }
     }
     
+    /**
+	 * Method that checks will receive the info about which button the user has clicked on
+	 * 
+	 * @see SimpleClient()
+	 * 
+	 * @return String
+	 */
     private String clickState()
     {
     	String state = "";
@@ -182,6 +190,9 @@ public class ServerThread extends Thread {
     	return state;
     }
     
+    /**
+	 * Method that updates every ArrayList of the class so it is up to date
+	 */
     private void loginInit() 
     {
     	try {
@@ -198,6 +209,12 @@ public class ServerThread extends Thread {
 		}
     }
     
+    /**
+	 * Method that checks if the username and password exists in the database (XML file) and send the answer to the user
+	 * 
+	 * @see SimpleClient()
+	 * @see loginCheck()
+	 */
     private void loginCheck()
     {
     	 try {
@@ -230,6 +247,12 @@ public class ServerThread extends Thread {
  		}
     }
     
+    /**
+	 * Method that checks if the account already exists in the database if so then send back a negative response
+	 * 
+	 * @see SimpleClient()
+	 * @see usrCheck()
+	 */
     private void registerCheck()
     {
     	loginInit();
@@ -267,6 +290,12 @@ public class ServerThread extends Thread {
          } 
     }
     
+    /**
+	 * Method that creates and send a valid ID for the newly created user
+	 * 
+	 * @see SimpleClient()
+	 * @createId()
+	 */
     private void idCheck()
     {
     	try {
@@ -286,18 +315,23 @@ public class ServerThread extends Thread {
  		} 
     }
     
+    /**
+	 * Method that checks if a contact is already registered in a contact list.
+	 * 
+	 * @see SimpleClient()
+	 */
     private boolean checkContact()
     {
     	try {
-    		contactUsername = (String)input.readObject();
+    		contactUsername = (String)input.readObject(); // getting the username we want to add
         	for(int i = 0; i < users.size(); i++)
         	{
-        		String node = users.get(i);
+        		String node = users.get(i); //get the current User
         		if(userToAdd.getUsername().equals(node))
         		{
-        			for(int j = 0; j < contactList.size(); j++)
+        			for(int j = 0; j < contactList.size(); j++) //Going through his contact list
         			{
-        				if(contactUsername.equals(contactList.get(i).get(j)))
+        				if(contactUsername.equals(contactList.get(i).get(j))) //If exists then return true
         				{
         					return true;
         				}
@@ -320,8 +354,6 @@ public class ServerThread extends Thread {
 	 * 
 	 * @param name
 	 * @param password
-	 * @param accounts
-	 * @param passwords
 	 * @return boolean
 	 */
 	public boolean match(String name, String password) {

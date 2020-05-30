@@ -43,7 +43,7 @@ public class SimpleClient {
 	 * 
 	 * @param ip is the Ip address where the server is located 
 	 * 
-	 * @author Nils Chol; Jean-Louis Cheng
+	 * @author Nils Chol; Jean-Louis Cheng; Jason Khaou
 	 *
 	 */
 	public void connect(String ip)
@@ -68,16 +68,27 @@ public class SimpleClient {
 		}
 	}
 	
+	/**
+	 * Method that asks validation from the server for the Username if it already exists or not 
+	 * 
+	 * @see RegisterActionListener()
+	 * @see ServerThread()
+	 * 
+	 * @param usrname
+	 * @param password 
+	 * 
+	 * @return boolean
+	 */
 	public boolean usrCheck(String usrname, String password)
 	{
 		boolean usr = false;
         try {
         	
-        	output.writeObject("register");
+        	output.writeObject("register"); //Sending data
             output.writeObject((String)usrname);
             output.writeObject((String)password);
             input = new ObjectInputStream(socket.getInputStream());
-            usr = (boolean)input.readObject();
+            usr = (boolean)input.readObject(); //Waiting for an answer
         } catch (IOException ex) {
             System.out.println("Server exception: " + ex.getMessage());
             ex.printStackTrace();
@@ -89,12 +100,20 @@ public class SimpleClient {
         return usr;
 	}
 	
+	/**
+	 * Method that asks the server to generate an unique ID for the new account
+	 * 
+	 * @see RegisterActionListener() 
+	 * @see ServerThread()
+	 * 
+	 * @return int
+	 */
 	public int createId()
 	{
 		int id= 0;
         try  {
 			id = (int) input.readObject();	//deserialize and read the Student object from the stream
-			connectedAccount = (User) input.readObject();
+			connectedAccount = (User) input.readObject(); //Waiting for an answer
 	    } catch  (UnknownHostException uhe) {
 			uhe.printStackTrace();
 		}
@@ -116,6 +135,18 @@ public class SimpleClient {
         return id;
 	}
 	
+	/**
+	 * Method that asks the server to check if the username and password exists in the database (XML file)
+	 * 
+	 * @see LogActionListener() 
+	 * @see ServerThread()
+	 * 
+	 * @param ip
+	 * @param usrname
+	 * @param psword
+	 * 
+	 * @return boolean
+	 */
 	public boolean loginCheck(String ip, String usrname, String psword) 
 	{
 		boolean check = false;
@@ -149,6 +180,13 @@ public class SimpleClient {
         return check;
 	}
 	
+	/**
+	 * Method that asks for the conversations logs from the server
+	 * 
+	 * @see Chatroom() 
+	 * 
+	 * @return String
+	 */
 	public String getLogs(String ip) {
 		int port = 6666;
 		String logs ="";
