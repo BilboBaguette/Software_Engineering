@@ -246,32 +246,37 @@ public class XMLUser {
 	 * @return  ArrayList<ArrayList<String>>
 	 */
 	public static ArrayList<ArrayList<String>> readContactXMLUser() throws Exception
-	{
-		File xmlFile = new File("./User.xml");
-		ArrayList<ArrayList<String>> toReturn = new ArrayList<ArrayList<String>>();
-		
-		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();  //Creation of elements to include in the XML file
-		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-		Document document = documentBuilder.parse(xmlFile);
-		
-		NodeList list = document.getElementsByTagName("User");
-		
-		for(int i = 0; i < list.getLength(); i++) //Going through the list of users
-		{
-			Node node = list.item(i);
-			
-			if(node.getNodeType() == Node.ELEMENT_NODE)
-			{
-				Element element = (Element) node;
-				NodeList subUserList = element.getChildNodes();
-				ArrayList<String> contactsList = new ArrayList<String>();
-				for (int j = 0; j < subUserList.getLength(); j++) { //Add all the contacts of an user to a ArrayList
-		            Node subElement = subUserList.item(j);
-		            contactsList.add(subElement.getTextContent());	                
-		        }
-				toReturn.add(contactsList); //Add the previously created list to another ArrayList.
-			}
-		}
-		return toReturn;
-	}
+    {
+        File xmlFile = new File("./User.xml");
+        ArrayList<ArrayList<String>> toReturn = new ArrayList<ArrayList<String>>();
+
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();  //Creation of elements to include in the XML file
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document document = documentBuilder.parse(xmlFile);
+
+        Node contacts = document.getFirstChild();
+        NodeList userList = contacts.getChildNodes();
+
+        for (int i = 0; i < userList.getLength(); i++) //Going through the list of user
+        {
+            Node element =  userList.item(i);
+                NodeList subUserList = element.getChildNodes();
+                for (int j = 0; j < subUserList.getLength(); j++) //Looking for the sub Node "Contacts"
+                {
+                    Node subElement = subUserList.item(j);
+                    if ("Contacts".equals(subElement.getNodeName())) //If found then go through the list of contact
+                    {
+                        NodeList subSubUserList = element.getChildNodes();
+                        ArrayList<String> contactsList = new ArrayList<String>();
+                        for (int n = 0; n < subSubUserList.getLength(); n++) 
+                        {
+                            Node subSubElement = subSubUserList.item(n);
+                            contactsList.add(subSubElement.getTextContent());
+                        }
+                        toReturn.add(contactsList);
+                    }
+                }
+            }
+        return toReturn;
+        }
 }
