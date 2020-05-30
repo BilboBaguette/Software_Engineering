@@ -1,5 +1,6 @@
 package loginFeat;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -11,7 +12,7 @@ import java.util.ArrayList;
  * @see RegisterActionListener
  *
  */
-public class User {
+public class User implements Serializable {
 	
 	/**
 	 * Username of the user

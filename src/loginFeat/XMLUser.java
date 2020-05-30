@@ -24,25 +24,26 @@ import org.w3c.dom.NodeList;
  *
  * @see logger
  *
- * @author Jean-Louis CHENG
- * @author Nils CHOL
- * @author Aurélien ANDRIEUX
- *
+ * @author Roman DIDELET
+ * @author Jason KHAOU
  */
 
 public class XMLUser {
-		
-	public static void createUserXML() throws Exception
+	
+	/**
+	 * Method that creates the XML file
+	 */
+	public static void createUserXML() throws Exception 
 	{
-		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance(); //Creation of elements to include in the XML file
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		
 		Document document = documentBuilder.newDocument();
 		
-		Element element = document.createElement("Accounts");
+		Element element = document.createElement("Accounts"); // Creating the "root" node
 		document.appendChild(element);
 		
-		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+		TransformerFactory transformerFactory = TransformerFactory.newInstance(); // Creation of the file
 		Transformer transformer = transformerFactory.newTransformer();
 		DOMSource source = new DOMSource(document);
 		
@@ -51,107 +52,137 @@ public class XMLUser {
 		transformer.transform(source, streamResult);
 	}
 	
-	public static void addToXML(User UserToAdd) throws Exception
+	/**
+	 * Method that adds an User to the XML file
+	 * 
+	 * @param userToAdd
+	 */
+	public static void addToXML(User userToAdd) throws Exception 
 	{
 		File xmlFile = new File("./User.xml");
 		
-		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance(); //Creation of elements to include in the XML file
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		Document document = documentBuilder.parse(xmlFile);
 		
-		Element element = document.createElement("User");
-		
+		Element element = document.createElement("User"); //Sub Node of the root "account"
 		Element root = document.getDocumentElement();
         root.appendChild(element);
 		
-		Attr attr = document.createAttribute("id");
-        attr.setValue(Integer.toString(UserToAdd.getId()));
+		Attr attr = document.createAttribute("id"); //Giving an ID to the newly added User as an attribute
+        attr.setValue(Integer.toString(userToAdd.getId()));
         element.setAttributeNode(attr);
         
-        Element userName = document.createElement("UserName");
-    	userName.appendChild(document.createTextNode(UserToAdd.getUsername()));
+        Element userName = document.createElement("UserName"); //Sub Node of the User Node containing the username
+    	userName.appendChild(document.createTextNode(userToAdd.getUsername()));
     	element.appendChild(userName);
     	
-    	Element password = document.createElement("Password");
-    	password.appendChild(document.createTextNode(UserToAdd.getPassword()));
+    	Element password = document.createElement("Password"); //Sub Node of the User Node containing the password
+    	password.appendChild(document.createTextNode(userToAdd.getPassword()));
     	element.appendChild(password);
     		
-    	Element contacts = document.createElement("Contacts");
+    	Element contacts = document.createElement("Contacts"); //Sub Node of the User Node which will contain the contact list
     	element.appendChild(contacts);
 
-        TransformerFactory factory = TransformerFactory.newInstance();
+        TransformerFactory factory = TransformerFactory.newInstance(); //Rebuilding the XML file and replace the old one
         Transformer transformer = factory.newTransformer();
         DOMSource domSource = new DOMSource(document);
         StreamResult streamResult = new StreamResult(new File("./User.xml"));
         transformer.transform(domSource, streamResult);
 	}
 	
-	public static void addContactToUserXML(Integer idUser, Integer idToAdd) throws Exception
+	/**
+	 * Method that adds contact to an user's contact list
+	 * 
+	 * @param idUser
+	 * @param idToAdd
+	 */
+	public static void addContactToUserXML(Integer idUser, String usernameToAdd) throws Exception 
 	{
 		File xmlFile = new File("./User.xml");
 		
-		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance(); //Creation of elements to include in the XML file
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		Document document = documentBuilder.parse(xmlFile);
 		
 		Node contacts = document.getFirstChild();
 		NodeList userList = contacts.getChildNodes();
 		
-		for (int i = 0; i < userList.getLength(); i++) 
+		for (int i = 0; i < userList.getLength(); i++) //Going through the list of user
 		{
 			Node element =  userList.item(i);
 			
 			String attr = element.getAttributes().getNamedItem("id").getNodeValue();
-			if(Integer.toString(idUser).equals(attr))
+			if(Integer.toString(idUser).equals(attr)) //If it is the user we are looking for
 			{
 				NodeList subUserList = element.getChildNodes();
-				for (int j = 0; j < subUserList.getLength(); j++) {
+				for (int j = 0; j < subUserList.getLength(); j++) { //Looking for the sub Node "Contacts"
 					
 	                Node subElement = subUserList.item(j);
-	                if ("Contacts".equals(subElement.getNodeName())) {
-	                	Element contact = document.createElement("Contact");
-	                	contact.appendChild(document.createTextNode(Integer.toString(idToAdd)));
-	                	((Node) subUserList).appendChild(contact);
+	                if ("Contacts".equals(subElement.getNodeName())) { //If found then add an ID to the contact list
+	                	
+	                	NodeList subSubUserList = element.getChildNodes();
+	                	boolean check = false;
+	                	for (int n = 0; n < subSubUserList.getLength(); n++) 
+	    				{
+	    	                Node subSubElement = subSubUserList.item(n);  				
+	    	    	        if (usernameToAdd.equals(subSubElement.getTextContent())) //If we find the ID then we delete it.
+	    	    	        {
+	    	    	        	check = true;
+	    	    	        }
+	    	            }
+	                	if(!check)
+	                	{
+	                		Element contact = document.createElement("Contact");
+	                		contact.appendChild(document.createTextNode(usernameToAdd));
+	                		((Node) subUserList).appendChild(contact);
+	                	}
 	                }
 	            }
 			}
 		}
-		TransformerFactory factory = TransformerFactory.newInstance();
+		TransformerFactory factory = TransformerFactory.newInstance(); //Rebuilding the XML file and replace the old one
         Transformer transformer = factory.newTransformer();
         DOMSource domSource = new DOMSource(document);
         StreamResult streamResult = new StreamResult(new File("./User.xml"));
         transformer.transform(domSource, streamResult);	 
 	}
-	
-	public static void removeContactFromUserXML(Integer idUser, Integer idToRemove) throws Exception //Doesn't Work
+
+	/**
+	 * Method that removes contact from an user's contact list
+	 * 
+	 * @param idUser
+	 * @param idToRemove
+	 */
+	public static void removeContactFromUserXML(Integer idUser, String usernameToRemove) throws Exception 
 	{
 		File xmlFile = new File("./User.xml");
 		
-		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance(); //Creation of elements to include in the XML file
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		Document document = documentBuilder.parse(xmlFile);
 		
 		Node contacts = document.getFirstChild();
 		NodeList userList = contacts.getChildNodes();
 		
-		for (int i = 0; i < userList.getLength(); i++) 
+		for (int i = 0; i < userList.getLength(); i++) //Going through the list of user
 		{
 			Node element =  userList.item(i);
 			
 			String attr = element.getAttributes().getNamedItem("id").getNodeValue();
-			if(Integer.toString(idUser).equals(attr))
+			if(Integer.toString(idUser).equals(attr)) //If it is the user we are looking for
 			{
 				NodeList subUserList = element.getChildNodes();
-				for (int j = 0; j < subUserList.getLength(); j++) 
+				for (int j = 0; j < subUserList.getLength(); j++) //Looking for the sub Node "Contacts"
 				{
 	                Node subElement = subUserList.item(j);
-	                if ("Contacts".equals(subElement.getNodeName()))
+	                if ("Contacts".equals(subElement.getNodeName())) //If found then go through the list of contact
 	                {
 	                	NodeList subSubUserList = element.getChildNodes();
 	    				for (int n = 0; n < subSubUserList.getLength(); n++) 
 	    				{
 	    	                Node subSubElement = subSubUserList.item(n);  				
-	    	    	        if (Integer.toString(idToRemove).equals(subSubElement.getTextContent())) 
+	    	    	        if (usernameToRemove.equals(subSubElement.getTextContent())) //If we find the ID then we delete it.
 	    	    	        {
 	    	    	        	((Node) subUserList).removeChild(subSubElement);
 	    	    	        }
@@ -160,32 +191,39 @@ public class XMLUser {
 	            }
 			}
 		}
-		TransformerFactory factory = TransformerFactory.newInstance();
+		TransformerFactory factory = TransformerFactory.newInstance();  //Rebuilding the XML file and replace the old one
         Transformer transformer = factory.newTransformer();
         DOMSource domSource = new DOMSource(document);
         StreamResult streamResult = new StreamResult(new File("./User.xml"));
         transformer.transform(domSource, streamResult);	 
 	}
 	
-	public static ArrayList<String> readXMLUser(String choice) throws Exception //Need changes
+	/**
+	 * Method that gives a list of either username, password or id
+	 * 
+	 * @param choice
+	 *
+	 * @return ArrayList<String>
+	 */
+	public static ArrayList<String> readXMLUser(String choice) throws Exception 
 	{
 		File xmlFile = new File("./User.xml");
 		ArrayList<String> toReturn = new ArrayList<String>();
 		
-		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance(); //Creation of elements to include in the XML file
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		Document document = documentBuilder.parse(xmlFile);
 		
 		NodeList list = document.getElementsByTagName("User");
 		
-		for(int i = 0; i < list.getLength(); i++)
+		for(int i = 0; i < list.getLength(); i++) //Going through the list of users
 		{
 			Node node = list.item(i);
 			
 			if(node.getNodeType() == Node.ELEMENT_NODE)
 			{
-				Element element = (Element) node;
-				switch(choice) {
+				Element element = (Element) node; 
+				switch(choice) { //Either add username, password or id to the ArrayList depending on the choice parameter
 				case "UserName": 
 					toReturn.add(element.getElementsByTagName("UserName").item(0).getTextContent());
 					break;
@@ -201,18 +239,24 @@ public class XMLUser {
 		return toReturn;
 	}
 	
+	
+	/**
+	 * Method that gives a list of lists of contacts
+	 *
+	 * @return  ArrayList<ArrayList<String>>
+	 */
 	public static ArrayList<ArrayList<String>> readContactXMLUser() throws Exception
 	{
 		File xmlFile = new File("./User.xml");
 		ArrayList<ArrayList<String>> toReturn = new ArrayList<ArrayList<String>>();
 		
-		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();  //Creation of elements to include in the XML file
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		Document document = documentBuilder.parse(xmlFile);
 		
 		NodeList list = document.getElementsByTagName("User");
 		
-		for(int i = 0; i < list.getLength(); i++)
+		for(int i = 0; i < list.getLength(); i++) //Going through the list of users
 		{
 			Node node = list.item(i);
 			
@@ -221,11 +265,11 @@ public class XMLUser {
 				Element element = (Element) node;
 				NodeList subUserList = element.getChildNodes();
 				ArrayList<String> contactsList = new ArrayList<String>();
-				for (int j = 0; j < subUserList.getLength(); j++) {
+				for (int j = 0; j < subUserList.getLength(); j++) { //Add all the contacts of an user to a ArrayList
 		            Node subElement = subUserList.item(j);
 		            contactsList.add(subElement.getTextContent());	                
 		        }
-				toReturn.add(contactsList);
+				toReturn.add(contactsList); //Add the previously created list to another ArrayList.
 			}
 		}
 		return toReturn;

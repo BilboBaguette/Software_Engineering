@@ -79,7 +79,7 @@ public class MenuGUI {
 		addNewContact = new JPanel();
 		JPanel newContactbtnPane = new JPanel();
 		JPanel newGroupbtnPane = new JPanel();
-		JLabel currentUserLabel = new JLabel("Current User: "+currentUser.getUsername()+"ID: "+currentUser.getId());
+		JLabel currentUserLabel = new JLabel("Current User: "+currentUser.getUsername()+" ID: "+currentUser.getId());
 		addNewContactbtn = new JButton("Add");
 		newGroupbtn = new JButton("Create Group");
 		newContact = new JTextField("Account Name");

@@ -2,8 +2,13 @@ package loginFeat;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JOptionPane;
+
+import javax.swing.JFrame;
 import javax.swing.JTextField;
+
+import Menu.MenuGUI;
+import connec.SimpleClient;
+
 /**
  * Class that handles the actionevent for the "register" button of the logger and oversees acount creation
  * @author roman
@@ -25,9 +30,16 @@ public class RegisterActionListener implements ActionListener{
 	 */
 	private JTextField password;
 	
-	public RegisterActionListener(JTextField username, JTextField password) {
+	private JFrame frame;
+	
+	private SimpleClient c1;
+	
+	
+	public RegisterActionListener(JTextField username, JTextField password,JFrame frame, SimpleClient c1) {
 		this.username=username;
 		this.password=password;
+		this.c1=c1;
+		this.frame = frame;
 	}
 
 	@Override
@@ -36,37 +48,23 @@ public class RegisterActionListener implements ActionListener{
 		String pwd = password.getText();
 		boolean existingAccount=false;
 		
-		int id= (int)(Math.random() * 999999); //generate a random account id
-
-		for(int i=0; i<LoggerGUI.getData().IdUser.size();i++) { //check that it is unique
-			if(id==LoggerGUI.getData().IdUser.get(i)) {
-				i=0;
-				id= (int)(Math.random() * 999999);
-			}
-		}
 		try{
-			for(int i=0; i<LoggerGUI.getData().users.size(); i++){ //check that the account name is unique
-				if(usr.compareTo(LoggerGUI.getData().users.get(i)) == 0){
-					existingAccount=true;
-					JOptionPane.showMessageDialog(null,"Account already exist", //if it isn't display an error message
-							  "Warning", JOptionPane.WARNING_MESSAGE);
-				}
-			}
+			existingAccount =  c1.usrCheck(usr,pwd);
+
 			if(!existingAccount){ //if the account doesn't already exist, create it
-				User user = new User(usr, pwd, id);
-				XMLUser.addToXML(user); //update the logger XML
-				XMLUser.addContactToUserXML(id, 52); 
-				XMLUser.addContactToUserXML(id, 53);
-				XMLUser.addContactToUserXML(id, 55);
-				XMLUser.removeContactFromUserXML(id, 52);//Try add test contact
-				LoggerGUI.updateLogger();
+				int id = c1.createId();
+				//System.out.println(id);
+				User test=c1.connectedAccount;
+				System.out.println("Username =" + test.getUsername() + "\nPassword = " + test.getPassword() + "\nID = " + test.getId());
+				frame.setVisible(false); //remove the logger
+				frame.dispose();
+				new MenuGUI(test);
 				LoggerGUI.idConnectedUser = id;
 			}
 		}catch(Exception err){
 			err.printStackTrace();
-		}
+		} 
 		username.setText("Account Name");
 		password.setText("Password");
 	}
-
 }
