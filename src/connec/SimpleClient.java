@@ -126,17 +126,14 @@ public class SimpleClient {
             String password = psword;
             
             output.writeObject(username); //serialize and write the String to the stream
-			System.out.println("output sent to the server: " + username);	
 			
 			output.writeObject(password); //serialize and write the String to the stream
-			System.out.println("output sent to the server: " + password);
 			
 			input = new ObjectInputStream(socket.getInputStream());		
 
 			check = (boolean) input.readObject();	//deserialize and read the Student object from the stream
 			
 			connectedAccount = (User) input.readObject();
-			System.out.println(check);
 	    } catch  (UnknownHostException uhe) {
 			uhe.printStackTrace();
 		}
@@ -172,5 +169,47 @@ public class SimpleClient {
         
         return logs;
         
+	}
+	
+	public void addUser(String userToAdd) {
+        try  {
+			//create the socket; it is defined by an remote IP address (the address of the server) and a port number
+            output.writeObject((String)"addcontact"); //serialize and write the String to the stream
+            output.writeObject((String) userToAdd);
+            
+		} catch  (UnknownHostException uhe) {
+			uhe.printStackTrace();
+		}
+		catch  (IOException ioe) {
+			ioe.printStackTrace();
+		}
+	}
+	
+	public String[] getContactList() {
+		try {
+			int arraySize = (int) input.readObject();
+			String tester1[] = new String[arraySize];
+			for(int i=0; i<arraySize;i++) {
+				tester1[i] = (String) input.readObject();
+			}
+			return tester1;
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return new String[1];
+	}
+	
+	public void startChatroom() {
+		try {
+			output.writeObject((String) "chatroom");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

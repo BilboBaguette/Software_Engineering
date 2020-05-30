@@ -5,6 +5,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -116,11 +117,15 @@ public class MenuGUI {
 		//Adding MouseListener and ActionListeners
 		MouseListener newContactFieldMouseListener = new loginFeat.FieldMouseListener(newContact);
 		newContact.addMouseListener(newContactFieldMouseListener);
+		
+		String tester2[] = c1.getContactList();
+		DefaultComboBoxModel<String> model1 = new DefaultComboBoxModel<String>(tester2);
+		contactsOrGroups.setModel(model1);
 		contactsAndGroups.addActionListener(new ActionListeners(contactsAndGroups, contactsOrGroups, currentUser, c1));
 		contactsAndGroups.setActionCommand("contactsAndGroups");
 		contactsOrGroups.addActionListener(new ActionListeners(contactsOrGroups, c1));
 		contactsOrGroups.setActionCommand("contactsOrGroups");
-		addNewContactbtn.addActionListener(new ActionListeners(newContact, currentUser, c1));
+		addNewContactbtn.addActionListener(new ActionListeners(newContact, currentUser, c1, contactsOrGroups));
 		addNewContactbtn.setActionCommand("add");
 		//Display the frame
 		frame.pack();

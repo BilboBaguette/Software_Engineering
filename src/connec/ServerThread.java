@@ -90,40 +90,45 @@ public class ServerThread extends Thread {
         try {
     		input = new ObjectInputStream(socket.getInputStream());
  			output = new ObjectOutputStream(socket.getOutputStream());
-        	System.out.println("Here");
         	choice = clickState();
         	loginInit();
         	switch(choice) {
         	case "register":
-        		System.out.println("Here2");
         		registerCheck();
-        		System.out.println("Here3");
         		idCheck();
-        		System.out.println("Here4");
         		if(!accountExists) {
         			XMLUser.addToXML(userToAdd);
         		}
         		break;
         		
         	case "login":
-        		System.out.println("Here5");
         		loginCheck();
-        		System.out.println("Here6");
         		break;
         		
-        	case "addcontact":
-        		System.out.println("Here7");
-        		if(!checkContact())
-        		{
-        			System.out.println("Here9");
-        			XMLUser.addContactToUserXML(userToAdd.getId(), contactUsername);
-        			System.out.println("Here10");
-        		}
-        		System.out.println("Here8");
-        		break;
         	}
+        	
+        	//envoyer infos combobox contacts pour menu
+        	sendContactList();
+        	
+        	while(true) {
+        	String menuChoice = (String)input.readObject();
+        	switch(menuChoice) {
+	        	case "addcontact":
+	        		if(!checkContact())
+	        		{
+	        			XMLUser.addContactToUserXML(userToAdd.getId(), contactUsername);
+	        			loginInit();
+	        			sendContactList();
+	        		}
+	        		break;
+	        	case "chatroom":
+	        		System.out.println("test Chatroom");
+	        		break;
+	        	}
+        	}
+        	
 			//create the streams that will handle the objects coming through the sockets
-			ArrayList<String> messageContent = XMLLog.readXMLLog("MessageContent");
+			/*ArrayList<String> messageContent = XMLLog.readXMLLog("MessageContent");
 			ArrayList<String> messageUsername = XMLLog.readXMLLog("UserName");
 			String wholeText = "";
 			for(int i=0;i<messageContent.size()-1;i++) {
@@ -133,13 +138,12 @@ public class ServerThread extends Thread {
 						
 			output = new ObjectOutputStream(socket.getOutputStream());
 			output.writeObject((String) wholeText);
-			
 			while(true) {
 				input = new ObjectInputStream(socket.getInputStream());
 				String helo = (String) input.readObject();
 				System.out.println("The server received: " + helo);
 				XMLLog.addToXML(new Messages("user", helo));
-			}
+			}*/
         } catch (IOException ex) {
             System.out.println("Server exception: " + ex.getMessage());
             ex.printStackTrace();
@@ -166,10 +170,7 @@ public class ServerThread extends Thread {
     {
     	String state = "";
     	try {
-    		System.out.println("BO");
-    		System.out.println("BO2");
   			state = (String)input.readObject();  //read the object received through the stream and deserialize it
-  			System.out.println(state);
          } catch (IOException ex) {
              System.out.println("Server exception: " + ex.getMessage());
              ex.printStackTrace();
@@ -178,7 +179,6 @@ public class ServerThread extends Thread {
              System.out.println("Server exception: " + ex.getMessage());
              ex.printStackTrace();
          } 
-    	System.out.println(state);
     	return state;
     }
     
@@ -198,21 +198,47 @@ public class ServerThread extends Thread {
 		}
     }
     
+    private void sendContactList() {
+    	for(int i = 0; i < users.size(); i++)
+    	{
+    		String node = users.get(i);
+    		if(userToAdd.getUsername().compareTo(node)==0)
+    		{
+    			try {
+    				//System.out.println(contactList.get(i));
+					output.writeObject((int) contactList.get(i).size());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+    			for(int j = 0; j < contactList.get(i).size(); j++)
+    			{
+    				try {
+						output.writeObject((String) contactList.get(i).get(j));
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+    			}
+    		}
+		}	
+    }
+    
     private void loginCheck()
     {
     	 try {
   			String username = (String)input.readObject();  //read the object received through the stream and deserialize it
- 			System.out.println("server received input:" + username);
  			String password = (String)input.readObject();  //read the object received through the stream and deserialize it
- 			System.out.println("server received input:" + password);
  			
  			loginInit();
  			
  			boolean matchCheck = match(username, password);
  			output.writeObject(matchCheck);		//serialize and write the Student object to the stream
  			int id = Logger.findID(username, password, users, passwords, IdUser);
+ 			userToAdd.setId(id);
+ 			userToAdd.setPassword(password);
+ 			userToAdd.setUsername(username);
  			output.writeObject((User) new User(username, password, id));
- 			System.out.println(matchCheck);
          } catch (IOException ex) {
              System.out.println("Server exception: " + ex.getMessage());
              ex.printStackTrace();
@@ -220,14 +246,7 @@ public class ServerThread extends Thread {
  		} catch (ClassNotFoundException ex) {
              System.out.println("Server exception: " + ex.getMessage());
              ex.printStackTrace();
-         } finally {
- 			try {
- 				output.close();
- 				input.close();
- 			} catch (IOException ioe) {
- 				ioe.printStackTrace();
- 			}
- 		}
+         }
     }
     
     private void registerCheck()
@@ -235,25 +254,18 @@ public class ServerThread extends Thread {
     	loginInit();
     	try {
     		boolean existingAccount = false;
- 			System.out.println("test");
  			String usr = (String)input.readObject();  //read the object received through the stream and deserialize it
- 			System.out.println("usr = " + usr);
  			String psd = (String)input.readObject();
- 			System.out.println("password = " + psd);
  			userToAdd.setUsername(usr);
  			userToAdd.setPassword(psd);
- 			System.out.println("test");
  			for(int i=0; i<users.size(); i++){ //check that the account name is unique
 				if(usr.compareTo(users.get(i)) == 0){
 					accountExists=true;
 					existingAccount=true;
-					System.out.println("ji");
 					JOptionPane.showMessageDialog(null,"Account already exist", //if it isn't display an error message
 							  "Warning", JOptionPane.WARNING_MESSAGE);
-					System.out.println("ju ");
 				}
 			}
- 			System.out.println("test2");
  			System.out.println(existingAccount);
  			output.writeObject((boolean)existingAccount);
   
@@ -293,9 +305,9 @@ public class ServerThread extends Thread {
         	for(int i = 0; i < users.size(); i++)
         	{
         		String node = users.get(i);
-        		if(userToAdd.getUsername().equals(node))
+        		if(userToAdd.getUsername().compareTo(node)==0)
         		{
-        			for(int j = 0; j < contactList.size(); j++)
+        			for(int j = 0; j < contactList.get(i).size(); j++)
         			{
         				if(contactUsername.equals(contactList.get(i).get(j)))
         				{

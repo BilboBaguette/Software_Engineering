@@ -64,10 +64,11 @@ public class ActionListeners implements ActionListener{
 	 * @param newContactName
 	 * @see MenuGUI
 	 */
-	public ActionListeners(JTextField newContactName, User user, SimpleClient c1) {
+	public ActionListeners(JTextField newContactName, User user, SimpleClient c1, JComboBox<String> contactsOrGroups) {
 		this.newContactName=newContactName;
 		this.user=user;
 		this.c1 =c1;
+		this.contactsOrGroups = contactsOrGroups;
 	}
 
 	@Override
@@ -95,14 +96,17 @@ public class ActionListeners implements ActionListener{
 		case "contactsOrGroups":
 			String selected = contactsOrGroups.getSelectedItem().toString();
 			System.out.println("Starting convo with "+selected); //TODO replace with chatroom startup
+			c1.startChatroom();
 			break;
 		case "createGroup":
 			//TODO group creation
 			break;
 		case "add":
 			String userToAdd = newContactName.getText();
-			//XMLUser.addContactToUserXML(user.getUsername(),userToAdd);
-			System.out.println("Adding contact "+userToAdd); //TODO replace with method to add contact
+			c1.addUser(userToAdd);
+			String tester2[] = c1.getContactList();
+			DefaultComboBoxModel<String> model1 = new DefaultComboBoxModel<String>(tester2);
+			contactsOrGroups.setModel(model1);
 			break;
 		}
 		

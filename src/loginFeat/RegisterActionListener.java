@@ -55,7 +55,6 @@ public class RegisterActionListener implements ActionListener{
 				int id = c1.createId();
 				//System.out.println(id);
 				User test=c1.connectedAccount;
-				System.out.println("Username =" + test.getUsername() + "\nPassword = " + test.getPassword() + "\nID = " + test.getId());
 				frame.setVisible(false); //remove the logger
 				frame.dispose();
 				new MenuGUI(test, c1);
