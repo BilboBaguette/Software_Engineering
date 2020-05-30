@@ -92,26 +92,35 @@ public class ServerThread extends Thread {
         	//partie logger
     		input = new ObjectInputStream(socket.getInputStream());
  			output = new ObjectOutputStream(socket.getOutputStream());
-        	choice = clickState();
-        	loginInit();
-        	switch(choice) {
-        	case "register":
-        		registerCheck();
-        		idCheck();
-        		if(!accountExists) {
-        			XMLUser.addToXML(userToAdd);
-        		}
-        		break;
-        		
-        	case "login":
-        		loginCheck();
-        		break;
-        		
-        	}
-        	
+ 			boolean logger=true;
+ 			while(logger) {
+	        	choice = clickState();
+	        	loginInit();
+	        	switch(choice) {
+	        	case "register":
+	        		accountExists=false;
+	        		registerCheck();
+	        		idCheck();
+	        		if(!accountExists) {
+	        			XMLUser.addToXML(userToAdd);
+	        			logger=false;
+	        		}
+	        		break;
+	        		
+	        	case "login":
+	        		accountExists=false;
+	        		loginCheck();
+	        		if(accountExists) {
+	        			logger=false;
+	        		}
+	        		break;
+	        		
+	        	}
+ 			}
         	//partie menu
         	boolean menu;
         	boolean chatroom;
+        	loginInit();
         	sendContactList();
         	while(true) {
 	        	menu=true;
@@ -218,6 +227,8 @@ public class ServerThread extends Thread {
     }
     
     private void sendContactList() {
+
+    	
     	for(int i = 0; i < users.size(); i++)
     	{
     		String node = users.get(i);
@@ -264,6 +275,7 @@ public class ServerThread extends Thread {
  			userToAdd.setPassword(password);
  			userToAdd.setUsername(username);
  			output.writeObject((User) new User(username, password, id));
+ 			accountExists = matchCheck;
          } catch (IOException ex) {
              System.out.println("Server exception: " + ex.getMessage());
              ex.printStackTrace();
@@ -297,7 +309,6 @@ public class ServerThread extends Thread {
 							  "Warning", JOptionPane.WARNING_MESSAGE);
 				}
 			}
- 			System.out.println(existingAccount);
  			output.writeObject((boolean)existingAccount);
   
          } catch (IOException ex) {

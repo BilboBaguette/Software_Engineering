@@ -53,6 +53,7 @@ public class SimpleClient {
 			socket = new Socket(ip, port);
 			//create the streams that will handle the objects coming and going through the sockets
 			output = new ObjectOutputStream(socket.getOutputStream());
+			input = new ObjectInputStream(socket.getInputStream());
 			/*while(true){
 				if(messageSent==true) {
 					output = new ObjectOutputStream(socket.getOutputStream());
@@ -87,7 +88,6 @@ public class SimpleClient {
         	output.writeObject("register"); //Sending data
             output.writeObject((String)usrname);
             output.writeObject((String)password);
-            input = new ObjectInputStream(socket.getInputStream());
             usr = (boolean)input.readObject(); //Waiting for an answer
         } catch (IOException ex) {
             System.out.println("Server exception: " + ex.getMessage());
@@ -160,8 +160,6 @@ public class SimpleClient {
 			
 			output.writeObject(password); //serialize and write the String to the stream
 			
-			input = new ObjectInputStream(socket.getInputStream());		
-
 			check = (boolean) input.readObject();	//deserialize and read the Student object from the stream
 			
 			connectedAccount = (User) input.readObject();

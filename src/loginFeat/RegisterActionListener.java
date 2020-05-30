@@ -64,9 +64,10 @@ public class RegisterActionListener implements ActionListener{
 		
 		try{
 			existingAccount =  c1.usrCheck(usr,pwd);
+			int id = c1.createId();
+
 
 			if(!existingAccount){ //if the account doesn't already exist, create it
-				int id = c1.createId();
 				//System.out.println(id);
 				User test=c1.connectedAccount;
 				frame.setVisible(false); //remove the logger
