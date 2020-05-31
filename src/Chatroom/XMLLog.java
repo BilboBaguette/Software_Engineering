@@ -80,6 +80,46 @@ public class XMLLog {
         transformer.transform(domSource, streamResult);
 	}
 	
+	public static void deleteChatRoom(ArrayList<String> members) throws ParserConfigurationException, SAXException, IOException, TransformerException
+	{
+		File xmlFile = new File("./Messages.xml");
+		
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance(); //Creation of elements to include in the XML file
+		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+		Document document = documentBuilder.parse(xmlFile);
+		
+		Node contacts = document.getFirstChild();
+		NodeList chatList = contacts.getChildNodes();
+		
+		for (int i = 0; i < chatList.getLength(); i++) 
+		{		
+			Element node = (Element) chatList.item(i);
+            ArrayList<String> attrList = listAllAttributes(node);
+            if(attrList.size() == members.size())
+            {
+                boolean check = true;
+                for(int k = 0; k < members.size(); k++)
+                {
+                    if(!members.get(k).equals(attrList.get(k))) {
+                        check = false;
+                        System.out.println("nop");
+                        k = members.size();
+                    }
+                }
+                if(check)
+                {
+                	((Node) chatList).removeChild(node);
+                	System.out.println("done");
+                }
+            }
+		}
+		TransformerFactory factory = TransformerFactory.newInstance();  //Rebuilding the XML file and replace the old one
+        Transformer transformer = factory.newTransformer();
+        DOMSource domSource = new DOMSource(document);
+        StreamResult streamResult = new StreamResult(new File("./Messages.xml"));
+        transformer.transform(domSource, streamResult);	 
+	}
+	
 	public static void addToXML(Messages messageToAdd, ArrayList<String> members) throws Exception
     {
         File xmlFile = new File("./Messages.xml");
