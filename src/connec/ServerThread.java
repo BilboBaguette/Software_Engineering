@@ -257,10 +257,11 @@ public class ServerThread extends Thread {
 					if(helo.compareTo("/quit")==0) {
 						chatroom=false;
 					}else {
-						wholeText = readLogs();
-						wholeText+= "\n" + userToAdd.getUsername() + ": " + helo;
-						output.writeObject(wholeText);
 						XMLLog.addToXML(new Messages(userToAdd.getUsername(), helo), members);
+						wholeText = readLogs();
+						//wholeText+= "\n" + userToAdd.getUsername() + ": " + helo;
+						output.writeObject(wholeText);
+						
 					}
 					
 				}
@@ -321,11 +322,9 @@ public class ServerThread extends Thread {
 		try {
 	    	Collections.sort(members);
 			ArrayList<String> messageContent = XMLLog.readXMLLog("MessageContent", members);
-			ArrayList<String> messageUsername;
-			messageUsername = XMLLog.readXMLLog("UserName", members);
-	
+			ArrayList<String> messageUsername = XMLLog.readXMLLog("UserName", members);
 			String wholeText = "";
-			if(messageUsername.size()==0) {
+			if(!XMLLog.chatRoomExist(members)) {
 				XMLLog.createChatRoom(members);
 				messageContent = XMLLog.readXMLLog("MessageContent", members);
 				messageUsername = XMLLog.readXMLLog("UserName", members);

@@ -80,6 +80,19 @@ public class XMLLog {
         transformer.transform(domSource, streamResult);
 	}
 	
+	private static boolean checkAttrMembers(ArrayList<String> members, ArrayList<String> attrList)
+	{
+		boolean check = true;
+        for(int k = 0; k < members.size(); k++)
+        {
+            if(!members.get(k).equals(attrList.get(k))) {
+                check = false;
+                k = members.size();
+            }
+        }
+        return check;
+	}
+	
 	public static void deleteChatRoom(ArrayList<String> members) throws ParserConfigurationException, SAXException, IOException, TransformerException
 	{
 		File xmlFile = new File("./Messages.xml");
@@ -97,15 +110,7 @@ public class XMLLog {
             ArrayList<String> attrList = listAllAttributes(node);
             if(attrList.size() == members.size())
             {
-                boolean check = true;
-                for(int k = 0; k < members.size(); k++)
-                {
-                    if(!members.get(k).equals(attrList.get(k))) {
-                        check = false;
-                        k = members.size();
-                    }
-                }
-                if(check)
+                if(checkAttrMembers(members, attrList))
                 {
                 	((Node) chatList).removeChild(node);
                 }
@@ -136,15 +141,7 @@ public class XMLLog {
             ArrayList<String> attrList = listAllAttributes(node);
             if(attrList.size() == members.size())
             {
-                boolean check = true;
-                for(int j = 0; j < members.size(); j++)
-                {
-                    if(!members.get(j).equals(attrList.get(j))) {
-                        check = false;
-                        j = members.size();
-                    }
-                }
-                if(check)
+                if(checkAttrMembers(members, attrList))
                 {
                     Element messages = document.createElement("Message"); //Sub Node of the User Node containing the username
                     element.appendChild(messages);
@@ -184,6 +181,32 @@ public class XMLLog {
         return attrList;
     }
 	
+	public static boolean chatRoomExist(ArrayList<String> members) throws ParserConfigurationException, SAXException, IOException
+	{
+		File xmlFile = new File("./Messages.xml");
+		boolean check = false;
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document document = documentBuilder.parse(xmlFile);
+        
+        Node chat = document.getFirstChild();
+        NodeList chatList = chat.getChildNodes();
+        for (int i = 0; i < chatList.getLength(); i++) 
+        {
+        	
+	        Element node = (Element) chatList.item(i);
+	        ArrayList<String> attrList = listAllAttributes(node);
+	        if(attrList.size() == members.size())
+	        {
+	            if(checkAttrMembers(members, attrList))
+	            {
+	            	check = true;
+	            }
+	        }
+        }
+        return check;
+	}
+	
 	public static ArrayList<String> readXMLLog(String choice, ArrayList<String> members) throws Exception
     {
         File xmlFile = new File("./Messages.xml");
@@ -196,42 +219,31 @@ public class XMLLog {
         
         Node chat = document.getFirstChild();
         NodeList chatList = chat.getChildNodes();
-        for (int i = 0; i < chatList.getLength(); i++) //Going through the list of user
+        for (int i = 0; i < chatList.getLength(); i++) 
         {
             Node element = chatList.item(i);
-                NodeList subUserList = element.getChildNodes();
-                //for (int j = 0; j < subUserList.getLength(); j++)
-                //{
-                    Element node = (Element) chatList.item(i);
-                    ArrayList<String> attrList = listAllAttributes(node);
-                    if(attrList.size() == members.size())
-                    {
-                        boolean check = true;
-                        for(int k = 0; k < members.size(); k++)
-                        {
-                            if(!members.get(k).equals(attrList.get(k))) {
-                                check = false;
-                                k = members.size();
-                            }
+            NodeList subUserList = element.getChildNodes();
+            Element node = (Element) chatList.item(i);
+            ArrayList<String> attrList = listAllAttributes(node);
+            if(attrList.size() == members.size())
+            {
+                if(checkAttrMembers(members, attrList))
+                {
+                    Element content = (Element) node;
+                    for (int n = 0; n < subUserList.getLength(); n++) 
+                    {   
+                        switch(choice) {
+                        case "UserName":
+                            toReturn.add(content.getElementsByTagName("UserName").item(n).getTextContent());
+                            break;
+                        case "MessageContent":  
+                            toReturn.add(content.getElementsByTagName("MessageContent").item(n).getTextContent());
+                            break;
                         }
-                        if(check)
-                        {
-                            Element content = (Element) node;
-                            for (int n = 0; n < subUserList.getLength(); n++) 
-                            {   
-                                switch(choice) {
-                                case "UserName":
-                                    toReturn.add(content.getElementsByTagName("UserName").item(n).getTextContent());
-                                    break;
-                                case "MessageContent":  
-                                    toReturn.add(content.getElementsByTagName("MessageContent").item(n).getTextContent());
-                                    break;
-                                }
-                            }
-                        } 
-                    //}
-                }
-            }
+                    }
+                }     
+            }    
+        }
         return toReturn;
     }
 }
