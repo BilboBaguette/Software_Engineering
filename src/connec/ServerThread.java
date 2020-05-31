@@ -512,8 +512,8 @@ public class ServerThread extends Thread {
 				if(usr.compareTo(users.get(i)) == 0){
 					accountExists=true;
 					existingAccount=true;
-					JOptionPane.showMessageDialog(null,"Account already exist", //if it isn't display an error message
-							  "Warning", JOptionPane.WARNING_MESSAGE);
+					/*JOptionPane.showMessageDialog(null,"Account already exist", //if it isn't display an error message
+							  "Warning", JOptionPane.WARNING_MESSAGE);*/
 				}
 			}
  			output.writeObject((boolean)existingAccount);

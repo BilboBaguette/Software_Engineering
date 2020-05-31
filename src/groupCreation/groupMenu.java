@@ -30,7 +30,6 @@ public class groupMenu {
 		JList<String> contactList = new JList<String>(contacts);
 		contactList.setBounds(123, 57, 444, 338);
 		contactList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		contactList.addListSelectionListener(new groupListListener());
 		scrollPane.getViewport().setBackground(Color.WHITE);
 		scrollPane.getViewport().add(contactList);
 		frame.add(contactList);

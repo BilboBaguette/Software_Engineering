@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import Menu.MenuGUI;
@@ -73,6 +74,9 @@ public class RegisterActionListener implements ActionListener{
 				frame.dispose();
 				new MenuGUI(test, c1);
 				LoggerGUI.idConnectedUser = id;
+			}else {
+				JOptionPane.showMessageDialog(null,"Account already exist", //if it isn't display an error message
+				  "Warning", JOptionPane.WARNING_MESSAGE);
 			}
 		}catch(Exception err){
 			err.printStackTrace();
