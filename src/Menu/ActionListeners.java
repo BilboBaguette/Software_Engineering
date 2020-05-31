@@ -12,7 +12,6 @@ import javax.swing.JTextField;
 import Chatroom.Chatroom;
 import connec.SimpleClient;
 import loginFeat.User;
-import loginFeat.XMLUser;
 
 /**
  * class that handles action performed by buttons and comboboxes from the menu GUI

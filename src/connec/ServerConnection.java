@@ -1,6 +1,5 @@
 package connec;
-import java.io.*;  
-import java.net.*; 
+
 
 /*
  * Class name : ServerConnection

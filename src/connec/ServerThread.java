@@ -185,7 +185,6 @@ public class ServerThread extends Thread {
 		        	case "deletecontact":
 		        		if(checkContact())
 		        		{
-		        			JOptionPane option = new JOptionPane();
 		        			int verif = JOptionPane.showConfirmDialog(new JFrame(), "Warning, deleting this contact will also delete the associated logs! Continue?", "Warning", JOptionPane.YES_NO_OPTION);
 		        			if(verif==JOptionPane.OK_OPTION) {
 			        			XMLUser.removeContactFromUserXML(userToAdd.getId(), contactUsername);

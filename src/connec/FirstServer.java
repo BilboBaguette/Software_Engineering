@@ -17,10 +17,6 @@ import java.net.*;
 
 public class FirstServer extends AbstractServer
 {
-	/**
-	 * The base ip address
-	 */
-	private String ip = "localhost";
 	
 	/**
 	 * This the variable where we put the port for connecting 

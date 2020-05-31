@@ -23,7 +23,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 
 import connec.SimpleClient;
-import loginFeat.User;
 
 
 public class Chatroom {

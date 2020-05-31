@@ -7,12 +7,11 @@ package loginFeat;
  * 
  * Date : 29/05/2020
  */
-public class testf {
+public class Launcher {
 
 	public static void main(String[] args) throws Exception {
 		
-		//XMLUser.createUserXML();
-		LoggerGUI log = new LoggerGUI();
+		new LoggerGUI();
 	}
 	
 }

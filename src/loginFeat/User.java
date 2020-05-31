@@ -19,6 +19,10 @@ import connec.SimpleClient;
 public class User implements Serializable {
 	
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * Username of the user
 	 * @see LoggerGUI
 	 * @see LogActionListener#LogActionListener(JTextField username, JTextField password, JFrame frame, SimpleClient c1)
