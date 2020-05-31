@@ -1,6 +1,6 @@
 package loginFeat;
 /**
- * Class name : testf
+ * Class name : Launcher
  * This class is the client's main
  * 
  * Version : 1.0

@@ -55,6 +55,8 @@ public class ServerThread extends Thread {
 	 */
 	public ArrayList<ArrayList<String>> contactList = new ArrayList<ArrayList<String>>();
 	
+	public ArrayList<ArrayList<ArrayList<String>>> groupMembersList = new ArrayList<ArrayList<ArrayList<String>>>();
+	
 	/**
 	 * Server socket variable
 	 */
@@ -176,38 +178,69 @@ public class ServerThread extends Thread {
 		        			}else {
 			        			loginInit();
 			        			sendContactList();
-			        			JOptionPane.showMessageDialog(null,"This user does not exist.","Warning", JOptionPane.WARNING_MESSAGE);
+			        			//JOptionPane.showMessageDialog(null,"This user does not exist.","Warning", JOptionPane.WARNING_MESSAGE);
 		        			}
 		        		}else {
 		        			loginInit();
 		        			sendContactList();
-		        			JOptionPane.showMessageDialog(null,"This account already is in the contact list.","Warning", JOptionPane.WARNING_MESSAGE);
+		        			//JOptionPane.showMessageDialog(null,"This account already is in the contact list.","Warning", JOptionPane.WARNING_MESSAGE);
 		        		}
 		        		break;
 		        	case "chatroom":
-		        		emptyMemberList();
-		        		fetchMembers();
-		        		menu=false;
+		        		String grpOrContact = (String) input.readObject();
+		        		switch(grpOrContact) {
+		        		case "Contacts":
+			        		emptyMemberList();
+			        		fetchMembers();
+			        		menu=false;
+			        		break;
+		        		case "Groups":
+		        			//JOptionPane.showMessageDialog(null,"This function has yet to be implemented.","Warning", JOptionPane.WARNING_MESSAGE);
+		        			break;
+		        		}
+
 		        		break;
 		        	case "deletecontact":
 		        		if(checkContact())
 		        		{
-		        			int verif = JOptionPane.showConfirmDialog(new JFrame(), "Warning, deleting this contact will also delete the associated logs! Continue?", "Warning", JOptionPane.YES_NO_OPTION);
-		        			if(verif==JOptionPane.OK_OPTION) {
+		        			//int verif = JOptionPane.showConfirmDialog(new JFrame(), "Warning, deleting this contact will also delete the associated logs! Continue?", "Warning", JOptionPane.YES_NO_OPTION);
+		        			//if(verif==JOptionPane.OK_OPTION) {
 			        			XMLUser.removeContactFromUserXML(userToAdd.getId(), contactUsername);
 			        			emptyMemberList();
 			        			members.add(userToAdd.getUsername());
 			        			members.add(contactUsername);
 			        			Collections.sort(members);
 			        			XMLLog.deleteChatRoom(members);
-		        			}
+		        			//}
 		        			loginInit();
 		        			sendContactList();
 		        		}else {
 		        			loginInit();
 		        			sendContactList();
-		        			JOptionPane.showMessageDialog(null,"This account is not in your contact list or does not exist.","Warning", JOptionPane.WARNING_MESSAGE);
+		        			//JOptionPane.showMessageDialog(null,"This account is not in your contact list or does not exist.","Warning", JOptionPane.WARNING_MESSAGE);
 		        		}
+		        		break;
+		        	case "Contacts":
+	        			loginInit();
+	        			sendContactList();
+		        		break;
+		        	case "Groups":
+		        		loginInit();
+		        		sendGroupList();
+		        		
+		        		break;
+		        	case "createGroup":
+	        			loginInit();
+	        			sendContactList();
+	        			if((boolean) input.readObject()) {
+	        				int size = (int) input.readObject();
+	        				ArrayList<String> newGroupMembers = new ArrayList<String>();
+	        				for(int i=0;i<size;i++) {
+	        					newGroupMembers.add((String) input.readObject());
+	        				}
+        					newGroupMembers.add((String) input.readObject());
+	        				XMLUser.addGroupToUserXML(userToAdd.getId(), newGroupMembers);
+	        			}
 		        		break;
 		        	}
 	        	}
@@ -224,10 +257,11 @@ public class ServerThread extends Thread {
 					if(helo.compareTo("/quit")==0) {
 						chatroom=false;
 					}else {
-						wholeText = readLogs();
-						wholeText+= "\n" + userToAdd.getUsername() + ": " + helo;
-						output.writeObject(wholeText);
 						XMLLog.addToXML(new Messages(userToAdd.getUsername(), helo), members);
+						wholeText = readLogs();
+						//wholeText+= "\n" + userToAdd.getUsername() + ": " + helo;
+						output.writeObject(wholeText);
+						
 					}
 					
 				}
@@ -254,6 +288,37 @@ public class ServerThread extends Thread {
         }
     }
     
+
+    private void sendGroupList() {
+    	for(int i = 0; i < users.size(); i++)
+    	{
+    		String node = users.get(i);
+    		if(userToAdd.getUsername().compareTo(node)==0)
+    		{
+    			try {
+    				//System.out.println(contactList.get(i));
+					output.writeObject((int) groupMembersList.get(i).size());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+    			for(int j = 0; j < groupMembersList.get(i).size(); j++)
+    			{
+    				String group = "";
+    				for(int k=0;k<groupMembersList.get(i).get(j).size()-1;k++){
+    					group += groupMembersList.get(i).get(j).get(k) + ", ";
+    				}
+					group += groupMembersList.get(i).get(j).get(groupMembersList.get(i).get(j).size()-1);
+    				try {
+						output.writeObject((String) group);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+    			}
+    		}
+		}	
+	}
     /**
      * This function reads and returns the contents of the XML doc
      * 
@@ -261,15 +326,13 @@ public class ServerThread extends Thread {
      * 
      * @return
      */
-    private String readLogs() {
+	private String readLogs() {
 		try {
 	    	Collections.sort(members);
 			ArrayList<String> messageContent = XMLLog.readXMLLog("MessageContent", members);
-			ArrayList<String> messageUsername;
-			messageUsername = XMLLog.readXMLLog("UserName", members);
-	
+			ArrayList<String> messageUsername = XMLLog.readXMLLog("UserName", members);
 			String wholeText = "";
-			if(messageUsername.size()==0) {
+			if(!XMLLog.chatRoomExist(members)) {
 				XMLLog.createChatRoom(members);
 				messageContent = XMLLog.readXMLLog("MessageContent", members);
 				messageUsername = XMLLog.readXMLLog("UserName", members);
@@ -383,6 +446,7 @@ public class ServerThread extends Thread {
 			passwords = XMLUser.readXMLUser("Password");
 			IdUserString = XMLUser.readXMLUser("ID");
 			contactList = XMLUser.readContactXMLUser();
+			groupMembersList = XMLUser.readGroupXMLUser();
 			//Since it was simpler to store the IDs in the XML files as string and then convert them, we use parseInt to do the conversion
 			for(int i=0; i<IdUserString.size(); i++) {
 				IdUser.add(Integer.parseInt(IdUserString.get(i)));

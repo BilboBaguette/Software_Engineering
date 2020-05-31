@@ -82,6 +82,9 @@ public class XMLUser {
     		
     	Element contacts = document.createElement("Contacts"); //Sub Node of the User Node which will contain the contact list
     	element.appendChild(contacts);
+    	
+    	Element groups = document.createElement("Groups");
+    	element.appendChild(groups);
 
         TransformerFactory factory = TransformerFactory.newInstance(); //Rebuilding the XML file and replace the old one
         Transformer transformer = factory.newTransformer();
@@ -147,6 +150,75 @@ public class XMLUser {
         transformer.transform(domSource, streamResult);	 
 	}
 
+	
+	public static void addGroupToUserXML(Integer idUser, ArrayList<String> groupMembers) throws Exception 
+	{
+		File xmlFile = new File("./User.xml");
+		
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance(); //Creation of elements to include in the XML file
+		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+		Document document = documentBuilder.parse(xmlFile);
+		
+		Node contacts = document.getFirstChild();
+		NodeList userList = contacts.getChildNodes();
+		
+		for (int i = 0; i < userList.getLength(); i++) //Going through the list of user
+		{
+			Node element =  userList.item(i);
+			
+			String attr = element.getAttributes().getNamedItem("id").getNodeValue();
+			if(Integer.toString(idUser).equals(attr)) //If it is the user we are looking for
+			{
+				NodeList subUserList = element.getChildNodes();
+				for (int j = 0; j < subUserList.getLength(); j++) { //Looking for the sub Node "Contacts"
+					
+	                Node subElement = subUserList.item(j);
+	                if ("Groups".equals(subElement.getNodeName())) { //If found then add an ID to the contact list
+	                	boolean check = true;
+	                	NodeList subSubUserList = subElement.getChildNodes();
+	                	for (int n = 0; n < subSubUserList.getLength(); n++) 
+	    				{
+	                		System.out.println("test");
+	                		Node group = subSubUserList.item(n);
+	                		if("Group".equals(group.getNodeName())) {
+		    	                NodeList groupMember = group.getChildNodes();
+			                	check=false;
+		    	                for(int z=0;z<groupMember.getLength();z++) {
+		    	                	Node member = groupMember.item(z);
+		    	                	for(int w=0;w<groupMembers.size();w++) {
+				    	    	        if (!groupMembers.get(w).equals(member.getTextContent())) //If we find the ID then we delete it.
+				    	    	        {
+				    	    	        	check = true;
+				    	    	        }
+		    	                	}
+		    	                }
+		    	                if(groupMember.getLength()==0) {
+		    	                	check = true;
+		    	                }
+	                		}
+
+	    	            }
+	                	if(check)
+	                	{
+	                		Element contact = document.createElement("Group");
+	                		for(int m=0; m<groupMembers.size();m++) {
+	                			Element member = document.createElement("Member");
+		                		member.appendChild(document.createTextNode(groupMembers.get(m)));
+		                		((Node) contact).appendChild(member);
+	                		}
+		                	//contact.appendChild(document.createTextNode(groupMembers.get(m)));
+		                	((Node) subSubUserList).appendChild(contact);
+	                	}
+	                }
+	            }
+			}
+		}
+		TransformerFactory factory = TransformerFactory.newInstance(); //Rebuilding the XML file and replace the old one
+        Transformer transformer = factory.newTransformer();
+        DOMSource domSource = new DOMSource(document);
+        StreamResult streamResult = new StreamResult(new File("./User.xml"));
+        transformer.transform(domSource, streamResult);	 
+	}
 	/**
 	 * Method that removes contact from an user's contact list
 	 * 
@@ -272,6 +344,46 @@ public class XMLUser {
                             contactsList.add(subSubElement.getTextContent());
                         }
                         toReturn.add(contactsList);
+                    }
+                }
+            }
+        return toReturn;
+        }
+	
+	public static ArrayList<ArrayList<ArrayList<String>>> readGroupXMLUser() throws Exception
+    {
+        File xmlFile = new File("./User.xml");
+        ArrayList<ArrayList<ArrayList<String>>> toReturn = new ArrayList<ArrayList<ArrayList<String>>>();
+
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();  //Creation of elements to include in the XML file
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document document = documentBuilder.parse(xmlFile);
+
+        Node contacts = document.getFirstChild();
+        NodeList userList = contacts.getChildNodes();
+
+        for (int i = 0; i < userList.getLength(); i++) //Going through the list of user
+        {
+            Node element =  userList.item(i);
+                NodeList subUserList = element.getChildNodes();
+                for (int j = 0; j < subUserList.getLength(); j++) //Looking for the sub Node "Contacts"
+                {
+                    Node subElement = subUserList.item(j);
+                    if ("Groups".equals(subElement.getNodeName())) //If found then go through the list of contact
+                    {
+                        NodeList subSubUserList = subElement.getChildNodes();//Here, we get the nodes name "Group"
+                        ArrayList<ArrayList<String>> groupList = new ArrayList<ArrayList<String>>();
+                        for(int k=0; k<subSubUserList.getLength();k++) {
+                        	Node member = subSubUserList.item(k);//Here we have a group
+                        	NodeList memberList = member.getChildNodes();
+                        	ArrayList<String> members = new ArrayList<String>();
+                        	for(int l=0;l<memberList.getLength();l++) {
+                        		Node singleMember = memberList.item(l);
+                        		members.add(singleMember.getTextContent());
+                        	}
+                        	groupList.add(members);
+                        }
+                        toReturn.add(groupList);
                     }
                 }
             }
