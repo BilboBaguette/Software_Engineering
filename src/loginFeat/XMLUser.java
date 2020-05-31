@@ -22,7 +22,6 @@ import org.w3c.dom.NodeList;
  *
  * @version 1.0
  *
- * @see logger
  *
  * @author Roman DIDELET
  * @author Jason KHAOU
@@ -95,7 +94,7 @@ public class XMLUser {
 	 * Method that adds contact to an user's contact list
 	 * 
 	 * @param idUser
-	 * @param idToAdd
+	 * @param usernameToAdd
 	 */
 	public static void addContactToUserXML(Integer idUser, String usernameToAdd) throws Exception 
 	{
@@ -152,7 +151,7 @@ public class XMLUser {
 	 * Method that removes contact from an user's contact list
 	 * 
 	 * @param idUser
-	 * @param idToRemove
+	 * @param usernameToRemove
 	 */
 	public static void removeContactFromUserXML(Integer idUser, String usernameToRemove) throws Exception 
 	{
@@ -203,7 +202,7 @@ public class XMLUser {
 	 * 
 	 * @param choice
 	 *
-	 * @return ArrayList<String>
+	 * @return ArrayList
 	 */
 	public static ArrayList<String> readXMLUser(String choice) throws Exception 
 	{
@@ -243,7 +242,7 @@ public class XMLUser {
 	/**
 	 * Method that gives a list of lists of contacts
 	 *
-	 * @return  ArrayList<ArrayList<String>>
+	 * @return  ArrayList
 	 */
 	public static ArrayList<ArrayList<String>> readContactXMLUser() throws Exception
     {

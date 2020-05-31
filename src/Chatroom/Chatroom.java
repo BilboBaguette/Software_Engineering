@@ -36,9 +36,9 @@ public class Chatroom {
 	/**
 	 * Description: Constructor of the class chat room
      *
-	 * @param frame
-	 * @param members
-	 * @param c1
+	 * @param frame The frame of the GUI
+	 * @param members The list of members 
+	 * @param c1 The client connection variable
 	 */
 	public Chatroom(JFrame frame, ArrayList<String> members, SimpleClient c1){
 		

@@ -8,7 +8,6 @@ import Chatroom.Messages;
 import Chatroom.XMLLog;
 import javax.swing.JOptionPane;
 
-import loginFeat.Logger;
 import loginFeat.User;
 import loginFeat.XMLUser;
  
@@ -27,24 +26,24 @@ public class ServerThread extends Thread {
 	 * This variable countains the server port 
 	 *
 	 * Arraylist used to store account names
-	 * @see match()
-	 * @see loginInit()
+	 * @see #match(String, String)
+	 * @see #loginInit()
 	 */
 	public ArrayList<String> users = new ArrayList<String>();
 	/**
 	 * Arraylist used to store passwords
-	 * @see match()
-	 * @see loginInit()
+	 * @see #match(String, String)
+	 * @see #loginInit()
 	 */
 	public ArrayList<String> passwords = new ArrayList<String>();
 	/**
 	 * Arraylist used to store client IDs as Strings
-	 * @see loginInit()
+	 * @see #loginInit()
 	 */
 	public ArrayList<String> IdUserString = new ArrayList<String>();
 	/**
 	 * Arraylist used to store client IDs as integers
-	 * @see loginInit()
+	 * @see #loginInit()
 	 */
 	public ArrayList<Integer> IdUser = new ArrayList<Integer>();
 
@@ -86,6 +85,23 @@ public class ServerThread extends Thread {
 	String contactUsername;
 	
 	/**
+	 * Function to find the ID of an user 
+	 * @param name The name of the client
+	 * @param password the password of the client 
+	 * @param accounts List of accounts
+	 * @param passwords List of passwords
+	 * @param IdClients List of clients IDs 
+	 * @return
+	 */
+	static private int findID(String name, String password, ArrayList<String> accounts, ArrayList<String> passwords, ArrayList<Integer> IdClients) {
+        for(int i=0; i<accounts.size();i++) {
+            if(name.compareTo(accounts.get(i))==0 && password.compareTo(passwords.get(i))==0) {
+                return IdClients.get(i);
+            }
+        }
+        return -1;
+    }
+	/**
 	 * This is the constructor of the class
 	 * 
 	 * @param socket Is the socket of the server 
@@ -100,7 +116,10 @@ public class ServerThread extends Thread {
 	/**
 	 * This function will run the client connection and executes the task leading to the exchange with the server
 	 * 
-	 * @see java Class Thread; java Class Socket; java Class ObjectInputStream; java Class ObjectOutputStream
+	 * @see Thread 
+	 * @see Socket 
+	 * @see ObjectInputStream 
+	 * @see ObjectOutputStream
 	 *
 	 */
     public void run() {
@@ -314,7 +333,7 @@ public class ServerThread extends Thread {
  			
  			boolean matchCheck = match(username, password);
  			output.writeObject(matchCheck);		//serialize and write the Student object to the stream
- 			int id = Logger.findID(username, password, users, passwords, IdUser);
+ 			int id = findID(username, password, users, passwords, IdUser);
  			userToAdd.setId(id);
  			userToAdd.setPassword(password);
  			userToAdd.setUsername(username);

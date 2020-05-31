@@ -27,7 +27,6 @@ import org.xml.sax.SAXException;
  *
  * @version 1.0
  *
- * @see logger
  *
  * @author Jean-Louis CHENG
  * @author Nils CHOL

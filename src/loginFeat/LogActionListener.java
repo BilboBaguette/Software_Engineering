@@ -13,7 +13,6 @@ import connec.SimpleClient;
  * Class that handles the action event for the "login" button of the logger, checks if the entered credentials are correct
  * @author roman
  * @version 1.0
- * @see Logger
  * @see LoggerGUI
  *
  */

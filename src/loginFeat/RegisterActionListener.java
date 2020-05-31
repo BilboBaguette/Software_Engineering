@@ -13,7 +13,6 @@ import connec.SimpleClient;
  * Class that handles the actionevent for the "register" button of the logger and oversees acount creation
  * @author roman
  * @version 1.0
- * @see Logger
  * @see LoggerGUI
  * 
  */

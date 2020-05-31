@@ -49,14 +49,23 @@ public class SendButtonListener implements ActionListener {
 	 */
 	public List<Messages> myList = new ArrayList<Messages>();
 	
-/**
- * Description: Constructor for the class SendButtonListener
- * 
- * @param textPane: The text area that we see our messages after we sent it
- * @param textPane2: The text area that we type our messages
- * @param sendList: List of messages that we have received or sent
- * 
- */
+	/**
+	 * Description: Constructor for the class SendButtonListener
+	 * 
+	 * @param textPane: The text area that we see our messages after we sent it
+	 * @param textPane2: The text area that we type our messages
+	 * @param sendList: List of messages that we have received or sent
+	 * @param 
+	 */
+	/**
+	 * 
+	 * @param frameMenu The frame of the Menu's GUI
+	 * @param frame the Frame of the GUI
+	 * @param textPane The text area that we see our messages after we sent it
+	 * @param textPane2 The text area that we type our messages
+	 * @param sendList List of messages that we have received or sent
+	 * @param sc The client connection variable
+	 */
 	public SendButtonListener(JFrame frameMenu, JFrame frame,JTextPane textPane, JTextPane textPane2,List<Messages> sendList, SimpleClient sc)
 	{
 		this.frameMenu = frameMenu;

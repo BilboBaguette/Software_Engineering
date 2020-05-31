@@ -14,8 +14,10 @@ import connec.SimpleClient;
  */
 
 public class Project {
+	
 	/**
-	* Launch the application.
+	 * Launch the application.
+	 * @param args
 	 */
 	public static void main(String[] args) {
 		new Project();
