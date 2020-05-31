@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
 import connec.SimpleClient;
@@ -30,7 +31,7 @@ public class SendButtonListener implements ActionListener {
 	/**
 	 * Variable containing space to write text
 	 */
-	private JTextPane TypingText;
+	private JTextField TypingText;
 	/**
 	 * SimpleClient variable that will allow us to send a message to the server
 	 */
@@ -44,10 +45,6 @@ public class SendButtonListener implements ActionListener {
 	 */
 	private JFrame frameMenu;
 	
-	/**
-	 * List of type message containing user message
-	 */
-	public List<Messages> myList = new ArrayList<Messages>();
 	
 	/**
 	 * Description: Constructor for the class SendButtonListener
@@ -66,13 +63,12 @@ public class SendButtonListener implements ActionListener {
 	 * @param sendList List of messages that we have received or sent
 	 * @param sc The client connection variable
 	 */
-	public SendButtonListener(JFrame frameMenu, JFrame frame,JTextPane textPane, JTextPane textPane2,List<Messages> sendList, SimpleClient sc)
+	public SendButtonListener(JFrame frameMenu, JFrame frame,JTextPane textPane, JTextField textPane2, SimpleClient sc)
 	{
 		this.frameMenu = frameMenu;
 		this.frame = frame;
 		this.textPane = textPane;
 		this.TypingText =textPane2;
-		this.myList = sendList;
 		this.simpleClient = sc;
 	}
 
@@ -93,14 +89,16 @@ public class SendButtonListener implements ActionListener {
 			frame.dispose();
 		} 
 		if(!TypingText.getText().isEmpty()){
-			myList.add(new Messages("user",a));
+			//myList.add(new Messages("user",a));
 			simpleClient.sendMessage(a);
-			if(textPane.getText().isEmpty()){
-				textPane.setText(simpleClient.connectedAccount.getUsername() + " : " +  a+b);
-				}else{
-					textPane.setText(b+"\n"+simpleClient.connectedAccount.getUsername()+" : "+a);
-				}
+			if(a.compareTo("/quit")==0) {
+				frameMenu.setVisible(true);
+				frame.setVisible(false);
+				frame.dispose();
+			}else {
+				textPane.setText(simpleClient.getLogs());
 			}
+		}
 		TypingText.setText("");
 	}
 }

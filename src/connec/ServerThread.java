@@ -168,9 +168,16 @@ public class ServerThread extends Thread {
 		        	case "addcontact":
 		        		if(!checkContact())
 		        		{
-		        			XMLUser.addContactToUserXML(userToAdd.getId(), contactUsername);
 		        			loginInit();
-		        			sendContactList();
+		        			if(userExists(contactUsername)) {
+			        			XMLUser.addContactToUserXML(userToAdd.getId(), contactUsername);
+			        			loginInit();
+			        			sendContactList();
+		        			}else {
+			        			loginInit();
+			        			sendContactList();
+			        			JOptionPane.showMessageDialog(null,"This user does not exist.","Warning", JOptionPane.WARNING_MESSAGE);
+		        			}
 		        		}else {
 		        			loginInit();
 		        			sendContactList();
@@ -199,27 +206,14 @@ public class ServerThread extends Thread {
 		        		}else {
 		        			loginInit();
 		        			sendContactList();
-		        			JOptionPane.showMessageDialog(null,"This account is not in the contact list.","Warning", JOptionPane.WARNING_MESSAGE);
+		        			JOptionPane.showMessageDialog(null,"This account is not in your contact list or does not exist.","Warning", JOptionPane.WARNING_MESSAGE);
 		        		}
 		        		break;
 		        	}
 	        	}
         	
 	        	//partie chatroom
-	        	Collections.sort(members);
-				ArrayList<String> messageContent = XMLLog.readXMLLog("MessageContent", members);
-				ArrayList<String> messageUsername = XMLLog.readXMLLog("UserName", members);
-				String wholeText = "";
-				if(messageUsername.size()==0) {
-					XMLLog.createChatRoom(members);
-					messageContent = XMLLog.readXMLLog("MessageContent", members);
-					messageUsername = XMLLog.readXMLLog("UserName", members);
-				}else {
-					for(int i=0;i<messageContent.size()-1;i++) {
-						wholeText += messageUsername.get(i) + ": " + messageContent.get(i) + "\n";
-					}
-					wholeText += messageUsername.get(messageUsername.size()-1) + ": " + messageContent.get(messageContent.size()-1);
-				}				
+	        	String wholeText = readLogs();
 				
 				//output = new ObjectOutputStream(socket.getOutputStream());
 				output.writeObject((String) wholeText);
@@ -230,8 +224,12 @@ public class ServerThread extends Thread {
 					if(helo.compareTo("/quit")==0) {
 						chatroom=false;
 					}else {
+						wholeText = readLogs();
+						wholeText+= "\n" + userToAdd.getUsername() + ": " + helo;
+						output.writeObject(wholeText);
 						XMLLog.addToXML(new Messages(userToAdd.getUsername(), helo), members);
 					}
+					
 				}
         	}
         } catch (IOException ex) {
@@ -254,6 +252,41 @@ public class ServerThread extends Thread {
 
         	      		
         }
+    }
+    
+    private String readLogs() {
+		try {
+	    	Collections.sort(members);
+			ArrayList<String> messageContent = XMLLog.readXMLLog("MessageContent", members);
+			ArrayList<String> messageUsername;
+			messageUsername = XMLLog.readXMLLog("UserName", members);
+	
+			String wholeText = "";
+			if(messageUsername.size()==0) {
+				XMLLog.createChatRoom(members);
+				messageContent = XMLLog.readXMLLog("MessageContent", members);
+				messageUsername = XMLLog.readXMLLog("UserName", members);
+			}else {
+				for(int i=0;i<messageContent.size()-1;i++) {
+					wholeText += messageUsername.get(i) + ": " + messageContent.get(i) + "\n";
+				}
+				wholeText += messageUsername.get(messageUsername.size()-1) + ": " + messageContent.get(messageContent.size()-1);
+		}
+			return wholeText;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "";
+    }
+    
+    private boolean userExists(String userToCheck) {
+    	for(int i=0;i<users.size();i++) {
+    		if(userToCheck.compareTo(users.get(i))==0) {
+    			return true;
+    		}
+    	}
+    	return false;
     }
     
     private void emptyMemberList() {

@@ -20,17 +20,13 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
 import connec.SimpleClient;
 
 
 public class Chatroom {
-
-	/**
-	 * List of type message containing user message
-	 */
-	public List<Messages> myList = new ArrayList<Messages>();
 
 
 	/**
@@ -56,25 +52,22 @@ public class Chatroom {
      * @see SendButtonListener#SendButtonListener
      */
 	private void initialize(JFrame frameMenu, ArrayList<String> members, SimpleClient c1) {
-
-		JScrollPane scrollPane;
-		JFrame frame;		 
-		 
-		frame = new JFrame();
-		frame.setBounds(100, 100, 706, 600);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		
-		final JTextPane Typingtext = new JTextPane();
-		Typingtext.setBounds(123, 406, 272, 23);
-		frame.getContentPane().add(Typingtext);
-		
-		scrollPane = new JScrollPane();
-		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-				
-
 		
 		try {
+			JScrollPane scrollPane;
+			JFrame frame;		 
+			 
+			frame = new JFrame();
+			frame.setBounds(100, 100, 706, 600);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.getContentPane().setLayout(null);
+			
+			final JTextField Typingtext = new JTextField();
+			Typingtext.setBounds(123, 406, 272, 23);
+			frame.getContentPane().add(Typingtext);
+			
+			scrollPane = new JScrollPane();
+			scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 			final JTextPane textPane = new JTextPane();
 			textPane.setEnabled(false);
 			textPane.setBounds(123, 57, 444, 338);
@@ -89,10 +82,11 @@ public class Chatroom {
 			String logs = c1.getLogs();
 			textPane.setText(logs);
 
+			Typingtext.addActionListener(new SendButtonListener(frameMenu, frame, textPane,Typingtext, c1));
 			
 			JButton btnSend = new JButton("Send");
 			frameMenu.setVisible(false);
-			btnSend.addActionListener(new SendButtonListener(frameMenu, frame, textPane,Typingtext,myList, c1));
+			btnSend.addActionListener(new SendButtonListener(frameMenu, frame, textPane,Typingtext, c1));
 			btnSend.setBounds(486, 406, 89, 23);
 			frame.getContentPane().add(btnSend);
 			

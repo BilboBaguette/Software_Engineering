@@ -109,7 +109,7 @@ public class MenuGUI {
 		currentUserPanel.setLayout(userLayout);
 		selectContactsAndGroups.setBorder(BorderFactory.createTitledBorder("Contacts and Groups"));
 		selectContactsAndGroups.setLayout(contactsAndGroupsLayout);
-		addNewContact.setBorder(BorderFactory.createTitledBorder("Add new Contact"));
+		addNewContact.setBorder(BorderFactory.createTitledBorder("Manage Contacts"));
 		addNewContact.setLayout(newContactLayout);
 		newContactbtnPane.setBorder(BorderFactory.createEmptyBorder(0, 15, 100, 10));
 		newGroupbtnPane.setBorder(BorderFactory.createEmptyBorder(0, 15, 100, 10));
