@@ -11,6 +11,7 @@ import connec.SimpleClient;
 
 /**
  * Class that handles the action event for the "login" button of the logger, checks if the entered credentials are correct
+ * 
  * @author roman
  * @version 1.0
  * @see LoggerGUI
@@ -41,10 +42,10 @@ public class LogActionListener implements ActionListener{
 	/**
 	 * This is the constructor
 	 * 
-	 * @param username
-	 * @param password
-	 * @param frame
-	 * @param c1
+	 * @param username Name of the user
+	 * @param password password of the user
+	 * @param frame frame variable
+	 * @param c1 SimpleClient variable
 	 */
 	public LogActionListener(JTextField username, JTextField password, JFrame frame, SimpleClient c1) {
 		this.username=username;
@@ -55,6 +56,7 @@ public class LogActionListener implements ActionListener{
 
 	/**
 	 * This class check if the user has correct credentials and link the results to the GUI
+	 * @param e actionevent variable
 	 */
 	public void actionPerformed(ActionEvent e) {
 		String usr = username.getText();

@@ -17,7 +17,9 @@ import connec.SimpleClient;
 import loginFeat.User;
 /**
  * Class used to create the Menu GUI, allowing the user to select which contact or group he wants to chat with, add new contacts and create groups
+ * 
  * @author roman
+ * 
  * @see ActionListeners
  */
 public class MenuGUI {
@@ -74,9 +76,11 @@ public class MenuGUI {
 	 * @see connec.SimpleClient
 	 */
 	private SimpleClient c1;
-	
+
 	/**
 	 * Create the application.
+	 * @param user A user
+	 * @param sc Client variable
 	 */
 	public MenuGUI(User user, SimpleClient sc) {
 		this.currentUser=user;

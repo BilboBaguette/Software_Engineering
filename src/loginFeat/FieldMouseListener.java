@@ -4,12 +4,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JTextField;
-/*
+/**
  * Class name : FieldMouseListener
  * 
  * Description : This is a class gets the user's mouse actions
  * 
  * Version : 1.0
+ * 
+ * @author Roman
  * 
  * Date : 26/05/2020
  * 
@@ -24,7 +26,7 @@ public class FieldMouseListener implements MouseListener{
 	
 	/**
 	 * This is the constructor of the class
-	 * @param textfield
+	 * @param textfield Field where text can be entered
 	 */
 	public FieldMouseListener(JTextField textfield) {
 		this.textfield = textfield;

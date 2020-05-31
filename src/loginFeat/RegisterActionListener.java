@@ -10,9 +10,12 @@ import Menu.MenuGUI;
 import connec.SimpleClient;
 
 /**
- * Class that handles the actionevent for the "register" button of the logger and oversees acount creation
+ * Class that handles the actionevent for the "register" button of the logger and oversees account creation
+ * 
  * @author roman
+ * 
  * @version 1.0
+ * 
  * @see LoggerGUI
  * 
  */
@@ -20,16 +23,19 @@ public class RegisterActionListener implements ActionListener{
 	
 	/**
 	 * username textfield from the GUI
+	 * 
 	 * @see LoggerGUI()
 	 */
 	private JTextField username;
 	/**
 	 * password textfield from the GUI
+	 * 
 	 * @see LoggerGUI()
 	 */
 	private JTextField password;
 	/**
 	 * frame from the GUI
+	 * 
 	 * @see LoggerGUI()
 	 */
 	private JFrame frame;
@@ -40,10 +46,11 @@ public class RegisterActionListener implements ActionListener{
 	
 	/**
 	 * This is the constructor
-	 * @param username
-	 * @param password
-	 * @param frame
-	 * @param c1
+	 * 
+	 * @param username Name of the user
+	 * @param password password of the user
+	 * @param frame frame variable
+	 * @param c1 SimpleClient variable
 	 */
 	public RegisterActionListener(JTextField username, JTextField password,JFrame frame, SimpleClient c1) {
 		this.username=username;
@@ -54,6 +61,7 @@ public class RegisterActionListener implements ActionListener{
 
 	/**
 	 * This class register the user's credentials and link the results to the GUI
+	 * @param e ActionEvent variable
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {

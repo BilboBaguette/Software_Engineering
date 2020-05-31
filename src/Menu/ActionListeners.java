@@ -16,18 +16,22 @@ import loginFeat.User;
 
 /**
  * class that handles action performed by buttons and comboboxes from the menu GUI
+ * 
  * @author roman
+ * 
  * @see MenuGUI
  *
  */
 public class ActionListeners implements ActionListener{
 	/**
 	 * combobox from the GUI used to select either contacts or groups
+	 * 
 	 * @see MenuGUI
 	 */
 	private JComboBox<String> contactsAndGroups;
 	/**
 	 * combobox from the GUI used to select a specific contact or group
+	 * 
 	 * @see MenuGUI
 	 */
 	private JComboBox<String> contactsOrGroups;
@@ -53,10 +57,11 @@ public class ActionListeners implements ActionListener{
 	/**
 	 * first constructor, used for the action listener of the contactsOrGroups combobox
 	 * 
-	 * @param frame
-	 * @param user
-	 * @param contactsOrGroups
-	 * @param c1
+	 * @param frame frame variable
+	 * @param user User variable
+	 * @param contactsOrGroups variable displaying either contacts or groups 
+	 * @param c1 Client variable
+	 * @param contactsAndGroups variable displaying contacts and groups 
 	 * 
 	 * @see MenuGUI
 	 */
@@ -71,10 +76,10 @@ public class ActionListeners implements ActionListener{
 	/**
 	 * second constructor, used for the action listener of the contactAndGroups combobox
 	 * 
-	 * @param contactsAndGroups
-	 * @param contactsOrGroups
-	 * @param user
-	 * @param c1
+	 * @param contactsAndGroups variable displaying contacts and groups 
+	 * @param contactsOrGroups variable displaying either contacts or groups 
+	 * @param user User variable
+	 * @param c1 Client variable
 	 * 
 	 * @see MenuGUI
 	 */
@@ -88,10 +93,10 @@ public class ActionListeners implements ActionListener{
 	/**
 	 * third constructor, used for the add button that adds a new contact
 	 * 
-	 * @param newContactName
-	 * @param user
-	 * @param c1
-	 * @param contactsOrGroups
+	 * @param newContactName Contact name variable
+	 * @param user user variable
+	 * @param c1 Client variable
+	 * @param contactsOrGroups variable displaying either contacts or groups 
 	 * 
 	 * @see MenuGUI
 	 */
@@ -106,7 +111,7 @@ public class ActionListeners implements ActionListener{
 	/**
 	 * method used to perform actions, we used a switch/case to separate the different actions used by different buttons/comboboxes
 	 * 
-	 * @param e
+	 * @param e actionevent variable
 	 */
 	public void actionPerformed(ActionEvent e) {
 		switch(e.getActionCommand()) {

@@ -8,6 +8,17 @@ import javax.swing.JList;
 
 import connec.SimpleClient;
 
+/**
+ * Class name : crtGrpBtnListener
+ * This Class create the listener of the button "group"
+ * 
+ * Version : 1.0
+ * 
+ * @author Aurélien
+ * 
+ * Date : 31/05/2020
+ */
+
 public class crtGrpBtnListener implements ActionListener{
 	
 
@@ -20,29 +31,23 @@ public class crtGrpBtnListener implements ActionListener{
 	 */
 	private JFrame frame;
 	/**
-	 * FRame variable
+	 * Frame variable
 	 */
 	private JFrame frameMenu;
 	
+	/**
+	 * JList variable containing the list of an user's contact
+	 */
 	private JList<String> contactList;
 	
-	
+
 	/**
-	 * Description: Constructor for the class SendButtonListener
-	 * 
-	 * @param textPane: The text area that we see our messages after we sent it
-	 * @param textPane2: The text area that we type our messages
-	 * @param sendList: List of messages that we have received or sent
-	 * @param 
-	 */
-	/**
+	 * Constructor of the crtGrpBtnListener
 	 * 
 	 * @param frameMenu The frame of the Menu's GUI
 	 * @param frame the Frame of the GUI
-	 * @param textPane The text area that we see our messages after we sent it
-	 * @param textPane2 The text area that we type our messages
-	 * @param sendList List of messages that we have received or sent
 	 * @param sc The client connection variable
+	 * @param contactList List of an user's contact
 	 */
 	public crtGrpBtnListener(JFrame frameMenu, JFrame frame, SimpleClient sc, JList<String> contactList)
 	{

@@ -11,8 +11,23 @@ import javax.swing.ListSelectionModel;
 
 import connec.SimpleClient;
 
+/**
+ * Class name : groupMenu
+ * This Class is used to create the Group menu GUI 
+ * 
+ * Version : 1.0
+ * 
+ * @author Aurélien
+ * Date : 31/05/2020
+ */
 public class groupMenu {
 
+	/**
+	 * This function creates the Group menu GUI 
+	 * @param frameMenu The frame of the menu
+	 * @param contacts User's contact list
+	 * @param c1 Client server variable
+	 */
 	public groupMenu(JFrame frameMenu, String[] contacts, SimpleClient c1) {
 		JFrame frame;	
 		frame = new JFrame();
@@ -30,7 +45,7 @@ public class groupMenu {
 		JList<String> contactList = new JList<String>(contacts);
 		contactList.setBounds(123, 57, 444, 338);
 		contactList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		contactList.addListSelectionListener(new groupListListener());
+		//contactList.addListSelectionListener(new groupListListener());
 		scrollPane.getViewport().setBackground(Color.WHITE);
 		scrollPane.getViewport().add(contactList);
 		frame.add(contactList);
