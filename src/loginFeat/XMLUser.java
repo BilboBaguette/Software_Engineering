@@ -160,7 +160,6 @@ public class XMLUser {
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance(); //Creation of elements to include in the XML file
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		Document document = documentBuilder.parse(xmlFile);
-		
 		Node contacts = document.getFirstChild();
 		NodeList userList = contacts.getChildNodes();
 		
@@ -177,13 +176,13 @@ public class XMLUser {
 	                Node subElement = subUserList.item(j);
 	                if ("Contacts".equals(subElement.getNodeName())) //If found then go through the list of contact
 	                {
-	                	NodeList subSubUserList = element.getChildNodes();
+	                	NodeList subSubUserList = subElement.getChildNodes();
 	    				for (int n = 0; n < subSubUserList.getLength(); n++) 
 	    				{
-	    	                Node subSubElement = subSubUserList.item(n);  				
+	    	                Node subSubElement = subSubUserList.item(n); 
 	    	    	        if (usernameToRemove.equals(subSubElement.getTextContent())) //If we find the ID then we delete it.
 	    	    	        {
-	    	    	        	((Node) subUserList).removeChild(subSubElement);
+	    	    	        	((Node) subSubUserList).removeChild(subSubElement);
 	    	    	        }
 	    	            }
 	                }
