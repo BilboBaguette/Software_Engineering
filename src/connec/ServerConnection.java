@@ -17,6 +17,8 @@ public class ServerConnection
 	/**
 	* This is the main,
 	* Launch the application.
+	* 
+	* @param args basic main parameter
 	*/
 	public static void main (String[] args) {
 		AbstractServer as = new FirstServer();

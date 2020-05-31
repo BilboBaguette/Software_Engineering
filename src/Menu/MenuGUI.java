@@ -17,7 +17,9 @@ import connec.SimpleClient;
 import loginFeat.User;
 /**
  * Class used to create the Menu GUI, allowing the user to select which contact or group he wants to chat with, add new contacts and create groups
+ * 
  * @author roman
+ * 
  * @see ActionListeners
  */
 public class MenuGUI {
@@ -58,20 +60,27 @@ public class MenuGUI {
 	 */
 	private JButton newGroupbtn;
 	
+	/**
+	 * Button used to delete a contact
+	 */
 	private JButton deleteContactbtn;
 	
 	/**
 	 * User variable containing the current user
+	 * @see loginFeat.User
 	 */
 	private User currentUser;
 	
 	/**
 	 * Client connection variable
+	 * @see connec.SimpleClient
 	 */
 	private SimpleClient c1;
-	
+
 	/**
 	 * Create the application.
+	 * @param user A user
+	 * @param sc Client variable
 	 */
 	public MenuGUI(User user, SimpleClient sc) {
 		this.currentUser=user;
@@ -139,8 +148,6 @@ public class MenuGUI {
 		addNewContactbtn.setActionCommand("add");
 		deleteContactbtn.addActionListener(new ActionListeners(newContact, currentUser, c1, contactsOrGroups));
 		deleteContactbtn.setActionCommand("delete");
-		newGroupbtn.addActionListener(new ActionListeners(frame, currentUser, contactsOrGroups, c1, contactsAndGroups));
-		newGroupbtn.setActionCommand("createGroup");
 		//Display the frame
 		frame.pack();
 		frame.setVisible(true);

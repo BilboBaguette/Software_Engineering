@@ -19,6 +19,7 @@ import loginFeat.XMLUser;
  * 
  * Version : 2.0
  * 
+ * @author Nils Chol; Aurelien Andrieux; Jason Khaou
  * Date : 30/05/2020
  */
 
@@ -55,6 +56,9 @@ public class ServerThread extends Thread {
 	 */
 	public ArrayList<ArrayList<String>> contactList = new ArrayList<ArrayList<String>>();
 	
+	/**
+	 * This variable contains the list of all the users, all the group they are connected to and all the other members that are also connected to the same chatrooms
+	 */
 	public ArrayList<ArrayList<ArrayList<String>>> groupMembersList = new ArrayList<ArrayList<ArrayList<String>>>();
 	
 	/**
@@ -80,9 +84,11 @@ public class ServerThread extends Thread {
 	 */
 	private boolean accountExists=false;
 	
+	/**
+	 * List of all the members of a chatroom
+	 */
 	ArrayList<String> members = new ArrayList<String>();
 
-	
 	/**
 	 * String containing user's username 
 	 */
@@ -90,11 +96,13 @@ public class ServerThread extends Thread {
 	
 	/**
 	 * Function to find the ID of an user 
+	 * 
 	 * @param name The name of the client
 	 * @param password the password of the client 
 	 * @param accounts List of accounts
 	 * @param passwords List of passwords
 	 * @param IdClients List of clients IDs 
+	 * 
 	 * @return
 	 */
 	static private int findID(String name, String password, ArrayList<String> accounts, ArrayList<String> passwords, ArrayList<Integer> IdClients) {
@@ -288,6 +296,9 @@ public class ServerThread extends Thread {
         }
     }
     
+    /**
+     * This function sends the list of groups the users possess 
+     */
     private void sendGroupList() {
     	for(int i = 0; i < users.size(); i++)
     	{
@@ -318,6 +329,13 @@ public class ServerThread extends Thread {
     		}
 		}	
 	}
+    /**
+     * This function reads and returns the contents of the XML doc
+     * 
+     * @see Chatroom.XMLLog
+     * 
+     * @return
+     */
 	private String readLogs() {
 		try {
 	    	Collections.sort(members);
@@ -341,7 +359,14 @@ public class ServerThread extends Thread {
 		}
 		return "";
     }
+ 
     
+    /**
+     * This function checks if a user already exists in the logs 
+     * 
+     * @param userToCheck
+     * @return
+     */
     private boolean userExists(String userToCheck) {
     	for(int i=0;i<users.size();i++) {
     		if(userToCheck.compareTo(users.get(i))==0) {
@@ -351,12 +376,18 @@ public class ServerThread extends Thread {
     	return false;
     }
     
+    /**
+     * This functions empties the list of a chatroom's members 
+     */
     private void emptyMemberList() {
     	for(int i=0;i<members.size();i+=0) {
     		members.remove(i);
     	}
     }
     
+    /**
+     * This functions sends the list of person that have access to a chatroom
+     */
     private void sendMemberList() {
     	try {
         	String memberList = "";
@@ -370,7 +401,9 @@ public class ServerThread extends Thread {
 			e.printStackTrace();
 		}
     }
-    
+    /**
+     * This functions adds members to the list members
+     */
     private void fetchMembers() {
     	try {
     		int numberMembers = (int) input.readObject();
@@ -387,8 +420,11 @@ public class ServerThread extends Thread {
          } 
     }
     
+    
+    
+    
     /**
-	 * Method that checks will receive the info about which button the user has clicked on
+	 * Method that will receive the info about which button the user has clicked on
 	 * 
 	 * @see SimpleClient()
 	 * 
@@ -532,7 +568,7 @@ public class ServerThread extends Thread {
 	 * Method that creates and send a valid ID for the newly created user
 	 * 
 	 * @see SimpleClient()
-	 * @createId()
+	 * @see createId()
 	 */
     private void idCheck()
     {
@@ -556,7 +592,7 @@ public class ServerThread extends Thread {
     /**
 	 * Method that checks if a contact is already registered in a contact list.
 	 * 
-	 * @see SimpleClient()
+	 * @see SimpleClient#SimpleClient()
 	 */
     private boolean checkContact()
     {
@@ -590,8 +626,8 @@ public class ServerThread extends Thread {
     /**
 	 * Method that matches the entered account name and password with existing accounts
 	 * 
-	 * @param name
-	 * @param password
+	 * @param name The account name
+	 * @param password The account password
 	 * @return boolean
 	 */
 	public boolean match(String name, String password) {

@@ -150,9 +150,9 @@ public class SimpleClient {
 	 * @see loginFeat.LogActionListener 
 	 * @see ServerThread
 	 * 
-	 * @param ip
-	 * @param usrname
-	 * @param psword
+	 * @param ip The server ip
+	 * @param usrname The username
+	 * @param psword The password
 	 * 
 	 * @return boolean
 	 */
@@ -214,6 +214,7 @@ public class SimpleClient {
 	
 	/**
 	 * Function to add an user to a friend list
+	 * 
 	 * @param userToAdd User name to add to the friend list
 	 */
 	public void addUser(String userToAdd) {
@@ -232,8 +233,9 @@ public class SimpleClient {
 	}
 	
 	/**
-	 * Function to return the contact list of an user 
-	 * @return
+	 * Function to return the contact list of an user
+	 *  
+	 * @return the contact list as a string
 	 */
 	public String[] getContactList() {
 		try {
@@ -254,8 +256,12 @@ public class SimpleClient {
 		return new String[1];
 	}
 	
+
 	/**
 	 * Function to start a Chatroom
+	 * 
+	 * @param members Chatroom members
+	 * @param category Type of chatroom
 	 */
 	public void startChatroom(ArrayList<String> members, String category) {
 		try {
@@ -273,7 +279,8 @@ public class SimpleClient {
 	
 	/**
 	 * Function to send a message into a chatroom
-	 * @param message to be sent 
+	 * 
+	 * @param message message to be sent 
 	 */
 	public void sendMessage(String message) {
 		try {
@@ -285,6 +292,11 @@ public class SimpleClient {
 		}
 	}
 	
+	/**
+	 * This function is used to display all the participant in a chatroom
+	 * 
+	 * @return empty string
+	 */
 	public String getMemberList() {
 		String memberList = "";
 		try {
@@ -301,6 +313,11 @@ public class SimpleClient {
 		return "";
 	}
 	
+	/**
+	 * This function deletes an user's contact member
+	 * 
+	 * @param userToDelete User name of the user that will be deleted
+	 */
 	public void deleteUser(String userToDelete) {
         try  {
 			//create the socket; it is defined by an remote IP address (the address of the server) and a port number
@@ -315,6 +332,12 @@ public class SimpleClient {
 		}
 	}
 	
+	/**
+	 * Function to add new members to a group
+	 * 
+	 * @param btnClicked variable containing information on a button 
+	 * @param membersGroup List of group members
+	 */
 	public void sendNewGroupMembers(String btnClicked, List<String> membersGroup) {
 		
         try {

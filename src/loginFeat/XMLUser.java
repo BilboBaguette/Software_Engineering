@@ -29,8 +29,11 @@ import org.w3c.dom.NodeList;
 
 public class XMLUser {
 	
+
 	/**
 	 * Method that creates the XML file
+	 * 
+	 * @throws Exception
 	 */
 	public static void createUserXML() throws Exception 
 	{
@@ -54,7 +57,9 @@ public class XMLUser {
 	/**
 	 * Method that adds an User to the XML file
 	 * 
-	 * @param userToAdd
+	 * @param userToAdd User that will be added
+	 * 
+	 * @throws Exception
 	 */
 	public static void addToXML(User userToAdd) throws Exception 
 	{
@@ -96,8 +101,10 @@ public class XMLUser {
 	/**
 	 * Method that adds contact to an user's contact list
 	 * 
-	 * @param idUser
-	 * @param usernameToAdd
+	 * @param idUser id of a User
+	 * @param usernameToAdd Username of a user to add 
+	 * 
+	 * @throws Exception
 	 */
 	public static void addContactToUserXML(Integer idUser, String usernameToAdd) throws Exception 
 	{
@@ -150,7 +157,14 @@ public class XMLUser {
         transformer.transform(domSource, streamResult);	 
 	}
 
-	
+	/**
+	 * Function to add a group to the XML containing Chatroom info
+	 * 
+	 * @param idUser ID of a user
+	 * @param groupMembers List of a all the group member 
+	 * 
+	 * @throws Exception
+	 */
 	public static void addGroupToUserXML(Integer idUser, ArrayList<String> groupMembers) throws Exception 
 	{
 		File xmlFile = new File("./User.xml");
@@ -222,8 +236,10 @@ public class XMLUser {
 	/**
 	 * Method that removes contact from an user's contact list
 	 * 
-	 * @param idUser
-	 * @param usernameToRemove
+	 * @param idUser id of a User
+	 * @param usernameToRemove User name of a user that will be removed
+	 * 
+	 * @throws Exception
 	 */
 	public static void removeContactFromUserXML(Integer idUser, String usernameToRemove) throws Exception 
 	{
@@ -271,9 +287,11 @@ public class XMLUser {
 	/**
 	 * Method that gives a list of either username, password or id
 	 * 
-	 * @param choice
+	 * @param choice the choice 
 	 *
 	 * @return ArrayList
+	 * 
+	 * @throws Exception
 	 */
 	public static ArrayList<String> readXMLUser(String choice) throws Exception 
 	{
@@ -313,7 +331,9 @@ public class XMLUser {
 	/**
 	 * Method that gives a list of lists of contacts
 	 *
-	 * @return  ArrayList
+	 * @return ArrayList
+	 * 
+	 * @throws Exception
 	 */
 	public static ArrayList<ArrayList<String>> readContactXMLUser() throws Exception
     {
@@ -349,7 +369,12 @@ public class XMLUser {
             }
         return toReturn;
         }
-	
+	/**
+	 * This function reads all the groups of all users in the XML file 
+	 * 
+	 * @return The arraylist
+	 * @throws Exception
+	 */
 	public static ArrayList<ArrayList<ArrayList<String>>> readGroupXMLUser() throws Exception
     {
         File xmlFile = new File("./User.xml");

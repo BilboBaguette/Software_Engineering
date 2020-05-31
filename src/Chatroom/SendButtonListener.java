@@ -45,22 +45,15 @@ public class SendButtonListener implements ActionListener {
 	 */
 	private JFrame frameMenu;
 	
+
 	
 	/**
 	 * Description: Constructor for the class SendButtonListener
-	 * 
-	 * @param textPane: The text area that we see our messages after we sent it
-	 * @param textPane2: The text area that we type our messages
-	 * @param sendList: List of messages that we have received or sent
-	 * @param 
-	 */
-	/**
 	 * 
 	 * @param frameMenu The frame of the Menu's GUI
 	 * @param frame the Frame of the GUI
 	 * @param textPane The text area that we see our messages after we sent it
 	 * @param textPane2 The text area that we type our messages
-	 * @param sendList List of messages that we have received or sent
 	 * @param sc The client connection variable
 	 */
 	public SendButtonListener(JFrame frameMenu, JFrame frame,JTextPane textPane, JTextField textPane2, SimpleClient sc)
@@ -71,14 +64,14 @@ public class SendButtonListener implements ActionListener {
 		this.TypingText =textPane2;
 		this.simpleClient = sc;
 	}
-
-/**
- * Description: The action of displaying all messages sent
- * You cannot send a message if the typing area is empty
- * 
- * @param e: An action that occurs to the item when we perform an act
- * @see ActionListener
- */
+	
+	/**
+	 * Description: The action of displaying all messages sent
+	 * You cannot send a message if the typing area is empty
+	 * 
+	 * @param e: An action that occurs to the item when we perform an act
+	 * @see ActionListener
+	 */
 	public void actionPerformed(ActionEvent e){
 		String a,b;
 		a = TypingText.getText();

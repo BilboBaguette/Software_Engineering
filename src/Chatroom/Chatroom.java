@@ -44,7 +44,7 @@ public class Chatroom {
 	
     /**
      * Description: Creates the GUI
-     * 2 text ares(one for writing and the other one for seeing the chat box) and a button to send a text.
+     * 2 text areas (one for writing and the other one for seeing the chat box) and a button to send a text.
      * 
      * @param frameMenu
      * @param members

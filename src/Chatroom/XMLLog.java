@@ -27,15 +27,16 @@ import org.xml.sax.SAXException;
  *
  * @version 1.0
  *
- *
- * @author Jean-Louis CHENG
- * @author Nils CHOL
- * @author Aurélien ANDRIEUX
- *
+ * @author Jason Khaou
  */
 
 public class XMLLog {
 		
+	/**
+	 * Function that creates an XML file
+	 * 
+	 * @throws Exception
+	 */
 	public static void createLogXML() throws Exception
 	{
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -55,6 +56,16 @@ public class XMLLog {
 		transformer.transform(source, streamResult);
 	}
 	
+	/**
+	 * This function creates a chatroom in the XML doc
+	 * 
+	 * @param members List of members to be added 
+	 * 
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws TransformerException
+	 */
 	public static void createChatRoom(ArrayList<String> members) throws ParserConfigurationException, SAXException, IOException, TransformerException {
 		File xmlFile = new File("./Messages.xml");
 		
@@ -80,6 +91,14 @@ public class XMLLog {
         transformer.transform(domSource, streamResult);
 	}
 	
+
+	/**
+	 * This function checks if the list of members are the same that in the classroom
+	 * 
+	 * @param members List of members
+	 * @param attrList List of a node's attributes in a chatroom 
+	 * @return
+	 */
 	private static boolean checkAttrMembers(ArrayList<String> members, ArrayList<String> attrList)
 	{
 		boolean check = true;
@@ -93,6 +112,16 @@ public class XMLLog {
         return check;
 	}
 	
+	/**
+	 * This function deletes a chatroom in the XML doc
+	 * 
+	 * @param members List of members 
+	 * 
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws TransformerException
+	 */
 	public static void deleteChatRoom(ArrayList<String> members) throws ParserConfigurationException, SAXException, IOException, TransformerException
 	{
 		File xmlFile = new File("./Messages.xml");
@@ -123,6 +152,14 @@ public class XMLLog {
         transformer.transform(domSource, streamResult);	 
 	}
 	
+	/**
+	 * This function adds a message from a user to the XML doc
+	 * 
+	 * @param messageToAdd The user's message
+	 * @param members List of members
+	 * 
+	 * @throws Exception
+	 */
 	public static void addToXML(Messages messageToAdd, ArrayList<String> members) throws Exception
     {
         File xmlFile = new File("./Messages.xml");
@@ -163,7 +200,12 @@ public class XMLLog {
         transformer.transform(domSource, streamResult);    
     }
 	
-	
+	/**
+	 * This function lists all the attributes from the XML doc
+	 * 
+	 * @param element
+	 * @return
+	 */
 	private static ArrayList<String> listAllAttributes(Element element) {
         
         ArrayList<String> attrList = new ArrayList<String>();
@@ -181,6 +223,16 @@ public class XMLLog {
         return attrList;
     }
 	
+	/**
+	 * This function checks if a chatroom exists
+	 * 
+	 * @param members List of members
+	 * 
+	 * @return Result of the check
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 */
 	public static boolean chatRoomExist(ArrayList<String> members) throws ParserConfigurationException, SAXException, IOException
 	{
 		File xmlFile = new File("./Messages.xml");
@@ -207,6 +259,15 @@ public class XMLLog {
         return check;
 	}
 	
+	/**
+	 * This function reads the contents of the XML doc
+	 * 
+	 * @param choice variable used in the switch
+	 * @param members List of members
+	 * 
+	 * @return An arraylist containing the results
+	 * @throws Exception
+	 */
 	public static ArrayList<String> readXMLLog(String choice, ArrayList<String> members) throws Exception
     {
         File xmlFile = new File("./Messages.xml");
