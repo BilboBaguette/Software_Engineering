@@ -87,9 +87,9 @@ public class SendButtonListener implements ActionListener {
 			myList.add(new Messages("user",a));
 			simpleClient.sendMessage(a);
 			if(textPane.getText().isEmpty()){
-				textPane.setText("user : " +  a+b);
+				textPane.setText(simpleClient.connectedAccount.getUsername() + " : " +  a+b);
 				}else{
-					textPane.setText(b+"\nuser : "+a);
+					textPane.setText(b+"\n"+simpleClient.connectedAccount.getUsername()+" : "+a);
 				}
 			}
 		TypingText.setText("");

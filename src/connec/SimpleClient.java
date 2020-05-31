@@ -1,6 +1,7 @@
 package connec;
 import java.io.*;  
 import java.net.*;
+import java.util.ArrayList;
 
 import loginFeat.User; 
 
@@ -193,8 +194,10 @@ public class SimpleClient {
 		String logs ="";
         try  {
 			//create the socket; it is defined by an remote IP address (the address of the server) and a port number	
-        	input = new ObjectInputStream(socket.getInputStream());
+        	//input = new ObjectInputStream(socket.getInputStream());
+        	System.out.println("We get the logs");
 			logs = (String) input.readObject();
+			System.out.println("logs are : " + logs);
 
 		} catch  (UnknownHostException uhe) {
 			uhe.printStackTrace();
@@ -254,9 +257,13 @@ public class SimpleClient {
 	/**
 	 * Function to start a Chatroom
 	 */
-	public void startChatroom() {
+	public void startChatroom(ArrayList<String> members) {
 		try {
 			output.writeObject((String) "chatroom");
+			output.writeObject((int) members.size());
+			for(int i=0; i<members.size();i++) {
+				output.writeObject((String) members.get(i));
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -2,6 +2,7 @@ package connec;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import Chatroom.Messages;
 import Chatroom.XMLLog;
@@ -76,6 +77,9 @@ public class ServerThread extends Thread {
 	 */
 	private boolean accountExists=false;
 	
+	ArrayList<String> members = new ArrayList<String>();
+
+	
 	/**
 	 * String containing user's username 
 	 */
@@ -149,21 +153,29 @@ public class ServerThread extends Thread {
 		        		}
 		        		break;
 		        	case "chatroom":
+		        		fetchMembers();
 		        		menu=false;
 		        		break;
 		        	}
 	        	}
         	
 	        	//partie chatroom
-				ArrayList<String> messageContent = XMLLog.readXMLLog("MessageContent");
-				ArrayList<String> messageUsername = XMLLog.readXMLLog("UserName");
+	        	Collections.sort(members);
+				ArrayList<String> messageContent = XMLLog.readXMLLog("MessageContent", members);
+				ArrayList<String> messageUsername = XMLLog.readXMLLog("UserName", members);
 				String wholeText = "";
-				for(int i=0;i<messageContent.size()-1;i++) {
-					wholeText += messageUsername.get(i) + ": " + messageContent.get(i) + "\n";
-				}
-				wholeText += messageUsername.get(messageUsername.size()-1) + ": " + messageContent.get(messageContent.size()-1);
-							
-				output = new ObjectOutputStream(socket.getOutputStream());
+				if(messageUsername.size()==0) {
+					XMLLog.createChatRoom(members);
+					messageContent = XMLLog.readXMLLog("MessageContent", members);
+					messageUsername = XMLLog.readXMLLog("UserName", members);
+				}else {
+					for(int i=0;i<messageContent.size()-1;i++) {
+						wholeText += messageUsername.get(i) + ": " + messageContent.get(i) + "\n";
+					}
+					wholeText += messageUsername.get(messageUsername.size()-1) + ": " + messageContent.get(messageContent.size()-1);
+				}				
+				
+				//output = new ObjectOutputStream(socket.getOutputStream());
 				output.writeObject((String) wholeText);
 				chatroom=true;
 				while(chatroom){
@@ -171,7 +183,7 @@ public class ServerThread extends Thread {
 					if(helo.compareTo("/quit")==0) {
 						chatroom=false;
 					}else {
-						XMLLog.addToXML(new Messages("user", helo));
+						XMLLog.addToXML(new Messages(userToAdd.getUsername(), helo), members);
 					}
 				}
         	}
@@ -195,6 +207,22 @@ public class ServerThread extends Thread {
 
         	      		
         }
+    }
+    
+    private void fetchMembers() {
+    	try {
+    		int numberMembers = (int) input.readObject();
+    		for(int i=0;i<numberMembers;i++) {
+    			members.add((String) input.readObject());
+    		}
+    	} catch (IOException ex) {
+             System.out.println("Server exception: " + ex.getMessage());
+             ex.printStackTrace();
+
+ 		} catch (ClassNotFoundException ex) {
+             System.out.println("Server exception: " + ex.getMessage());
+             ex.printStackTrace();
+         } 
     }
     
     /**

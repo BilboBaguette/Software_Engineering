@@ -82,51 +82,52 @@ public class XMLLog {
 	}
 	
 	public static void addToXML(Messages messageToAdd, ArrayList<String> members) throws Exception
-	{
-		File xmlFile = new File("./Messages.xml");
-		
-		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-		Document document = documentBuilder.parse(xmlFile);
-		
-		NodeList chatList = document.getElementsByTagName("ChatRoom");
-		
-		for(int i = 0; i < chatList.getLength(); i++)
-		{
-			Node element = chatList.item(i);
-			Element node = (Element) chatList.item(i);
-			ArrayList<String> attrList = listAllAttributes(node);
-			if(attrList.size() == members.size())
-			{
-				boolean check = true;
-				for(int j = 0; j < members.size(); j++)
-				{
-					if(!members.get(j).equals(attrList.get(j))) {
-						check = false;
-						j = members.size();
-					}
-				}
-				if(check)
-				{
-					Element messages = document.createElement("Message"); //Sub Node of the User Node containing the username
-			    	element.appendChild(messages);
-					
-					Element userName = document.createElement("UserName");
-			    	userName.appendChild(document.createTextNode(messageToAdd.getUsername()));
-			    	messages.appendChild(userName);
-			    	
-			    	Element password = document.createElement("MessageContent");
-			    	password.appendChild(document.createTextNode(messageToAdd.getMessage()));
-			    	messages.appendChild(password);
-				}
-			}
-		}
+    {
+        File xmlFile = new File("./Messages.xml");
+        
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document document = documentBuilder.parse(xmlFile);
+        
+        Node contacts = document.getFirstChild();
+        NodeList chatList = contacts.getChildNodes();
+        
+        for(int i = 0; i < chatList.getLength(); i++)
+        {
+            Node element = chatList.item(i);
+            Element node = (Element) chatList.item(i);
+            ArrayList<String> attrList = listAllAttributes(node);
+            if(attrList.size() == members.size())
+            {
+                boolean check = true;
+                for(int j = 0; j < members.size(); j++)
+                {
+                    if(!members.get(j).equals(attrList.get(j))) {
+                        check = false;
+                        j = members.size();
+                    }
+                }
+                if(check)
+                {
+                    Element messages = document.createElement("Message"); //Sub Node of the User Node containing the username
+                    element.appendChild(messages);
+                    
+                    Element userName = document.createElement("UserName");
+                    userName.appendChild(document.createTextNode(messageToAdd.getUsername()));
+                    messages.appendChild(userName);
+                    
+                    Element password = document.createElement("MessageContent");
+                    password.appendChild(document.createTextNode(messageToAdd.getMessage()));
+                    messages.appendChild(password);
+                }
+            }
+        }
         TransformerFactory factory = TransformerFactory.newInstance();
         Transformer transformer = factory.newTransformer();
         DOMSource domSource = new DOMSource(document);
         StreamResult streamResult = new StreamResult(new File("./Messages.xml"));
         transformer.transform(domSource, streamResult);    
-	}
+    }
 	
 	
 	private static ArrayList<String> listAllAttributes(Element element) {
@@ -147,43 +148,53 @@ public class XMLLog {
     }
 	
 	public static ArrayList<String> readXMLLog(String choice, ArrayList<String> members) throws Exception
-	{
-		File xmlFile = new File("./Messages.xml");
-		
-		ArrayList<String> toReturn = new ArrayList<String>();
-		
-		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-		Document document = documentBuilder.parse(xmlFile);
-		
-		NodeList chatList = document.getElementsByTagName("ChatRoom");
-		for (int i = 0; i < chatList.getLength(); i++) //Going through the list of user
+    {
+        File xmlFile = new File("./Messages.xml");
+        
+        ArrayList<String> toReturn = new ArrayList<String>();
+        
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document document = documentBuilder.parse(xmlFile);
+        
+        Node chat = document.getFirstChild();
+        NodeList chatList = chat.getChildNodes();
+        for (int i = 0; i < chatList.getLength(); i++) //Going through the list of user
         {
-            Node element =  chatList.item(i);
+            Node element = chatList.item(i);
                 NodeList subUserList = element.getChildNodes();
-                for (int j = 0; j < subUserList.getLength()/2; j++)
-                {
-                    Node subElement = subUserList.item(j);
+                //for (int j = 0; j < subUserList.getLength(); j++)
+                //{
                     Element node = (Element) chatList.item(i);
                     ArrayList<String> attrList = listAllAttributes(node);
-        			if(attrList.size() == members.size())
-        			{
-                        NodeList subSubUserList = subElement.getChildNodes();
-                        Element content = (Element) node;
-                        for (int n = 0; n < subSubUserList.getLength(); n++) 
-                        {                  	
-            				switch(choice) {
-            				case "UserName":
-            					toReturn.add(content.getElementsByTagName("UserName").item(n).getTextContent());
-            					break;
-            				case "MessageContent":      					
-            					toReturn.add(content.getElementsByTagName("MessageContent").item(n).getTextContent());
-            					break;
-            				}
+                    if(attrList.size() == members.size())
+                    {
+                        boolean check = true;
+                        for(int k = 0; k < members.size(); k++)
+                        {
+                            if(!members.get(k).equals(attrList.get(k))) {
+                                check = false;
+                                k = members.size();
+                            }
                         }
-                    }
+                        if(check)
+                        {
+                            Element content = (Element) node;
+                            for (int n = 0; n < subUserList.getLength(); n++) 
+                            {   
+                                switch(choice) {
+                                case "UserName":
+                                    toReturn.add(content.getElementsByTagName("UserName").item(n).getTextContent());
+                                    break;
+                                case "MessageContent":  
+                                    toReturn.add(content.getElementsByTagName("MessageContent").item(n).getTextContent());
+                                    break;
+                                }
+                            }
+                        } 
+                    //}
                 }
             }
-		return toReturn;
-	}
+        return toReturn;
+    }
 }

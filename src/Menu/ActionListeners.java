@@ -112,7 +112,7 @@ public class ActionListeners implements ActionListener{
 			ArrayList<String> members = new ArrayList<String>();
 			members.add(user.getUsername());
 			members.add(selectedContact);
-			c1.startChatroom();
+			c1.startChatroom(members);
 			new Chatroom(frame, members, c1);
 			break;
 		case "createGroup":
