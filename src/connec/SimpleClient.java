@@ -195,9 +195,7 @@ public class SimpleClient {
         try  {
 			//create the socket; it is defined by an remote IP address (the address of the server) and a port number	
         	//input = new ObjectInputStream(socket.getInputStream());
-        	System.out.println("We get the logs");
 			logs = (String) input.readObject();
-			System.out.println("logs are : " + logs);
 
 		} catch  (UnknownHostException uhe) {
 			uhe.printStackTrace();
@@ -298,5 +296,19 @@ public class SimpleClient {
 		}
 		
 		return "";
+	}
+	
+	public void deleteUser(String userToDelete) {
+        try  {
+			//create the socket; it is defined by an remote IP address (the address of the server) and a port number
+            output.writeObject((String)"deletecontact"); //serialize and write the String to the stream
+            output.writeObject((String) userToDelete);
+            
+		} catch  (UnknownHostException uhe) {
+			uhe.printStackTrace();
+		}
+		catch  (IOException ioe) {
+			ioe.printStackTrace();
+		}
 	}
 }

@@ -102,14 +102,12 @@ public class XMLLog {
                 {
                     if(!members.get(k).equals(attrList.get(k))) {
                         check = false;
-                        System.out.println("nop");
                         k = members.size();
                     }
                 }
                 if(check)
                 {
                 	((Node) chatList).removeChild(node);
-                	System.out.println("done");
                 }
             }
 		}

@@ -58,6 +58,8 @@ public class MenuGUI {
 	 */
 	private JButton newGroupbtn;
 	
+	private JButton deleteContactbtn;
+	
 	/**
 	 * User variable containing the current user
 	 */
@@ -92,6 +94,7 @@ public class MenuGUI {
 		JPanel newGroupbtnPane = new JPanel();
 		JLabel currentUserLabel = new JLabel("Current User: "+currentUser.getUsername()+" ID: "+currentUser.getId());
 		addNewContactbtn = new JButton("Add");
+		deleteContactbtn = new JButton("Delete");
 		newGroupbtn = new JButton("Create Group");
 		newContact = new JTextField("Account Name");
 		newContact.setColumns(25);
@@ -120,6 +123,7 @@ public class MenuGUI {
 		frame.add(addNewContact, BorderLayout.SOUTH);
 		addNewContact.add(newContact);
 		addNewContact.add(addNewContactbtn);
+		addNewContact.add(deleteContactbtn);
 		//Adding MouseListener and ActionListeners
 		MouseListener newContactFieldMouseListener = new loginFeat.FieldMouseListener(newContact);
 		newContact.addMouseListener(newContactFieldMouseListener);
@@ -133,6 +137,8 @@ public class MenuGUI {
 		contactsOrGroups.setActionCommand("contactsOrGroups");
 		addNewContactbtn.addActionListener(new ActionListeners(newContact, currentUser, c1, contactsOrGroups));
 		addNewContactbtn.setActionCommand("add");
+		deleteContactbtn.addActionListener(new ActionListeners(newContact, currentUser, c1, contactsOrGroups));
+		deleteContactbtn.setActionCommand("delete");
 		//Display the frame
 		frame.pack();
 		frame.setVisible(true);

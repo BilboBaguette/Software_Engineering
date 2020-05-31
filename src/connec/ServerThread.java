@@ -172,8 +172,22 @@ public class ServerThread extends Thread {
 		        		}
 		        		break;
 		        	case "chatroom":
+		        		emptyMemberList();
 		        		fetchMembers();
 		        		menu=false;
+		        		break;
+		        	case "deletecontact":
+		        		if(checkContact())
+		        		{
+		        			//XMLUser.removeContactFromUserXML(userToAdd.getId(), contactUsername);
+		        			emptyMemberList();
+		        			members.add(userToAdd.getUsername());
+		        			members.add(contactUsername);
+		        			Collections.sort(members);
+		        			XMLLog.deleteChatRoom(members);
+		        			loginInit();
+		        			sendContactList();
+		        		}
 		        		break;
 		        	}
 	        	}
@@ -227,6 +241,12 @@ public class ServerThread extends Thread {
 
         	      		
         }
+    }
+    
+    private void emptyMemberList() {
+    	for(int i=0;i<members.size();i+=0) {
+    		members.remove(i);
+    	}
     }
     
     private void sendMemberList() {
