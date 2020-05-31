@@ -11,6 +11,7 @@ import javax.swing.JTextField;
 
 import Chatroom.Chatroom;
 import connec.SimpleClient;
+import groupCreation.groupMenu;
 import loginFeat.User;
 
 /**
@@ -59,11 +60,12 @@ public class ActionListeners implements ActionListener{
 	 * 
 	 * @see MenuGUI
 	 */
-	public ActionListeners(JFrame frame,User user, JComboBox<String> contactsOrGroups, SimpleClient c1) {
+	public ActionListeners(JFrame frame,User user, JComboBox<String> contactsOrGroups, SimpleClient c1, JComboBox<String> contactsAndGroups) {
 		this.contactsOrGroups=contactsOrGroups;
 		this.c1 =c1;
 		this.user=user;
 		this.frame = frame;
+		this.contactsAndGroups = contactsAndGroups;
 	}
 
 	/**
@@ -110,37 +112,48 @@ public class ActionListeners implements ActionListener{
 		switch(e.getActionCommand()) {
 		case "contactsAndGroups":
 			String choice = contactsAndGroups.getSelectedItem().toString();
+			c1.sendMessage(choice);
 			switch(choice){
 				case "Contacts":
-					//String contacts[] = user.getContacts();
-					String tester1[] = {"Jean", "Pol", "Pot"};
-					DefaultComboBoxModel<String> model1 = new DefaultComboBoxModel<String>(tester1);
+					String tester2[] = c1.getContactList();
+					DefaultComboBoxModel<String> model1 = new DefaultComboBoxModel<String>(tester2);
 					contactsOrGroups.setModel(model1);
 					break;
 				case "Groups":
-					String groups[] = {"Group1", "Group2"}; //TODO replace with function to fetch group list
-					DefaultComboBoxModel<String> model2 = new DefaultComboBoxModel<String>(groups);
-					contactsOrGroups.setModel(model2);
+					String test4[] = c1.getContactList();
+					DefaultComboBoxModel<String> model7 = new DefaultComboBoxModel<String>(test4);
+					contactsOrGroups.setModel(model7);
 					break;
 			}
 			break;
 		case "contactsOrGroups":
-			String selectedContact = contactsOrGroups.getSelectedItem().toString();
-			ArrayList<String> members = new ArrayList<String>();
-			members.add(user.getUsername());
-			members.add(selectedContact);
-			c1.startChatroom(members);
-			new Chatroom(frame, members, c1);
+			String choice2 = contactsAndGroups.getSelectedItem().toString();
+			switch(choice2) {
+			case "Contacts":
+				//c1.sendMessage(choice2);
+				String selectedContact = contactsOrGroups.getSelectedItem().toString();
+				ArrayList<String> members = new ArrayList<String>();
+				members.add(user.getUsername());
+				members.add(selectedContact);
+				c1.startChatroom(members, choice2);
+				new Chatroom(frame, members, c1);
+				break;
+			case "Groups":
+				break;
+			}
+
 			break;
 		case "createGroup":
-			//TODO group creation
+			c1.sendMessage("createGroup");
+			String tester1[] = c1.getContactList();
+			new groupMenu(frame, tester1, c1);
 			break;
 		case "add":
 			String userToAdd = newContactName.getText();
 			c1.addUser(userToAdd);
-				String tester2[] = c1.getContactList();
-				DefaultComboBoxModel<String> model1 = new DefaultComboBoxModel<String>(tester2);
-				contactsOrGroups.setModel(model1);
+			String tester2[] = c1.getContactList();
+			DefaultComboBoxModel<String> model1 = new DefaultComboBoxModel<String>(tester2);
+			contactsOrGroups.setModel(model1);
 			break;
 		case "delete":
 			String userToDelete = newContactName.getText();

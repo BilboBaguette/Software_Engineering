@@ -133,12 +133,14 @@ public class MenuGUI {
 		contactsOrGroups.setModel(model1);
 		contactsAndGroups.addActionListener(new ActionListeners(contactsAndGroups, contactsOrGroups, currentUser, c1));
 		contactsAndGroups.setActionCommand("contactsAndGroups");
-		contactsOrGroups.addActionListener(new ActionListeners(frame, currentUser, contactsOrGroups, c1));
+		contactsOrGroups.addActionListener(new ActionListeners(frame, currentUser, contactsOrGroups, c1, contactsAndGroups));
 		contactsOrGroups.setActionCommand("contactsOrGroups");
 		addNewContactbtn.addActionListener(new ActionListeners(newContact, currentUser, c1, contactsOrGroups));
 		addNewContactbtn.setActionCommand("add");
 		deleteContactbtn.addActionListener(new ActionListeners(newContact, currentUser, c1, contactsOrGroups));
 		deleteContactbtn.setActionCommand("delete");
+		newGroupbtn.addActionListener(new ActionListeners(frame, currentUser, contactsOrGroups, c1, contactsAndGroups));
+		newGroupbtn.setActionCommand("createGroup");
 		//Display the frame
 		frame.pack();
 		frame.setVisible(true);

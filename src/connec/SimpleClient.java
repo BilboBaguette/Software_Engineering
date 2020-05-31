@@ -2,6 +2,7 @@ package connec;
 import java.io.*;  
 import java.net.*;
 import java.util.ArrayList;
+import java.util.List;
 
 import loginFeat.User; 
 import Chatroom.Chatroom;
@@ -256,9 +257,10 @@ public class SimpleClient {
 	/**
 	 * Function to start a Chatroom
 	 */
-	public void startChatroom(ArrayList<String> members) {
+	public void startChatroom(ArrayList<String> members, String category) {
 		try {
 			output.writeObject((String) "chatroom");
+			output.writeObject((String) category);
 			output.writeObject((int) members.size());
 			for(int i=0; i<members.size();i++) {
 				output.writeObject((String) members.get(i));
@@ -311,5 +313,27 @@ public class SimpleClient {
 		catch  (IOException ioe) {
 			ioe.printStackTrace();
 		}
+	}
+	
+	public void sendNewGroupMembers(String btnClicked, List<String> membersGroup) {
+		
+        try {
+        	if(btnClicked.equals("send")) {
+	        	output.writeObject((boolean) true);
+	        	output.writeObject((int) membersGroup.size());
+	            for(int i=0; i<membersGroup.size();i++) {
+	            	output.writeObject(membersGroup.get(i));
+	            }
+	            output.writeObject(connectedAccount.getUsername());
+        	}
+        	else {
+        		output.writeObject((boolean) false);
+        	}
+        } catch (IOException ex) {
+            System.out.println("Server exception: " + ex.getMessage());
+            ex.printStackTrace();
+
+		}
+		
 	}
 }
