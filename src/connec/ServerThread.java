@@ -346,7 +346,7 @@ public class ServerThread extends Thread {
 				XMLLog.createChatRoom(members);
 				messageContent = XMLLog.readXMLLog("MessageContent", members);
 				messageUsername = XMLLog.readXMLLog("UserName", members);
-			}else {
+			}else if(messageUsername.size()!=0){
 				for(int i=0;i<messageContent.size()-1;i++) {
 					wholeText += messageUsername.get(i) + ": " + messageContent.get(i) + "\n";
 				}
