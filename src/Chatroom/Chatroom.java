@@ -18,6 +18,7 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 
@@ -95,6 +96,17 @@ public class Chatroom {
 			btnSend.addActionListener(new SendButtonListener(frameMenu, frame, textPane,Typingtext,myList, c1));
 			btnSend.setBounds(486, 406, 89, 23);
 			frame.getContentPane().add(btnSend);
+			
+			JLabel MemberList = new JLabel("");
+	        MemberList.setBounds(123, 11, 444, 35);
+	        frame.getContentPane().add(MemberList);
+	        
+	        MemberList.setText(c1.getMemberList());
+
+	        JLabel HelpLabel = new JLabel("/quit to leave the chatroom");
+	        HelpLabel.setEnabled(false);
+	        HelpLabel.setBounds(123, 440, 131, 23);
+	        frame.getContentPane().add(HelpLabel);
 			
 			frame.setVisible(true);			
 

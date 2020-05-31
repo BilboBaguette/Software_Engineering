@@ -196,6 +196,7 @@ public class ServerThread extends Thread {
 				
 				//output = new ObjectOutputStream(socket.getOutputStream());
 				output.writeObject((String) wholeText);
+				sendMemberList();
 				chatroom=true;
 				while(chatroom){
 					String helo = (String) input.readObject();
@@ -226,6 +227,20 @@ public class ServerThread extends Thread {
 
         	      		
         }
+    }
+    
+    private void sendMemberList() {
+    	try {
+        	String memberList = "";
+        	for(int i=0; i<members.size()-1;i++) {
+        		memberList += members.get(i) + ", ";
+        	}
+        	memberList+= members.get(members.size()-1);
+			output.writeObject((String) memberList);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
     private void fetchMembers() {

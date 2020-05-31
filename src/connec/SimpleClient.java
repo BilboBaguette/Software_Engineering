@@ -283,4 +283,20 @@ public class SimpleClient {
 			e.printStackTrace();
 		}
 	}
+	
+	public String getMemberList() {
+		String memberList = "";
+		try {
+			memberList = (String) input.readObject();
+			return memberList;
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return "";
+	}
 }
