@@ -49,6 +49,12 @@ public class User implements Serializable {
 	 */
 	public ArrayList<Integer> Contacts = new ArrayList<Integer>();
 	
+	/**
+	 * This is the constructor
+	 * @param username
+	 * @param password
+	 * @param id
+	 */
 public User(String username, String password, int id) {
 		setUsername(username);
 		setPassword(password);
@@ -83,10 +89,20 @@ public User(String username, String password, int id) {
 		return Contacts;
 	}
 	
+	/**
+	 * This function adds a member to an user's contact list
+	 * @param Contacts
+	 * @param idToAdd
+	 */
 	public void AddContact(ArrayList<Integer> Contacts, Integer idToAdd) {
 		Contacts.add(idToAdd);
 	}
 	
+	/**
+	 * This function removes a member to an user's contact list
+	 * @param Contacts
+	 * @param idToRemove
+	 */
 	public void removeContact(ArrayList<Integer> Contacts, Integer idToRemove) {
 		Contacts.remove(idToRemove);
 	}

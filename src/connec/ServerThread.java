@@ -254,6 +254,13 @@ public class ServerThread extends Thread {
         }
     }
     
+    /**
+     * This function reads and returns the contents of the XML doc
+     * 
+     * @see Chatroom.XMLLog
+     * 
+     * @return
+     */
     private String readLogs() {
 		try {
 	    	Collections.sort(members);
@@ -279,7 +286,14 @@ public class ServerThread extends Thread {
 		}
 		return "";
     }
+ 
     
+    /**
+     * This function checks if a user already exists in the logs 
+     * 
+     * @param userToCheck
+     * @return
+     */
     private boolean userExists(String userToCheck) {
     	for(int i=0;i<users.size();i++) {
     		if(userToCheck.compareTo(users.get(i))==0) {
@@ -289,12 +303,18 @@ public class ServerThread extends Thread {
     	return false;
     }
     
+    /**
+     * This functions empties the list of a chatroom's members 
+     */
     private void emptyMemberList() {
     	for(int i=0;i<members.size();i+=0) {
     		members.remove(i);
     	}
     }
     
+    /**
+     * This functions sends the list of an user's contacts
+     */
     private void sendMemberList() {
     	try {
         	String memberList = "";
@@ -308,7 +328,9 @@ public class ServerThread extends Thread {
 			e.printStackTrace();
 		}
     }
-    
+    /**
+     * gets a User's contact member
+     */
     private void fetchMembers() {
     	try {
     		int numberMembers = (int) input.readObject();
@@ -324,6 +346,9 @@ public class ServerThread extends Thread {
              ex.printStackTrace();
          } 
     }
+    
+    
+    
     
     /**
 	 * Method that checks will receive the info about which button the user has clicked on

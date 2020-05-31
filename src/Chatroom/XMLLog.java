@@ -27,15 +27,19 @@ import org.xml.sax.SAXException;
  *
  * @version 1.0
  *
- *
- * @author Jean-Louis CHENG
- * @author Nils CHOL
- * @author Aurélien ANDRIEUX
+ * @see java.xml
+ * @author Jason Khaou
+
  *
  */
 
 public class XMLLog {
 		
+	/**
+	 * Function that creates an XML file
+	 * 
+	 * @throws Exception
+	 */
 	public static void createLogXML() throws Exception
 	{
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -55,6 +59,15 @@ public class XMLLog {
 		transformer.transform(source, streamResult);
 	}
 	
+	/**
+	 * This function creates a chatroom in the XML doc
+	 * 
+	 * @param members
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws TransformerException
+	 */
 	public static void createChatRoom(ArrayList<String> members) throws ParserConfigurationException, SAXException, IOException, TransformerException {
 		File xmlFile = new File("./Messages.xml");
 		
@@ -80,6 +93,14 @@ public class XMLLog {
         transformer.transform(domSource, streamResult);
 	}
 	
+	/**
+	 * This function deletes a chatroom in the XML doc
+	 * @param members
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws TransformerException
+	 */
 	public static void deleteChatRoom(ArrayList<String> members) throws ParserConfigurationException, SAXException, IOException, TransformerException
 	{
 		File xmlFile = new File("./Messages.xml");
@@ -118,6 +139,12 @@ public class XMLLog {
         transformer.transform(domSource, streamResult);	 
 	}
 	
+	/**
+	 * This function adds a message from a user to the XML doc
+	 * @param messageToAdd
+	 * @param members
+	 * @throws Exception
+	 */
 	public static void addToXML(Messages messageToAdd, ArrayList<String> members) throws Exception
     {
         File xmlFile = new File("./Messages.xml");
@@ -166,7 +193,12 @@ public class XMLLog {
         transformer.transform(domSource, streamResult);    
     }
 	
-	
+	/**
+	 * This function lists all the attributes from the XML doc
+	 * 
+	 * @param element
+	 * @return
+	 */
 	private static ArrayList<String> listAllAttributes(Element element) {
         
         ArrayList<String> attrList = new ArrayList<String>();
@@ -184,6 +216,13 @@ public class XMLLog {
         return attrList;
     }
 	
+	/**
+	 * This function reads the contents of tthe XML doc
+	 * @param choice
+	 * @param members
+	 * @return
+	 * @throws Exception
+	 */
 	public static ArrayList<String> readXMLLog(String choice, ArrayList<String> members) throws Exception
     {
         File xmlFile = new File("./Messages.xml");

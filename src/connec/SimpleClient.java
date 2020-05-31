@@ -283,6 +283,10 @@ public class SimpleClient {
 		}
 	}
 	
+	/**
+	 * This function is used to display all the participant in a chatroom
+	 * @return
+	 */
 	public String getMemberList() {
 		String memberList = "";
 		try {
@@ -299,6 +303,10 @@ public class SimpleClient {
 		return "";
 	}
 	
+	/**
+	 * This function deletes an user's contact member
+	 * @param userToDelete
+	 */
 	public void deleteUser(String userToDelete) {
         try  {
 			//create the socket; it is defined by an remote IP address (the address of the server) and a port number
