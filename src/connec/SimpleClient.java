@@ -220,6 +220,7 @@ public class SimpleClient {
 			//create the socket; it is defined by an remote IP address (the address of the server) and a port number
             output.writeObject((String)"addcontact"); //serialize and write the String to the stream
             output.writeObject((String) userToAdd);
+
             
 		} catch  (UnknownHostException uhe) {
 			uhe.printStackTrace();

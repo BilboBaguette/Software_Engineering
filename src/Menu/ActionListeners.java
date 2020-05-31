@@ -139,9 +139,9 @@ public class ActionListeners implements ActionListener{
 		case "add":
 			String userToAdd = newContactName.getText();
 			c1.addUser(userToAdd);
-			String tester2[] = c1.getContactList();
-			DefaultComboBoxModel<String> model1 = new DefaultComboBoxModel<String>(tester2);
-			contactsOrGroups.setModel(model1);
+				String tester2[] = c1.getContactList();
+				DefaultComboBoxModel<String> model1 = new DefaultComboBoxModel<String>(tester2);
+				contactsOrGroups.setModel(model1);
 			break;
 		case "delete":
 			String userToDelete = newContactName.getText();

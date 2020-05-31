@@ -6,6 +6,8 @@ import java.util.Collections;
 
 import Chatroom.Messages;
 import Chatroom.XMLLog;
+
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import loginFeat.User;
@@ -169,6 +171,10 @@ public class ServerThread extends Thread {
 		        			XMLUser.addContactToUserXML(userToAdd.getId(), contactUsername);
 		        			loginInit();
 		        			sendContactList();
+		        		}else {
+		        			loginInit();
+		        			sendContactList();
+		        			JOptionPane.showMessageDialog(null,"This account already is in the contact list.","Warning", JOptionPane.WARNING_MESSAGE);
 		        		}
 		        		break;
 		        	case "chatroom":
@@ -179,14 +185,22 @@ public class ServerThread extends Thread {
 		        	case "deletecontact":
 		        		if(checkContact())
 		        		{
-		        			//XMLUser.removeContactFromUserXML(userToAdd.getId(), contactUsername);
-		        			emptyMemberList();
-		        			members.add(userToAdd.getUsername());
-		        			members.add(contactUsername);
-		        			Collections.sort(members);
-		        			XMLLog.deleteChatRoom(members);
+		        			JOptionPane option = new JOptionPane();
+		        			int verif = JOptionPane.showConfirmDialog(new JFrame(), "Warning, deleting this contact will also delete the associated logs! Continue?", "Warning", JOptionPane.YES_NO_OPTION);
+		        			if(verif==JOptionPane.OK_OPTION) {
+			        			XMLUser.removeContactFromUserXML(userToAdd.getId(), contactUsername);
+			        			emptyMemberList();
+			        			members.add(userToAdd.getUsername());
+			        			members.add(contactUsername);
+			        			Collections.sort(members);
+			        			XMLLog.deleteChatRoom(members);
+		        			}
 		        			loginInit();
 		        			sendContactList();
+		        		}else {
+		        			loginInit();
+		        			sendContactList();
+		        			JOptionPane.showMessageDialog(null,"This account is not in the contact list.","Warning", JOptionPane.WARNING_MESSAGE);
 		        		}
 		        		break;
 		        	}
@@ -466,7 +480,7 @@ public class ServerThread extends Thread {
         				}
         			}
         		}
-			}		
+			}
          } catch (IOException ex) {
              System.out.println("Server exception: " + ex.getMessage());
              ex.printStackTrace();
