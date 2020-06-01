@@ -7,4 +7,4 @@ For clarity purpose, because we didn't think about it when we created our GitHub
 Aqualio=Nils
 BilboBaguette=Roman
 Beuhlex=Aurélien
-Yun=Jason
+Yunkoko=Jason
